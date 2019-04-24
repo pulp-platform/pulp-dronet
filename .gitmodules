@@ -1,0 +1,12 @@
+[submodule "dataset/Himax_Dataset"]
+	path = dataset/Himax_Dataset
+	url = https://github.com/pulp-platform/Himax_Dataset.git
+[submodule "dataset/Udacity_Dataset"]
+	path = dataset/Udacity_Dataset
+	url = https://github.com/pulp-platform/Udacity_Dataset.git
+[submodule "dataset/Zurich_Bicycle_Dataset"]
+	path = dataset/Zurich_Bicycle_Dataset
+	url = https://github.com/pulp-platform/Zurich_Bicycle_Dataset.git
+[submodule "src/autotiler"]
+	path = src/autotiler
+	url = https://github.com/pulp-platform/autotiler.git

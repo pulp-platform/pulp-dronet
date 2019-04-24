@@ -12,7 +12,7 @@ If you use **PULP-DroNet** in an academic or industrial context, please cite the
 
 Publication: [A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones](https://arxiv.org/abs/1805.01831)
 
-PULP Platform Youtube channel (subscribe it!): [Video1](https://youtu.be/JKY03NV3C2s) [Video2]()
+[PULP Platform Youtube](https://www.youtube.com/channel/UCpad_lwSfoMZkb6X7FdjU0g) channel (subscribe it!): [Video1](https://youtu.be/JKY03NV3C2s)
 
 ~~~~
 @article{palossi2019PULPDroNet,
@@ -37,7 +37,7 @@ The hardware soul of PULP-DroNet is embodied by the *PULP-Shield* an ultra-low p
 Then, we developed a [general methodology](https://arxiv.org/abs/1805.01831) for deploying state-of-the-art deep learning algorithms on top of ultra-low power embedded computation nodes, like a miniaturized drone.
 Our novel methodology allowed us first to deploy DroNet on the PULP-Shield, and then demonstrating how it enables the execution the CNN on board the CrazyFlie 2.0 within only 64-284mW and with a throughput of 6-18 frame-per-second!
 Finally, we field-prove our methodology presenting a closed-loop fully working demonstration of vision-driven autonomous navigation relying only on onboard resources, and within an ultra-low power budget.
-See the videos on the [PULP Platform](UCpad_lwSfoMZkb6X7FdjU0g) Youtube channel ([Video1](https://youtu.be/JKY03NV3C2s) and [Video2]()).
+See the videos on the [PULP Platform Youtube](https://www.youtube.com/channel/UCpad_lwSfoMZkb6X7FdjU0g) channel ([Video1](https://youtu.be/JKY03NV3C2s)).
 
 We release here, as open source, all our code, hardware designs, datasets, and trained networks.
 
@@ -98,7 +98,7 @@ More in detail:
 
 To start running PULP-DroNet, there are few preliminary steps you have to follow, depending on your usage of this project. For example, you might want to:
 * **Run PULP-DroNet binary**: you want to run the PULP-DroNet binary (available under the `bin` folder) as it is, either on the PULP-Shield or on the GAPuino board. In this case, you need to:
-	* install the [PULP-SDK](#sdk);
+	* [install the PULP-SDK](#sdk);
 	* [program the GAP8 via JTAG](#pulp_hw).
 * **Compile and run PULP-DroNet**: you want to compile either the default PULP-DroNet or a modified version of it and run it. In this case, you need to:
 	* [install the PULP-SDK](#sdk);
@@ -110,18 +110,19 @@ To start running PULP-DroNet, there are few preliminary steps you have to follow
 	* [download the basic kernels and generators](#basic_kernels);
 	* [download the Dataset](#dataset);
 	* [compile PULP-DroNet](#compile);
-	* [test PULP-DroNet on the PULP Virtual Platform](#pulp_vp).
+	* test PULP-DroNet on the [PULP Virtual Platform](#pulp_vp).
 * **Modify/Produce the PULP-Shield**: you want to modify or reproduce our PULP-Shield, we release all the *Altium* design of it:
 	* you can import the `PULP-Shield/GAP8` project into your Altium Designer tool and update the schematics or the PCB files;
 	* we also release the fabrication files. Thus, you are ready to go with the production of our PULP-Shield.
 * **Run PULP-DroNet on the CarzyFlie 2.0**: you want to run the PULP-DroNet binary as it is, on a PULP-Shield mounted on a CrazyFlie 2.0 nano-drone. In this case, you need to:
-	* install the [PULP-SDK](#sdk);
+	* [install the PULP-SDK](#sdk);
 	* [coming soon...](#pulp_cf)
 
 <img style="float: right;" src="imgs/PULP_proto.png" width="100%">
 
 
-### 2.1 Install the PULP-SDK<a name="sdk"></a>
+<a name="sdk"></a>
+### 2.1 Install the PULP-SDK
 The PULP-SDK is available [here](https://github.com/pulp-platform/pulp-sdk). 
 If you are a Linux Ubuntu user, we suggest you of installing the *Release* version of the PULP-SDK, if not you can build your own PULP-SDK.
 
@@ -171,7 +172,8 @@ In the rest of this README, we assume the following file-system structure:
 If your file-system looks different, please adjust the commands in the next sections accordingly to your folders' locations.
 
 
-### 2.2 Download the Basic Kernels<a name="basic_kernels"></a>
+<a name="basic_kernels"></a>
+### 2.2 Download the Basic Kernels
 If you want to compile PULP-DroNet, you need first to download the `basic kernels` and `generators` included in the GWT open source Autotiler release.
 Note that, you do not need the Autotiler library itself (i.e., `libtile.dronet.a`) but only a few auxiliary files.
 To get these files automatically, you can execute on your terminal the following:
@@ -203,7 +205,9 @@ To double-check that the `basic kernels` and `generators` are correctly download
 │   │   ├── CNN_HwCE.c
 ```
 
-### 2.3 Install the Autotiler<a name="tiler"></a>
+
+<a name="tiler"></a>
+### 2.3 Install the Autotiler
 The Autotiler is a software tool developed in collaboration with GWT.
 The tool role is to optimize memory utilization on GAP8, relieving the user from manual coding of the tiling loops and the data movement mechanism.
 This tool produces a set of C files (i.e., `src/PULPDronetKernels.c`, `src/PULPDronetKernels.h`, `src/PULPDronetKernelsInit.c`, and `src/PULPDronetKernelsInit.h`) that are then compiled together with the others source files in the `src` folder.
@@ -229,7 +233,8 @@ To double-check the Autotiler library is correctly installed you can look for it
 ```
 
 
-### 2.4 Download the Dataset<a name="dataset"></a>
+<a name="dataset"></a>
+### 2.4 Download the Dataset
 The PULP-DroNet dataset is composed by the following three sub-sets, provided as git submodules:
 * [Himax Dataset](https://github.com/pulp-platform/Himax_Dataset);
 * [Udacity Dataset](https://github.com/pulp-platform/Udacity_Dataset);
@@ -268,7 +273,8 @@ Each sub-folder contains a variable number of gray-scale `.pgm` images and one `
 The overall dataset has been used for testing the inference capability of our PULP-DroNet, and it extends the testing dataset previously introduced in [DroNet](https://github.com/uzh-rpg/rpg_public_dronet) with the Himax set.
 
 
-## 3. Compile PULP-DroNet<a name="compile"></a>
+<a name="compile"></a>
+## 3. Compile PULP-DroNet
 To compile PULP-DroNet you need at least the PULP-SDK installed (see [2.1](#sdk)) and the basic kernels/generators downloaded (see [2.2](#basic_kernels)). If you want to compile the PULP-DroNet as it is or with minimal modifications (e.g., only adjusting the USER parameters in `src/config.h`) you don't need any Autotiler, because the files the Autotiler would produce are already included in the repository (i.e., `src/PULPDronetKernels.c`, `src/PULPDronetKernels.h`, `src/PULPDronetKernelsInit.c`, `src/PULPDronetKernelsInit.h`).
 Remember to set the desired `PLATFORM` (i.e., PULP-Shield, GV-SoC or GAPuino) in `src/config.h`.
 In ANY case, you need first to configure the PULP-SDK executing in your terminal:
@@ -301,7 +307,8 @@ $ make clean conf autotiler all
 Note that if you change only the configuration under `src/config.h` you do not need the Autotiler to recompile the application.
 
 
-## 4. Run PULP-DroNet on the PULP Virtual Platform<a name="pulp_vp"></a>
+<a name="pulp_vp"></a>
+## 4. Run PULP-DroNet on the PULP Virtual Platform
 The PULP Virtual Platform, also known as GV-SoC, is part of the PULP-SDK. 
 It allows you to simulate many PULP chips including the GAP8. 
 The Virtual Platform environment is particularly useful for i) debugging the application and ii) evaluating the PULP-DroNet inference accuracy on the testing dataset.
@@ -351,7 +358,8 @@ $ sh ./run_dataset.sh
 Note that both the PULP-SDK and the `src/config.h` must be configured appropriately, as explained in [4.](#pulp_vp).
 
 
-## 5. Run PULP-DroNet on the PULP-Shield/GAPuino<a name="pulp_hw"></a>
+<a name="pulp_hw"></a>
+## 5. Run PULP-DroNet on the PULP-Shield/GAPuino
 If you want to run the PULP-DroNet either on our PULP-Shield or the GWT GAPuino board, you need to have at least the PULP-SDK installed in your system (see [2.1](#sdk)) and the *pulp-debug-bridge* tool adequately configured, as explained [here](https://github.com/pulp-platform/pulp-debug-bridge).
 This tool comes with the PULP-SDK but can also be installed independently. 
 Once the environment is set, you need first to flash the network's weights/biases into the *Flash Memory* (only once), then you can load the PULP-DroNet binary via JTAG, and the execution starts.
@@ -431,5 +439,6 @@ $ plpbridge --cable=ftdi --boot-mode=jtag --binary=./build/gap/PULPDroNet/PULPDr
 Note that in case you are using a GAPuino board you need to replace `--cable=ftdi` with `--cable=ftdi@digilent`.
 
 
-## 6. Run PULP-DroNet on the Crazyflie 2.0<a name="pulp_cf"></a>
+<a name="pulp_cf"></a>
+## 6. Run PULP-DroNet on the Crazyflie 2.0
 This section describes the use case of running PULPDroNet on the PULP-Shield when it is plugged to the Crazyflie 2.0.
