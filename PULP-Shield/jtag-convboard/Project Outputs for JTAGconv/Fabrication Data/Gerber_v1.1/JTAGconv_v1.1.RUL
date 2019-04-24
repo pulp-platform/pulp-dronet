@@ -1,0 +1,14 @@
+DRC Rules Export File for PCB: D:\Work\ETH\boards\jtag-convboard\JTAGconv.PcbDoc
+RuleKind=MinimumAnnularRing|RuleName=MinimumAnnularRing|Scope=Board|Minimum=5.91
+RuleKind=MinimumAnnularRing|RuleName=MinimumAnnularRing_Vias|Scope=Board|Minimum=4.88
+RuleKind=MinimumAnnularRing|RuleName=MinimumAnnularRing_Vias_bga|Scope=Board|Minimum=2.95
+RuleKind=ShortCircuit|RuleName=ShortCircuit|Scope=Board|Allowed=0
+RuleKind=ShortCircuit|RuleName=ShortCircuit_variant_footprint|Scope=Board|Allowed=1
+RuleKind=SolderMaskExpansion|RuleName=SolderMaskExpansion|Scope=Board|Minimum=2.95
+RuleKind=Width|RuleName=Width|Scope=Board|Minimum=5.91
+RuleKind=Width|RuleName=Width_PWR|Scope=Board|Minimum=5.91
+RuleKind=Width|RuleName=Width_bga|Scope=Board|Minimum=3.94
+RuleKind=Clearance|RuleName=Clearance|Scope=Board|Minimum=4.92
+RuleKind=Clearance|RuleName=Clearance_PULPLOGO|Scope=Board|Minimum=0.00
+RuleKind=Clearance|RuleName=Clearance_pulp|Scope=Board|Minimum=3.94
+RuleKind=Clearance|RuleName=Clearance_bga|Scope=Board|Minimum=2.95

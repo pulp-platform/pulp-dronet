@@ -1,0 +1,10 @@
+DRC Rules Export File for PCB: H:\PCB-Reviews\2019\Daniele Palossi\gap_shield-release\PCB1.PcbDoc
+RuleKind=Clearance|RuleName=Clearance_1|Scope=Board|Minimum=0.00
+RuleKind=Clearance|RuleName=Clearance_pulp|Scope=Board|Minimum=3.94
+RuleKind=Clearance|RuleName=Clearance|Scope=Board|Minimum=3.94
+RuleKind=Width|RuleName=Width_PWR|Scope=Board|Minimum=5.91
+RuleKind=Width|RuleName=Width|Scope=Board|Minimum=3.94
+RuleKind=SolderMaskExpansion|RuleName=SolderMaskExpansion|Scope=Board|Minimum=2.95
+RuleKind=ShortCircuit|RuleName=ShortCircuit_variant_footprint|Scope=Board|Allowed=1
+RuleKind=ShortCircuit|RuleName=ShortCircuit|Scope=Board|Allowed=0
+RuleKind=MinimumAnnularRing|RuleName=MinimumAnnularRing|Scope=Board|Minimum=3.94
