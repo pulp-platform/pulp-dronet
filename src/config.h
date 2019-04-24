@@ -26,10 +26,10 @@
 
 /****************************** USER PARAMETERS *******************************/
 // #define DATASET_TEST				// Enable if you test the Dataset (single iteration)
-// #define VERBOSE						// Enables additional information
+// #define VERBOSE					// Enables additional information
 // #define CHECKSUM					// Enables correctness check per layer
-// #define PROFILE_CL					// Profiling execution from the Cluster
-// #define PROFILE_FC					// Profiling execution from the Fabric Ctrl
+// #define PROFILE_CL				// Profiling execution from the Cluster
+// #define PROFILE_FC				// Profiling execution from the Fabric Ctrl
 #define PLATFORM		1			// Select 1 for PULP-Shield/GV-SoC or 2 for GAPuino
 #define CROPPING 		1			// Image cropping enable: 0 in HW, 1 in SW
 #define SPI_COMM					// Enables SPI communication

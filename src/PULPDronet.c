@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and        *
  * limitations under the License.                                             *
  *                                                                            *
- * File:    PULPDronet.c                                                          *
+ * File:    PULPDronet.c                                                      *
  * Author:  Daniele Palossi <dpalossi@iis.ee.ethz.ch>                         *
  * Date:    10.04.2019                                                        *
  *----------------------------------------------------------------------------*/

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and        *
  * limitations under the License.                                             *
  *                                                                            *
- * File:    PULPDronetGenerator.c                                                 *
+ * File:    PULPDronetGenerator.c                                             *
  * Author:  Daniele Palossi <dpalossi@iis.ee.ethz.ch>                         *
  * Date:    10.04.2019                                                        *
  *----------------------------------------------------------------------------*/
