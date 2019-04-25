@@ -284,8 +284,8 @@ $ source ./pulp-sdk/configs/gap.sh
 ~~~~
 
 Then depending on your target platform (i.e., Virtual Platform vs. PULP-Shield/GAPuino board), you need to source one last script accordingly:
-* execute `$ source ./pulp-sdk/config/platform-gvsoc.sh` if your target is the Virtual Platform
-* execute `$ source ./pulp-sdk/config/platform-board.sh` if your target is either the PULP-Shield or the GAPuino board
+* execute `$ source ./pulp-sdk/configs/platform-gvsoc.sh` if your target is the Virtual Platform
+* execute `$ source ./pulp-sdk/configs/platform-board.sh` if your target is either the PULP-Shield or the GAPuino board
 
 Then, you can compile PULP-DroNet just typing in a terminal the following commands:
 
