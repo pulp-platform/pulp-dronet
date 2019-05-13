@@ -8,17 +8,28 @@ Copyright (C) 2019 ***ETH Zürich***. All rights reserved.
 
 **Citing**
 
-If you use **PULP-DroNet** in an academic or industrial context, please cite the following publication:
+If you use **PULP-DroNet** in an academic or industrial context, please cite the following publications:
 
-Publication: [A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones](https://arxiv.org/abs/1805.01831)
+Publications: 
+* [A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones](https://arxiv.org/abs/1805.01831)
+* [An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs](https://arxiv.org/abs/1905.04166)
 
-[PULP Platform Youtube](https://www.youtube.com/channel/UCpad_lwSfoMZkb6X7FdjU0g) channel (subscribe it!): [Video1](https://youtu.be/JKY03NV3C2s)
+[PULP Platform Youtube](https://www.youtube.com/c/PULPPlatform) channel (subscribe it!): [Video1](https://youtu.be/JKY03NV3C2s) [Video2](https://youtu.be/57Vy5cSvnaA)
 
 ~~~~
-@article{palossi2019PULPDroNet,
+@article{palossi2019PULPDroNetV1,
   title={A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones},
   author={Palossi, Daniele and Loquercio, Antonio and Conti, Francesco and Flamand, Eric and Scaramuzza, Davide and Benini, Luca},
   journal={arXiv preprint arXiv:1805.01831},
+  year={2019}
+}
+~~~~
+
+~~~~
+@article{palossi2019PULPDroNetV2,
+  title={An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs},
+  author={Palossi, Daniele and Conti, Francesco and Benini, Luca},
+  journal={arXiv preprint arXiv:1905.04166},
   year={2019}
 }
 ~~~~
