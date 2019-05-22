@@ -11,24 +11,26 @@ Copyright (C) 2019 ***ETH Zürich***. All rights reserved.
 If you use **PULP-DroNet** in an academic or industrial context, please cite the following publications:
 
 Publications: 
-* [A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones](https://arxiv.org/abs/1805.01831)
-* [An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs](https://arxiv.org/abs/1905.04166)
+* *A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones* [preprint](https://arxiv.org/abs/1805.01831) [IEEE IoT Journal](https://ieeexplore.ieee.org/document/8715489)
+* *An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs* [preprint](https://arxiv.org/abs/1905.04166) [IEEE DCOSS]()
 
-[PULP Platform Youtube](https://www.youtube.com/c/PULPPlatform) channel (subscribe it!): [Video1](https://youtu.be/JKY03NV3C2s) [Video2](https://youtu.be/57Vy5cSvnaA)
+[PULP Platform Youtube](https://www.youtube.com/c/PULPPlatform) channel (subscribe it!): [Video1](https://youtu.be/57Vy5cSvnaA) [Video2](https://youtu.be/JKY03NV3C2s)
 
 ~~~~
-@article{palossi2019PULPDroNetV1,
-  title={A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones},
-  author={Palossi, Daniele and Loquercio, Antonio and Conti, Francesco and Flamand, Eric and Scaramuzza, Davide and Benini, Luca},
-  journal={arXiv preprint arXiv:1805.01831},
+@article{palossi2019PULPDroNetV1, 
+  author={D. {Palossi} and A. {Loquercio} and F. {Conti} and E. {Flamand} and D. {Scaramuzza} and L. {Benini}}, 
+  title={A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones}, 
+  journal={IEEE Internet of Things Journal}, 
+  doi={10.1109/JIOT.2019.2917066}, 
+  ISSN={2327-4662}, 
   year={2019}
 }
 ~~~~
 
 ~~~~
 @article{palossi2019PULPDroNetV2,
-  title={An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs},
   author={Palossi, Daniele and Conti, Francesco and Benini, Luca},
+  title={An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs},
   journal={arXiv preprint arXiv:1905.04166},
   year={2019}
 }
