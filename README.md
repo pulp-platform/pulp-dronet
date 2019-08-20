@@ -11,13 +11,13 @@ Copyright (C) 2019 ***ETH Zürich***. All rights reserved.
 If you use **PULP-DroNet** in an academic or industrial context, please cite the following publications:
 
 Publications: 
-* *A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones* [preprint](https://arxiv.org/abs/1805.01831) [IEEE IoT Journal](https://ieeexplore.ieee.org/document/8715489)
-* *An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs* [preprint](https://arxiv.org/abs/1905.04166) [IEEE DCOSS]()
+* *A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones* [arXiv preprint](https://arxiv.org/abs/1805.01831) -- [IEEE IoT Journal](https://ieeexplore.ieee.org/document/8715489)
+* *An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs* [arXiv preprint](https://arxiv.org/abs/1905.04166) -- [IEEE DCOSS](https://ieeexplore.ieee.org/document/8804776)
 
 [PULP Platform Youtube](https://www.youtube.com/c/PULPPlatform) channel (subscribe it!): [Video1](https://youtu.be/57Vy5cSvnaA) [Video2](https://youtu.be/JKY03NV3C2s)
 
 ~~~~
-@article{palossi2019PULPDroNetV1, 
+@article{palossi2019pulpdronetIoTJ, 
   author={D. {Palossi} and A. {Loquercio} and F. {Conti} and E. {Flamand} and D. {Scaramuzza} and L. {Benini}}, 
   title={A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones}, 
   journal={IEEE Internet of Things Journal}, 
@@ -28,11 +28,16 @@ Publications:
 ~~~~
 
 ~~~~
-@article{palossi2019PULPDroNetV2,
-  author={Palossi, Daniele and Conti, Francesco and Benini, Luca},
-  title={An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs},
-  journal={arXiv preprint arXiv:1905.04166},
-  year={2019}
+@inproceedings{palossi2019pulpdronetDCOSS,
+  author={D. {Palossi} and F. {Conti} and L. {Benini}},
+  booktitle={2019 15th International Conference on Distributed Computing in Sensor Systems (DCOSS)},
+  title={An Open Source and Open Hardware Deep Learning-Powered Visual Navigation Engine for Autonomous Nano-UAVs},
+  pages={604-611},
+  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},
+  doi={10.1109/DCOSS.2019.00111},
+  ISSN={2325-2944},
+  month={May},
+  year={2019},
 }
 ~~~~
 
@@ -45,19 +50,19 @@ This means that all the complex computations are done directly aboard the vehicl
 The visual navigation engine is composed of both a software and a hardware part.
 The former is based on the previous [DroNet](https://github.com/uzh-rpg/rpg_public_dronet) project developed by the [RPG](http://rpg.ifi.uzh.ch/) from the University of Zürich (UZH). 
 DroNet is a shallow convolutional neural network (CNN) which has been used to control a standard-size quadrotor in a set of environments via remote computation.
-The hardware soul of PULP-DroNet is embodied by the *PULP-Shield* an ultra-low power visual navigation module featuring a Parallel Ultra-Low-Power ([PULP](https://www.pulp-platform.org/)) GAP8 System-on-Chip (SoC) from [GreenWaves Technologies](https://greenwaves-technologies.com/) (GWT), an ultra-low power camera, and off-chip Flash/DRAM memory; the shield is designed as a pluggable PCB for the [Crazyflie 2.0](https://www.bitcraze.io/crazyflie-2/) nano-drone.
+The hardware soul of PULP-DroNet is embodied by the *PULP-Shield* an ultra-low power visual navigation module featuring a Parallel Ultra-Low-Power ([PULP](https://www.pulp-platform.org/)) GAP8 System-on-Chip (SoC) from [GreenWaves Technologies](https://greenwaves-technologies.com/) (GWT), an ultra-low power HiMax HBM01 camera, and off-chip Flash/DRAM memory; the shield is designed as a pluggable PCB for the [Crazyflie 2.0](https://www.bitcraze.io/crazyflie-2/)/[2.1](https://www.bitcraze.io/crazyflie-2-1/) nano-drone.
 
 Then, we developed a [general methodology](https://arxiv.org/abs/1805.01831) for deploying state-of-the-art deep learning algorithms on top of ultra-low power embedded computation nodes, like a miniaturized drone.
 Our novel methodology allowed us first to deploy DroNet on the PULP-Shield, and then demonstrating how it enables the execution the CNN on board the CrazyFlie 2.0 within only 64-284mW and with a throughput of 6-18 frame-per-second!
 Finally, we field-prove our methodology presenting a closed-loop fully working demonstration of vision-driven autonomous navigation relying only on onboard resources, and within an ultra-low power budget.
-See the videos on the [PULP Platform Youtube](https://www.youtube.com/channel/UCpad_lwSfoMZkb6X7FdjU0g) channel ([Video1](https://youtu.be/JKY03NV3C2s)).
+See the videos on the [PULP Platform Youtube](https://www.youtube.com/channel/UCpad_lwSfoMZkb6X7FdjU0g) channel ([Video](https://youtu.be/JKY03NV3C2s)).
 
 We release here, as open source, all our code, hardware designs, datasets, and trained networks.
 
 
 ## 2. Getting started
 The PULP-DroNet project uses the following terminology:
-* **PULP-Shield**: it is our pluggable PCB compatible with the Crazyflie 2.0 nano-drone. The shield is designed to host either a PULP GAP8 SoC from GWT or a PULP Mr.Wolf SoC (academic chip).
+* **PULP-Shield**: it is our pluggable PCB compatible with the Crazyflie 2.0/2.1 nano-drone. The shield is designed to host either a PULP GAP8 SoC from GWT or a PULP Mr.Wolf SoC (academic chip).
 * **PULP Virtual Platform**: it is a software simulation environment running on your machine. It simulates the execution of your application on the selected PULP SoC (e.g., GAP8, Mr.Wolf, etc.).
 * **Autotiler**: it is a software tool developed in collaboration with GWT and released as `lib.a`. It produces a set of C files required to compile PULP-DroNet. The default version of the generated files is already included in this release. Thus the tool is not strictly required.
 * **GAPuino board**: it is the GWT Arduino-compatible development board that includes a PULP GAP8 SoC ([spec](https://greenwaves-technologies.com/product/gapuino/)).
@@ -65,40 +70,41 @@ The PULP-DroNet project uses the following terminology:
 The project's structure is the following:
 
 ```
-├── pulp-dronet/
-│   ├── bin/
-│   │   ├── PULPDroNet_GAPuino
-│   │   ├── PULPDroNet_PULPShield
-│   ├── dataset/
-│   │   ├── Himax_Dataset/
-│   │   ├── Udacity_Dataset/
-│   │   ├── Zurich_Bicycle_Dataset/
-│   ├── imgs/
-│   │   ├── PULP_dataset.png
-│   │   ├── PULP_drone.png
-│   │   ├── PULP_proto.png
-│   │   ├── PULP_setup.png
-│   ├── PULP-Shield/
-│   │   ├── GAP8/
-│   │   ├── jtag-convboard/
-│   ├── src/
-│   │   ├── autotiler/
-│   │   ├── config.h
-│   │   ├── config.ini
-│   │   ├── PULPDronet.c
-│   │   ├── PULPDronetGenerator.c
-│   │   ├── PULPDronetKernels.c
-│   │   ├── PULPDronetKernels.h
-│   │   ├── PULPDronetKernelsInit.c
-│   │   ├── PULPDronetKernelsInit.h
-│   │   ├── Makefile
-│   │   ├── run_dataset.sh
-│   ├── weights/
-│   │   ├── binary/
-│   │   ├── WeightsPULPDroNet.raw
-│   ├── LICENSE.apache.md
-│   ├── LICENSE_README.md
-│   ├── README.md
+.
+└── pulp-dronet/
+    ├── bin/
+    │   ├── PULPDroNet_GAPuino
+    │   └── PULPDroNet_PULPShield
+    ├── dataset/
+    │   ├── Himax_Dataset/
+    │   ├── Udacity_Dataset/
+    │   └── Zurich_Bicycle_Dataset/
+    ├── imgs/
+    │   ├── PULP_dataset.png
+    │   ├── PULP_drone.png
+    │   ├── PULP_proto.png
+    │   └── PULP_setup.png
+    ├── PULP-Shield/
+    │   ├── GAP8/
+    │   └── jtag-convboard/
+    ├── src/
+    │   ├── autotiler/
+    │   ├── config.h
+    │   ├── config.ini
+    │   ├── PULPDronet.c
+    │   ├── PULPDronetGenerator.c
+    │   ├── PULPDronetKernels.c
+    │   ├── PULPDronetKernels.h
+    │   ├── PULPDronetKernelsInit.c
+    │   ├── PULPDronetKernelsInit.h
+    │   ├── Makefile
+    │   └── run_dataset.sh
+    ├── weights/
+    │   ├── binary/
+    │   └── WeightsPULPDroNet.raw
+    ├── LICENSE.apache.md
+    ├── LICENSE_README.md
+    └── README.md
 ```
 
 More in detail:
@@ -127,7 +133,7 @@ To start running PULP-DroNet, there are few preliminary steps you have to follow
 * **Modify/Produce the PULP-Shield**: you want to modify or reproduce our PULP-Shield, we release all the *Altium* design of it:
 	* you can import the `PULP-Shield/GAP8` project into your Altium Designer tool and update the schematics or the PCB files;
 	* we also release the fabrication files. Thus, you are ready to go with the production of our PULP-Shield.
-* **Run PULP-DroNet on the CarzyFlie 2.0**: you want to run the PULP-DroNet binary as it is, on a PULP-Shield mounted on a CrazyFlie 2.0 nano-drone. In this case, you need to:
+* **Run PULP-DroNet on the CarzyFlie 2.0/2.1**: you want to run the PULP-DroNet binary as it is, on a PULP-Shield mounted on a CrazyFlie 2.0/2.1 nano-drone. In this case, you need to:
 	* [install the PULP-SDK](#sdk);
 	* [coming soon...](#pulp_cf)
 
@@ -177,9 +183,9 @@ If you prefer, you can configure them in your `~/.bashrc` file.
 In the rest of this README, we assume the following file-system structure:
 
 ```
-├── .
-│   ├── pulp-dronet/
-│   ├── pulp-sdk/
+.
+├── pulp-dronet/
+└── pulp-sdk/
 ```
 
 If your file-system looks different, please adjust the commands in the next sections accordingly to your folders' locations.
@@ -201,21 +207,22 @@ To double-check that the `basic kernels` and `generators` are correctly download
 
 
 ```
-├── autotiler/
-│   ├── include/
-│   │   ├── AutoTilerLib.h
-│   │   ├── AutoTilerLibTypes.h
-│   │   ├── CNN_BasicKernels.h
-│   │   ├── CNN_Generator.h
-│   │   ├── CNN_HwCE.h
-│   │   ├── Gap8.h
-│   │   ├── HashName.h
-│   │   ├── KernelLibStdTypes.h
-│   │   ├── StdTypes.h
-│   ├── src/
-│   │   ├── CNN_BasicKernels.c
-│   │   ├── CNN_Generator.c
-│   │   ├── CNN_HwCE.c
+.
+└── autotiler/
+    ├── include/
+    │   ├── AutoTilerLib.h
+    │   ├── AutoTilerLibTypes.h
+    │   ├── CNN_BasicKernels.h
+    │   ├── CNN_Generator.h
+    │   ├── CNN_HwCE.h
+    │   ├── Gap8.h
+    │   ├── HashName.h
+    │   ├── KernelLibStdTypes.h
+    │   └── StdTypes.h
+    └── src/
+        ├── CNN_BasicKernels.c
+        ├── CNN_Generator.c
+        └── CNN_HwCE.c
 ```
 
 
@@ -239,10 +246,11 @@ This information will be sent to GWT, and you will automatically receive at the 
 To double-check the Autotiler library is correctly installed you can look for it under `pulp-dronet/src/autotiler` and see:
 
 ```
-├── autotiler/
-│   ├── lib/
-│   │   ├── libtile.a
-│   │   ├── libtile.dronet.a
+.
+└── autotiler/
+    └── lib/
+        ├── libtile.a
+        └── libtile.dronet.a
 ```
 
 
@@ -256,7 +264,7 @@ The PULP-DroNet dataset is composed by the following three sub-sets, provided as
 <img style="float: right;" src="imgs/PULP_dataset.png" width="100%">
 
 The original [Udacity](https://github.com/udacity/self-driving-car) and [Zurich Bicycle](https://github.com/uzh-rpg/rpg_public_dronet) datasets were previously released in their respective open-source projects.
-We redistribute part of them (i.e., only the *testing* part of the datasets) with modified resolution, color-scale, and format to match our Himax ultra-low-power camera configuration.
+We redistribute part of them (i.e., only the *testing* part of the datasets) with modified resolution, color-scale, and format to match our Himax HBM01 ultra-low-power camera configuration.
 To download all submodules, you can execute the following commands in your terminal:
 
 ~~~~shell
@@ -268,18 +276,19 @@ $ git submodule update -- dataset/
 Then the final structure of the dataset should look like this:
 
 ```
-├── pulp-dronet/
-│   ├── dataset/
-│   │   ├── Himax_Dataset/
-│   │   │   ├── test_2/
-│   │   │   ├── ...
-│   │   │   ├── test_23/
-│   │   ├── Udacity_Dataset/
-│   │   │   ├── HMB_3/
-│   │   ├── Zurich_Bicycle_Dataset/
-│   │   │   ├── DSCN2571/
-│   │   │   ├── ...
-│   │   │   ├── GOPR0386/
+.
+└── pulp-dronet/
+    └── dataset/
+        ├── Himax_Dataset/
+        │   ├── test_2/
+        │   ├── ...
+        │   └── test_23/
+        ├── Udacity_Dataset/
+        │   └── HMB_3/
+        └── Zurich_Bicycle_Dataset/
+            ├── DSCN2571/
+            ├── ...
+            └── GOPR0386/
 ```
 
 Each sub-folder contains a variable number of gray-scale `.pgm` images and one `.txt` or `.csv` file with all the ground-truth labels. 
@@ -379,7 +388,7 @@ Once the environment is set, you need first to flash the network's weights/biase
 
 **Programming the PULP-Shield**
 
-In case you want to use our PULP-Shield board (both connected to the CrazyFlie 2.0 or stand-alone) you need to have an Olimex Openocd ARM JTAG debugger [ARM-USB-OCD-H](https://www.olimex.com/Products/ARM/JTAG/ARM-USB-OCD-H/) and a *PULP JTAG converter board*.
+In case you want to use our PULP-Shield board (both connected to the CrazyFlie 2.0/2.1 or stand-alone) you need to have an Olimex Openocd ARM JTAG debugger [ARM-USB-OCD-H](https://www.olimex.com/Products/ARM/JTAG/ARM-USB-OCD-H/) and a *PULP JTAG converter board*.
 
 <img style="float: right;" src="imgs/PULP_setup.png" width="100%">
 
@@ -453,5 +462,5 @@ Note that in case you are using a GAPuino board you need to replace `--cable=ftd
 
 
 <a name="pulp_cf"></a>
-## 6. Run PULP-DroNet on the Crazyflie 2.0
-This section describes the use case of running PULPDroNet on the PULP-Shield when it is plugged to the Crazyflie 2.0.
+## 6. Run PULP-DroNet on the Crazyflie 2.0/2.1
+This section describes the use case of running PULPDroNet on the PULP-Shield when it is plugged to the Crazyflie 2.0/2.1.
