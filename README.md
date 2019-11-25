@@ -160,7 +160,7 @@ Note that this export/source steps need to be done for every new terminal or you
 **PULP-SDK Build**
 
 If you need to build the PULP-SDK and gcc-toolchain from scratch (e.g., your Linux distribution is not Ubuntu), you can follow the instructions under the [Standard SDK build](https://github.com/pulp-platform/pulp-sdk#standard-sdk-build) section.
-As explained in the PULP-SDK, you need first to install the dependencies and the *pulp-riscv-gnu-toolchain*, you can follow the instructions [here](https://github.com/pulp-platform/pulp-riscv-gnu-toolchain).
+As explained in the PULP-SDK, you need first to install the dependencies and the *pulp-riscv-gnu-toolchain*, you can follow the instructions [here](https://github.com/pulp-platform/pulp-riscv-gnu-toolchain) (follow the *Installation (Pulp)* section).
 Then, you can build the PULP-SDK running on your terminal the following:
 
 ~~~~shell
