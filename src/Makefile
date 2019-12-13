@@ -20,7 +20,8 @@
 # Date:    10.04.2019                                                          #
 #------------------------------------------------------------------------------#
 
-
+# Uncomment 'DEBUG' to enable debugging support (e.g., float prints)
+# DEBUG				= true
 pulpChip			= GAP
 PULP_APP			= PULPDroNet
 WEIGHTS_DIR			= $(CURDIR)/../weights
@@ -30,7 +31,12 @@ pulpFc				= 1
 RM					= rm -rf
 PULP_ARCH_CFLAGS	= -mPE=8 -mFC=1
 PULP_ARCH_LDFLAGS	= -mPE=8 -mFC=1
-PULP_CFLAGS			+= -O3 -w -mno-memcpy -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections -Wall -Wno-maybe-uninitialized -Wno-unused-but-set-variable
+ifdef DEBUG
+	PULP_CFLAGS		+= -Os -DDEBUG
+else
+	PULP_CFLAGS		+= -O3
+endif
+PULP_CFLAGS			+= -w -mno-memcpy -fno-tree-loop-distribute-patterns -fdata-sections -ffunction-sections -Wall -Wno-maybe-uninitialized -Wno-unused-but-set-variable
 PULP_CFLAGS 		+= -I$(TILER_DIR)/include -I$(CURDIR)
 PULP_LDFLAGS		+= -flto -Wl,--gc-sections
 USER_CONFIG			= $(CURDIR)/config.ini

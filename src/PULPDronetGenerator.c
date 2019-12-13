@@ -54,8 +54,8 @@ void PULPDronetGenerator() {
 		"LargeParConv_5x5_S2_Max2x2_S2_H_1",	// Name: 		Name
 		inCh[0],								// InFeat:		Number Input Channels
 		outCh[0],								// OutFeat:		Number Output Channels
-		inSize[0],								// Width:		Feature Map Width
-		inSize[0],								// Height:		Feature Map Height
+		inW[0],									// Width:		Feature Map Width
+		inH[0],									// Height:		Feature Map Height
 		5,										// FSc:			Filter Selection (1x1, 3x3, 5x5)
 		2,										// ConvStride:	Convolution Stride (\1, \2)
 		1,										// ConvDoPad:	Padded Convolution (yes=1, no=0)
@@ -74,8 +74,8 @@ void PULPDronetGenerator() {
 		"ReLU_SW_1",							// Name: 		Name
 		inCh[1],								// InFeat:		Number Input Channels
 		outCh[1],								// OutFeat:		Number Output Channels
-		inSize[1],								// Width:		Feature Map Width
-		inSize[1]);								// Height:		Feature Map Height
+		inW[1],							 		// Width:		Feature Map Width
+		inH[1]);								// Height:		Feature Map Height
 
 	/* 3x3 Convolution Stride 2, followed by ReLU. Pure SW.
 	* 32 input planes [50x50], 32 output planes [25x25] */
@@ -83,8 +83,8 @@ void PULPDronetGenerator() {
 		"MedParConv_3x3_S2_ReLU_2",				// Name: 		Name
 		inCh[2],								// InFeat:		Number Input Channels
 		outCh[2],								// OutFeat:		Number Output Channels
-		inSize[2],								// Width:		Feature Map Width
-		inSize[2],								// Height:		Feature Map Height
+		inW[2],									// Width:		Feature Map Width
+		inH[2],									// Height:		Feature Map Height
 		3,										// FSc:			Filter Selection (1x1, 3x3, 5x5)
 		2,										// ConvStride:	Convolution Stride (\1, \2) 
 		1,										// ConvDoPad:	Padded Convolution (yes=1, no=0)
@@ -103,8 +103,8 @@ void PULPDronetGenerator() {
 		"MedParConv_3x3_S1_3",					// Name: 		Name
 		inCh[3],								// InFeat:		Number Input Channels
 		outCh[3],								// OutFeat:		Number Output Channels
-		inSize[3],								// Width:		Feature Map Width
-		inSize[3],								// Height:		Feature Map Height
+		inW[3],									// Width:		Feature Map Width
+		inH[3],									// Height:		Feature Map Height
 		3,										// FSc:			Filter Selection (1x1, 3x3, 5x5)
 		1,										// ConvStride:	Convolution Stride (\1, \2) 
 		1,										// ConvDoPad:	Padded Convolution (yes=1, no=0)
@@ -123,8 +123,8 @@ void PULPDronetGenerator() {
 		"MedParConv_1x1_S2_4",					// Name: 		Name
 		inCh[4],								// InFeat:		Number Input Channels
 		outCh[4],								// OutFeat:		Number Output Channels
-		inSize[4],								// Width:		Feature Map Width
-		inSize[4],								// Height:		Feature Map Height
+		inW[4],									// Width:		Feature Map Width
+		inH[4],									// Height:		Feature Map Height
 		1,										// FSc:			Filter Selection (1x1, 3x3, 5x5)
 		2,										// ConvStride:	Convolution Stride (\1, \2) 
 		0,										// ConvDoPad:	Padded Convolution (yes=1, no=0)
@@ -143,8 +143,8 @@ void PULPDronetGenerator() {
 		"AddFeatureMaps_SW_1",					// Name: 		Name
 		inCh[5],								// InFeat:		Number Input Channels
 		outCh[5],								// OutFeat:		Number Output Channels
-		inSize[5],								// Width:		Feature Map Width
-		inSize[5]);								// Height:		Feature Map Height
+		inW[5],									// Width:		Feature Map Width
+		inH[5]);								// Height:		Feature Map Height
 
 
 /* --------------------------------- LAYER 5 -------------------------------- */
@@ -154,8 +154,8 @@ void PULPDronetGenerator() {
 		"ReLU_SW_2",							// Name: 		Name
 		inCh[6],								// InFeat:		Number Input Channels
 		outCh[6],								// OutFeat:		Number Output Channels
-		inSize[6],								// Width:		Feature Map Width
-		inSize[6]);								// Height:		Feature Map Height
+		inW[6],									// Width:		Feature Map Width
+		inH[6]);								// Height:		Feature Map Height
 
 	/* 3x3 Convolution Stride 2, followed by ReLU. Pure SW.
 	 * 32 input planes [25x25], 64 output planes [13x13] */
@@ -163,8 +163,8 @@ void PULPDronetGenerator() {
 		"MedParConv_3x3_S2_ReLU_5",				// Name: 		Name
 		inCh[7],								// InFeat:		Number Input Channels
 		outCh[7],								// OutFeat:		Number Output Channels
-		inSize[7],								// Width:		Feature Map Width
-		inSize[7],								// Height:		Feature Map Height
+		inW[7],									// Width:		Feature Map Width
+		inH[7],									// Height:		Feature Map Height
 		3,										// FSc:			Filter Selection (1x1, 3x3, 5x5)
 		2,										// ConvStride:	Convolution Stride (\1, \2) 
 		1,										// ConvDoPad:	Padded Convolution (yes=1, no=0)
@@ -183,8 +183,8 @@ void PULPDronetGenerator() {
 		"MedParConv_3x3_S1_6",					// Name: 		Name
 		inCh[8],								// InFeat:		Number Input Channels
 		outCh[8],								// OutFeat:		Number Output Channels
-		inSize[8],								// Width:		Feature Map Width
-		inSize[8],								// Height:		Feature Map Height
+		inW[8],									// Width:		Feature Map Width
+		inH[8],									// Height:		Feature Map Height
 		3,										// FSc:			Filter Selection (1x1, 3x3, 5x5)
 		1,										// ConvStride:	Convolution Stride (\1, \2) 
 		1,										// ConvDoPad:	Padded Convolution (yes=1, no=0)
@@ -203,8 +203,8 @@ void PULPDronetGenerator() {
 		"MedParConv_1x1_S2_7",					// Name: 		Name
 		inCh[9],								// InFeat:		Number Input Channels
 		outCh[9],								// OutFeat:		Number Output Channels
-		inSize[9],								// Width:		Feature Map Width
-		inSize[9],								// Height:		Feature Map Height
+		inW[9],									// Width:		Feature Map Width
+		inH[9],									// Height:		Feature Map Height
 		1,										// FSc:			Filter Selection (1x1, 3x3, 5x5)
 		2,										// ConvStride:	Convolution Stride (\1, \2) 
 		0,										// ConvDoPad:	Padded Convolution (yes=1, no=0)
@@ -223,8 +223,8 @@ void PULPDronetGenerator() {
 		"AddFeatureMaps_SW_2",					// Name: 		Name
 		inCh[10],								// InFeat:		Number Input Channels
 		outCh[10],								// OutFeat:		Number Output Channels
-		inSize[10],								// Width:		Feature Map Width
-		inSize[10]);							// Height:		Feature Map Height
+		inW[10],								// Width:		Feature Map Width
+		inH[10]);								// Height:		Feature Map Height
 
 
 /* --------------------------------- LAYER 8 -------------------------------- */
@@ -234,8 +234,8 @@ void PULPDronetGenerator() {
 		"ReLU_SW_3",							// Name: 		Name
 		inCh[11],								// InFeat:		Number Input Channels
 		outCh[11],								// OutFeat:		Number Output Channels
-		inSize[11],								// Width:		Feature Map Width
-		inSize[11]);							// Height:		Feature Map Height
+		inW[11],								// Width:		Feature Map Width
+		inH[11]);								// Height:		Feature Map Height
 
 	/* 3x3 Convolution Stride 2, followed by ReLU. Pure SW.
 	 * 64 input planes [13x13], 128 output planes [7x7] */
@@ -243,8 +243,8 @@ void PULPDronetGenerator() {
 		"MedParConv_3x3_S2_ReLU_8",				// Name: 		Name
 		inCh[12],								// InFeat:		Number Input Channels
 		outCh[12],								// OutFeat:		Number Output Channels
-		inSize[12],								// Width:		Feature Map Width
-		inSize[12],								// Height:		Feature Map Height
+		inW[12],								// Width:		Feature Map Width
+		inH[12],								// Height:		Feature Map Height
 		3,										// FSc:			Filter Selection (1x1, 3x3, 5x5)
 		2,										// ConvStride:	Convolution Stride (\1, \2) 
 		1,										// ConvDoPad:	Padded Convolution (yes=1, no=0)
@@ -263,8 +263,8 @@ void PULPDronetGenerator() {
 		"MedParConv_3x3_S1_9",					// Name: 		Name
 		inCh[13],								// InFeat:		Number Input Channels
 		outCh[13],								// OutFeat:		Number Output Channels
-		inSize[13],								// Width:		Feature Map Width
-		inSize[13],								// Height:		Feature Map Height
+		inW[13],								// Width:		Feature Map Width
+		inH[13],								// Height:		Feature Map Height
 		3,										// FSc:			Filter Selection (1x1, 3x3, 5x5)
 		1,										// ConvStride:	Convolution Stride (\1, \2) 
 		1,										// ConvDoPad:	Padded Convolution (yes=1, no=0)
@@ -283,8 +283,8 @@ void PULPDronetGenerator() {
 		"MedParConv_1x1_S1_ReLU_10",			// Name: 		Name
 		inCh[14],								// InFeat:		Number Input Channels
 		outCh[14],								// OutFeat:		Number Output Channels
-		inSize[14],								// Width:		Feature Map Width
-		inSize[14],								// Height:		Feature Map Height
+		inW[14],								// Width:		Feature Map Width
+		inH[14],								// Height:		Feature Map Height
 		1,										// FSc:			Filter Selection (1x1, 3x3, 5x5)
 		2,										// ConvStride:	Convolution Stride (\1, \2) 
 		0,										// ConvDoPad:	Padded Convolution (yes=1, no=0)
@@ -303,8 +303,8 @@ void PULPDronetGenerator() {
 		"AddFeatureMapsReLu_SW_3",				// Name: 		Name
 		inCh[15],								// InFeat:		Number Input Channels
 		outCh[15],								// OutFeat:		Number Output Channels
-		inSize[15],								// Width:		Feature Map Width
-		inSize[15]);							// Height:		Feature Map Height
+		inW[15],								// Width:		Feature Map Width
+		inH[15]);								// Height:		Feature Map Height
 
 
 /* --------------------------------- DENSE 1 -------------------------------- */
@@ -314,8 +314,8 @@ void PULPDronetGenerator() {
 		"LinearLayer_SW_1",						// Name: 		Name			
 		inCh[16],								// InFeat:		Number Input Channels
 		outCh[16],								// OutFeat:		Number Output Channels	
-		inSize[16],								// Width:		Feature Map Width	
-		inSize[16],								// Height:		Feature Map Height
+		inW[16],								// Width:		Feature Map Width	
+		inH[16],								// Height:		Feature Map Height
 		1,										// ModeSize:	
 		0,										// ReLu:		ReLu after Convolution (yes=1, no=0)
 		0);										// CoeffInL3:
@@ -328,8 +328,8 @@ void PULPDronetGenerator() {
 		"LinearLayer_SW_2",						// Name: 		Name			
 		inCh[17],								// InFeat:		Number Input Channels
 		outCh[17],								// OutFeat:		Number Output Channels	
-		inSize[17],								// Width:		Feature Map Width	
-		inSize[17],								// Height:		Feature Map Height
+		inW[17],								// Width:		Feature Map Width	
+		inH[17],								// Height:		Feature Map Height
 		1,										// ModeSize:	
 		0,										// ReLu:		ReLu after Convolution (yes=1, no=0)
 		0);										// CoeffInL3:

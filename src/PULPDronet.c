@@ -25,6 +25,7 @@
 #include "Gap8.h"
 #include "PULPDronetKernels.h"
 #include "config.h"
+#include "Utils.h"
 
 
 static char *			L2_base[NUM_L2_BUFF];
@@ -106,7 +107,7 @@ static void check_layer(short int *output, int layer) {
 
 	unsigned int checksum = 0;
 	short unsigned int *ptr = (short unsigned int *) output;
-	for(int j=0; j<outCh[layer]*outSize[layer]*outSize[layer]; j++) {
+	for(int j=0; j<outCh[layer]*outW[layer]*outH[layer]; j++) {
 		checksum += (unsigned int) ptr[j];
 	}
 
@@ -195,6 +196,10 @@ static void RunPULPDronet() {
 	memId_O = 0;
 	memId_W = 0;
 
+#if defined(DUMP_I) && (DUMP_I==0 || DUMP_I==18)
+	dumpFMs(0, L2_input, 0, DUMP_T);
+#endif
+
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
 #endif
@@ -216,6 +221,18 @@ static void RunPULPDronet() {
 	perf_exe_cum_cl[0] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_W) && (DUMP_W==0 || DUMP_W==18)
+	dumpW(0, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==0 || DUMP_B==18)
+	dumpBias(0, L2_bias[0], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==0 || DUMP_O==18) 
+	dumpFMs(0, L2_output[0], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[0], 0);
 #endif
@@ -231,6 +248,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[0];
 	memId_O = 0;
 
+#if defined(DUMP_I) && (DUMP_I==1 || DUMP_I==18)
+	dumpFMs(1, L2_input, 0, DUMP_T);
+#endif
+
 #ifdef PROFILE_CL
 	perf_mem_cum_cl[1] = 0;
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -244,6 +265,10 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[1] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_O) && (DUMP_O==1 || DUMP_O==18)
+	dumpFMs(1, L2_output[1], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[1], 1);
 #endif
@@ -252,6 +277,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[1];
 	memId_O = 1;
 	memId_W = 1;
+
+#if defined(DUMP_I) && (DUMP_I==2 || DUMP_I==18)
+	dumpFMs(2, L2_input, 0, DUMP_T);
+#endif
 
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -273,6 +302,18 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[2] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_W) && (DUMP_W==2 || DUMP_W==18)
+	dumpW(2, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==2 || DUMP_B==18)
+	dumpBias(2, L2_bias[1], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==2 || DUMP_O==18)
+	dumpFMs(2, L2_output[2], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[2], 2);
 #endif
@@ -285,6 +326,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[2];
 	memId_O = 0;
 	memId_W = 1;
+
+#if defined(DUMP_I) && (DUMP_I==3 || DUMP_I==18)
+	dumpFMs(3, L2_input, 0, DUMP_T);
+#endif
 
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -306,6 +351,18 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[3] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_W) && (DUMP_W==3 || DUMP_W==18)
+	dumpW(3, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==3 || DUMP_B==18)
+	dumpBias(3, L2_bias[2], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==3 || DUMP_O==18)
+	dumpFMs(3, L2_output[3], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[3], 3);
 #endif
@@ -318,6 +375,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[0];
 	memId_O = 1;
 	memId_W = 1;
+
+#if defined(DUMP_I) && (DUMP_I==4 || DUMP_I==18)
+	dumpFMs(4, L2_input, 0, DUMP_T);
+#endif
 
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -339,6 +400,18 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[4] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_W) && (DUMP_W==4 || DUMP_W==18)
+	dumpW(4, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==4 || DUMP_B==18)
+	dumpBias(4, L2_bias[3], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==4 || DUMP_O==18)
+	dumpFMs(4, L2_output[4], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[4], 4);
 #endif
@@ -350,6 +423,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[3];
 	L2_output[5] = L2_output[4];
 
+#if defined(DUMP_I) && (DUMP_I==5 || DUMP_I==18)
+	dumpFMs(5, L2_input, 0, DUMP_T);
+#endif
+
 #ifdef PROFILE_CL
 	perf_mem_cum_cl[5] = 0;
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -359,6 +436,10 @@ __rt_cluster_push_fc_event(event_capture);
 
 #ifdef PROFILE_CL
 	perf_exe_cum_cl[5] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==5 || DUMP_O==18)
+	dumpFMs(5, L2_output[5], 1, DUMP_T);
 #endif
 
 #ifdef CHECKSUM
@@ -373,6 +454,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[5];
 	memId_O = 0;
 
+#if defined(DUMP_I) && (DUMP_I==6 || DUMP_I==18)
+	dumpFMs(6, L2_input, 0, DUMP_T);
+#endif
+
 #ifdef PROFILE_CL
 	perf_mem_cum_cl[6] = 0;
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -386,6 +471,10 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[6] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_O) && (DUMP_O==6 || DUMP_O==18)
+	dumpFMs(6, L2_output[6], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[6], 6);
 #endif
@@ -394,6 +483,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[6];
 	memId_O = 0;
 	memId_W = 0;
+
+#if defined(DUMP_I) && (DUMP_I==7 || DUMP_I==18)
+	dumpFMs(7, L2_input, 0, DUMP_T);
+#endif
 
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -415,6 +508,18 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[7] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_W) && (DUMP_W==7 || DUMP_W==18)
+	dumpW(7, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==7 || DUMP_B==18)
+	dumpBias(7, L2_bias[4], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==7 || DUMP_O==18)
+	dumpFMs(7, L2_output[7], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[7], 7);
 #endif
@@ -426,6 +531,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[7];
 	memId_O = 1;
 	memId_W = 0;
+
+#if defined(DUMP_I) && (DUMP_I==8 || DUMP_I==18)
+	dumpFMs(8, L2_input, 0, DUMP_T);
+#endif
 
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -447,6 +556,18 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[8] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_W) && (DUMP_W==8 || DUMP_W==18)
+	dumpW(8, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==8 || DUMP_B==18)
+	dumpBias(8, L2_bias[5], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==8 || DUMP_O==18)
+	dumpFMs(8, L2_output[8], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[8], 8);
 #endif
@@ -460,6 +581,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[4];
 	memId_O = 0;
 	memId_W = 0;
+
+#if defined(DUMP_I) && (DUMP_I==9 || DUMP_I==18)
+	dumpFMs(9, L2_input, 0, DUMP_T);
+#endif
 
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -481,6 +606,18 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[9] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_W) && (DUMP_W==9 || DUMP_W==18)
+	dumpW(9, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==9 || DUMP_B==18)
+	dumpBias(9, L2_bias[6], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==9 || DUMP_O==18)
+	dumpFMs(9, L2_output[9], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[9], 9);
 #endif
@@ -492,6 +629,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[8];
 	L2_output[10] = L2_output[9];
 
+#if defined(DUMP_I) && (DUMP_I==10 || DUMP_I==18)
+	dumpFMs(10, L2_input, 0, DUMP_T);
+#endif
+
 #ifdef PROFILE_CL
 	perf_mem_cum_cl[10] = 0;
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -501,6 +642,10 @@ __rt_cluster_push_fc_event(event_capture);
 
 #ifdef PROFILE_CL
 	perf_exe_cum_cl[10] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==10 || DUMP_O==18)
+	dumpFMs(10, L2_output[10], 1, DUMP_T);
 #endif
 
 #ifdef CHECKSUM
@@ -515,6 +660,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[10];
 	memId_O = 0;
 
+#if defined(DUMP_I) && (DUMP_I==11 || DUMP_I==18)
+	dumpFMs(11, L2_input, 0, DUMP_T);
+#endif
+
 #ifdef PROFILE_CL
 	perf_mem_cum_cl[11] = 0;
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -528,6 +677,10 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[11] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_O) && (DUMP_O==11 || DUMP_O==18)
+	dumpFMs(11, L2_output[11], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[11], 11);
 #endif
@@ -536,6 +689,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[11];
 	memId_O = 1;
 	memId_W = 0;
+
+#if defined(DUMP_I) && (DUMP_I==12 || DUMP_I==18)
+	dumpFMs(12, L2_input, 0, DUMP_T);
+#endif
 
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -557,6 +714,18 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[12] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_W) && (DUMP_W==12 || DUMP_W==18)
+	dumpW(12, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==12 || DUMP_B==18)
+	dumpBias(12, L2_bias[7], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==12 || DUMP_O==18)
+	dumpFMs(12, L2_output[12], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[12], 12);
 #endif
@@ -569,6 +738,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[12];
 	memId_O = 1;
 	memId_W = 0;
+
+#if defined(DUMP_I) && (DUMP_I==13 || DUMP_I==18)
+	dumpFMs(13, L2_input, 0, DUMP_T);
+#endif
 
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -590,6 +763,18 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[13] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_W) && (DUMP_W==13 || DUMP_W==18)
+	dumpW(13, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==13 || DUMP_B==18)
+	dumpBias(13, L2_bias[8], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==13 || DUMP_O==18)
+	dumpFMs(13, L2_output[13], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[13], 13);
 #endif
@@ -601,6 +786,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[9];
 	memId_O = 0;
 	memId_W = 1;
+
+#if defined(DUMP_I) && (DUMP_I==14 || DUMP_I==18)
+	dumpFMs(14, L2_input, 0, DUMP_T);
+#endif
 
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -622,6 +811,18 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[14] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_W) && (DUMP_W==14 || DUMP_W==18)
+	dumpW(14, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==14 || DUMP_B==18)
+	dumpBias(14, L2_bias[9], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==14 || DUMP_O==18)
+	dumpFMs(14, L2_output[14], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[14], 14);
 #endif
@@ -633,6 +834,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[13];
 	L2_output[15] = L2_output[14];
 
+#if defined(DUMP_I) && (DUMP_I==15 || DUMP_I==18)
+	dumpFMs(15, L2_input, 0, DUMP_T);
+#endif
+
 #ifdef PROFILE_CL
 	perf_mem_cum_cl[15] = 0;
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -642,6 +847,10 @@ __rt_cluster_push_fc_event(event_capture);
 
 #ifdef PROFILE_CL
 	perf_exe_cum_cl[15] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==15 || DUMP_O==18)
+	dumpFMs(15, L2_output[15], 1, DUMP_T);
 #endif
 
 #ifdef CHECKSUM
@@ -656,6 +865,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[15];
 	memId_O = 1;
 	memId_W = 1;
+
+#if defined(DUMP_I) && (DUMP_I==16 || DUMP_I==18)
+	dumpFMs(16, L2_input, 0, DUMP_T);
+#endif
 
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -677,6 +890,18 @@ __rt_cluster_push_fc_event(event_capture);
 	perf_exe_cum_cl[16] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
 #endif
 
+#if defined(DUMP_W) && (DUMP_W==16 || DUMP_W==18)
+	dumpW(16, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==16 || DUMP_B==18)
+	dumpBias(16, L2_bias[10], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==16 || DUMP_O==18)
+	dumpFMs(16, L2_output[16], 1, DUMP_T);
+#endif
+
 #ifdef CHECKSUM
 	check_layer(L2_output[16], 16);
 #endif
@@ -690,6 +915,10 @@ __rt_cluster_push_fc_event(event_capture);
 	L2_input = L2_output[15];
 	memId_O = 1;
 	memId_W = 1;
+
+#if defined(DUMP_I) && (DUMP_I==17 || DUMP_I==18)
+	dumpFMs(17, L2_input, 0, DUMP_T);
+#endif
 
 #ifdef PROFILE_CL
 	perf_start = rt_perf_read(RT_PERF_CYCLES);
@@ -709,6 +938,18 @@ __rt_cluster_push_fc_event(event_capture);
 
 #ifdef PROFILE_CL
 	perf_exe_cum_cl[17] = rt_perf_read(RT_PERF_CYCLES) - perf_start;
+#endif
+
+#if defined(DUMP_W) && (DUMP_W==17 || DUMP_W==18)
+	dumpW(17, L2_weights, DUMP_T);
+#endif
+
+#if defined(DUMP_B) && (DUMP_B==17 || DUMP_B==18)
+	dumpBias(17, L2_bias[11], DUMP_T);
+#endif
+
+#if defined(DUMP_O) && (DUMP_O==17 || DUMP_O==18)
+	dumpFMs(17, L2_output[17], 1, DUMP_T);
 #endif
 
 #ifdef CHECKSUM
@@ -939,7 +1180,7 @@ int main() {
 /* --------------------------- MEMORY ALLOCATION ---------------------------- */
 
 	for(int i=0; i<NLAYERS; i++)
-		outputSizesB[i] = outCh[i] * outSize[i] * outSize[i] * sizeof(short int);
+		outputSizesB[i] = outCh[i] * outW[i] * outH[i] * sizeof(short int);
 
 	Norm_Factor[0] = Q_Factor[0]+NORM_INPUT-NORM_ACT;
 	Norm_Factor[1] = Q_Factor[1];
@@ -965,9 +1206,10 @@ int main() {
 	}
 
 	// allocate the memory of L2 for the image buffer
-	L2_image = rt_alloc(RT_ALLOC_L2_CL_DATA, CAM_CROP_W*CAM_CROP_H*sizeof(short int));
+	int image_size_bytes = MAX(CAM_CROP_W*CAM_CROP_H*sizeof(short int), CAM_FULLRES_W*CAM_FULLRES_H*sizeof(unsigned char));
+	L2_image = rt_alloc(RT_ALLOC_L2_CL_DATA, image_size_bytes);
 #ifdef VERBOSE
-	printf("L2 Image alloc\t%dB\t@ 0x%08x:\t%s\n", CAM_CROP_W*CAM_CROP_H*sizeof(short int), (unsigned int) L2_image, L2_image?"Ok":"Failed");
+	printf("L2 Image alloc\t%dB\t@ 0x%08x:\t%s\n", image_size_bytes, (unsigned int) L2_image, L2_image?"Ok":"Failed");
 #endif
 	if(L2_image == NULL) return -1;
 
@@ -1130,7 +1372,11 @@ int main() {
 #endif
 
 #ifdef VERBOSE
+	#ifdef DEBUG
+		printf("Result[steer][coll]:\t%f\t%f\n", fixed2float(SPIM_tx[0], NORM_ACT), fixed2float(SPIM_tx[1], NORM_ACT));
+	#else
 		printf("Result[steer][coll]:\t%d\t%d\n", SPIM_tx[0], SPIM_tx[1]);
+	#endif
 #endif
 
 		iter++;
