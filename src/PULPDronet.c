@@ -1034,7 +1034,7 @@ int main() {
 	hyperram = rt_hyperram_open(NULL, &hyperram_conf, NULL);
 	if(hyperram == NULL) {
 #ifdef VERBOSE
-		printf("Error Opening HyperFlash\n");
+		printf("Error Opening HyperRAM\n");
 #endif
 		return -1;
 	}
