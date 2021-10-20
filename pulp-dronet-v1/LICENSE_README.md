@@ -1,7 +1,7 @@
 The project's structure is the following:
 
 ```
-├── pulp-dronet/
+├── pulp-dronet-v1/
 │   ├── bin/
 │   │   ├── PULPDroNet_GAPuino
 │   │   ├── PULPDroNet_PULPShield
@@ -39,10 +39,10 @@ The project's structure is the following:
 
 All the folders, sub-folders and files in this project except for the content of the following two folders: 
 
-* `pulp-dronet/dataset/Udacity_Dataset`
-* `pulp-dronet/dataset/Zurich_Bicycle_Dataset`
+* `pulp-dronet-v1/dataset/Udacity_Dataset`
+* `pulp-dronet-v1/dataset/Zurich_Bicycle_Dataset`
 
 are released open-source with the Apache 2.0 license.
-A copy of the Apache 2.0 license is included in `pulp-dronet\LICENSE.apache.md` and in `pulp-dronet/dataset/Himax_Dataset/LICENSE.apache.md`.
+A copy of the Apache 2.0 license is included in `pulp-dronet\LICENSE.apache.md` and in `pulp-dronet-v1/dataset/Himax_Dataset/LICENSE.apache.md`.
 
-All the files in `pulp-dronet/dataset/Udacity_Dataset` and  `pulp-dronet/dataset/Zurich_Bicycle_Dataset` are released with the MIT License included in the same folder as `LICENSE.mit.md`.
+All the files in `pulp-dronet-v1/dataset/Udacity_Dataset` and  `pulp-dronet-v1/dataset/Zurich_Bicycle_Dataset` are released with the MIT License included in the same folder as `LICENSE.mit.md`.

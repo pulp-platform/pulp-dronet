@@ -1,5 +1,4 @@
-
-# PULP-DroNet: *Judge me by my size, do you? --Yoda, TESB*
+# PULP-DroNet V1
 
 Author: *Daniele Palossi* <dpalossi@iis.ee.ethz.ch>
 Copyright (C) 2019 ***ETH Zürich***. All rights reserved.
@@ -71,7 +70,7 @@ The project's structure is the following:
 
 ```
 .
-└── pulp-dronet/
+└── pulp-dronet-v1/
     ├── bin/
     │   ├── PULPDroNet_GAPuino
     │   └── PULPDroNet_PULPShield
@@ -184,7 +183,7 @@ In the rest of this README, we assume the following file-system structure:
 
 ```
 .
-├── pulp-dronet/
+├── pulp-dronet-v1/
 └── pulp-sdk/
 ```
 
@@ -203,7 +202,7 @@ $ git submodule init -- src/autotiler
 $ git submodule update -- src/autotiler
 ~~~~
 
-To double-check that the `basic kernels` and `generators` are correctly downloaded you can look under `pulp-dronet/src/autotiler` and see the following hierarchy:
+To double-check that the `basic kernels` and `generators` are correctly downloaded you can look under `pulp-dronet-v1/src/autotiler` and see the following hierarchy:
 
 
 ```
@@ -236,14 +235,14 @@ Although, we recommend the user to install the Autotiler tool (i.e., `autotiler/
 To install the Autotiler, you can type the following commands in your terminal:
 
 ~~~~shell
-$ cd ./pulp-dronet/src/autotiler
+$ cd ./pulp-dronet-v1/src/autotiler
 $ make all
 ~~~~
 
 Then, you will be asked to put in the terminal your name, surname, company, country, and email.
 This information will be sent to GWT, and you will automatically receive at the same email address a link to be copy-pasted in your terminal to complete the download of the Autotiler.
 
-To double-check the Autotiler library is correctly installed you can look for it under `pulp-dronet/src/autotiler` and see:
+To double-check the Autotiler library is correctly installed you can look for it under `pulp-dronet-v1/src/autotiler` and see:
 
 ```
 .
@@ -277,7 +276,7 @@ Then the final structure of the dataset should look like this:
 
 ```
 .
-└── pulp-dronet/
+└── pulp-dronet-v1/
     └── dataset/
         ├── Himax_Dataset/
         │   ├── test_2/
@@ -312,7 +311,7 @@ Then depending on your target platform (i.e., Virtual Platform vs. PULP-Shield/G
 Then, you can compile PULP-DroNet just typing in a terminal the following commands:
 
 ~~~~shell
-$ cd ./pulp-dronet/src
+$ cd ./pulp-dronet-v1/src
 $ make clean conf all
 ~~~~
 
@@ -322,7 +321,7 @@ If you want to take advantage of the Autotiler (suggested option) be sure the to
 Then, you can compile your modified version of PULP-DroNet executing in your terminal the following commands (the PULP-SDK must be configured at this point): 
 
 ~~~~shell
-$ cd ./pulp-dronet/src
+$ cd ./pulp-dronet-v1/src
 $ make clean conf autotiler all
 ~~~~
 
@@ -353,7 +352,7 @@ To run PULP-DroNet on a single image it is sufficient to point the desired pictu
 Then, you can execute in the terminal the following:
 
 ~~~~shell
-$ cd ./pulp-dronet/src
+$ cd ./pulp-dronet-v1/src
 $ make conf run
 ~~~~
 
@@ -373,7 +372,7 @@ In this way, the bash script can invoke at every iteration of its main loop the 
 To run the script, you can type the following in your terminal:
 
 ~~~~shell
-$ cd ./pulp-dronet/src
+$ cd ./pulp-dronet-v1/src
 $ sh ./run_dataset.sh
 ~~~~
 
@@ -403,7 +402,7 @@ Execute in a terminal:
 ~~~~shell
 $ source ./pulp-sdk/configs/gap.sh
 $ source ./pulp-sdk/configs/platform-board.sh
-$ cd ./pulp-dronet/weights
+$ cd ./pulp-dronet-v1/weights
 $ plp_mkflash --verbose --raw WeightsPULPDroNet.raw \
 --comp=./binary/weights_conv2d_1.hex --comp=./binary/weights_conv2d_2.hex \
 --comp=./binary/weights_conv2d_3.hex --comp=./binary/weights_conv2d_4.hex \
@@ -430,7 +429,7 @@ Connect your JTAG cable to the hardware device, turn the shield/board on, and ex
 ~~~~shell
 $ source ./pulp-sdk/configs/gap.sh
 $ source ./pulp-sdk/configs/platform-board.sh
-$ cd ./pulp-dronet/weights
+$ cd ./pulp-dronet-v1/weights
 $ plpbridge --cable=ftdi --chip=gap flash_erase_chip flash_write --addr=0 --file=./WeightsPULPDroNet.raw 
 ~~~~
 
@@ -454,7 +453,7 @@ $ plpbridge --cable=ftdi --boot-mode=jtag --binary=./bin/PULPDroNet_PULPShield -
 If instead, you want to load your recompiled binary, you have to point to it in the `plpbridge` command, like in this example:
 
 ~~~~shell
-$ cd ./pulp-dronet/src
+$ cd ./pulp-dronet-v1/src
 $ plpbridge --cable=ftdi --boot-mode=jtag --binary=./build/gap/PULPDroNet/PULPDroNet --chip=gap load ioloop reqloop start wait
 ~~~~
 

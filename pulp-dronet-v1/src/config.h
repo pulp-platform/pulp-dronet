@@ -422,7 +422,7 @@ const int			Q_Factor[NWEIGTHS] = {
 
 #ifdef CHECKSUM
 /* --------------------- Layer output Ground Truth (GT) --------------------- *
- * for:	pulp-dronet/dataset/Himax_Dataset/test_2/frame_22.pgm						  *
+ * for:	pulp-dronet-v1/dataset/Himax_Dataset/test_2/frame_22.pgm						  *
  * -------------------------------------------------------------------------- */
 const unsigned int	Layer_GT[NLAYERS] = {
 	3583346007,					// 0	5x5ConvMax_1
