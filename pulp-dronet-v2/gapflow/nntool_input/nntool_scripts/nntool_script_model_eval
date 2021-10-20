@@ -1,0 +1,7 @@
+set debug true
+adjust
+fusions --scale8
+set input_norm_func "x:x/255"
+aquant -f 8 nntool_input/quantization_files/*
+#qshow
+run_pyscript nntool_input/nntool_model_eval.py

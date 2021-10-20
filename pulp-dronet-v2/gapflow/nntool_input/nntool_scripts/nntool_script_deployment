@@ -1,0 +1,15 @@
+set debug true
+adjust
+fusions --scale8
+set input_norm_func "x:x/255"
+aquant -f 8 nntool_input/quantization_files/*
+qshow
+imageformat input_1 bw8 shift_int8
+set l3_ram_ext_managed true
+set default_input_exec_location "AT_MEM_L3_HRAM"
+#set default_input_exec_location "AT_MEM_L2"
+set graph_produce_node_names true
+set graph_reorder_constant_in true
+set graph_produce_operinfos true
+set graph_monitor_cycles true
+save_state
