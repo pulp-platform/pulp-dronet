@@ -251,7 +251,7 @@ How to run PULP-DroNet on GAP8 or GVSoC in three steps, starting from a pretrain
 **1. Generate the onnx model with nemo script**
 ```
 conda activate your_env
-python quantize.py --data=/path/to/your/pulpdronet/dataset  --export_path=/nemo_output/
+python quantize.py --data_path=/path/to/your/pulpdronet/dataset  --export_path=./nemo_output/
 ```
 
 **2. Use DORY to generate the C code** 
