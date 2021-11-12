@@ -65,6 +65,19 @@ Publications:
 }
 ~~~~
 
+~~~~
+@ARTICLE{pulpdronetv2JETCAS,
+  author={Niculescu, Vlad and Lamberti, Lorenzo and Conti, Francesco and Benini, Luca and Palossi, Daniele},
+  journal={IEEE Journal on Emerging and Selected Topics in Circuits and Systems}, 
+  title={Improving Autonomous Nano-drones Performance via Automated End-to-End Optimization and Deployment of DNNs}, 
+  year={2021},
+  volume={},
+  number={},
+  pages={1-1},
+  doi={10.1109/JETCAS.2021.3126259}}
+~~~~
+
+
 
 ## 1. Introduction
 ### What is PULP-Dronet ?
