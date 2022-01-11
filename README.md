@@ -10,7 +10,7 @@ Copyright (C) 2021 ***ETH Zürich, University of Bologna***. All rights reserved
 ### **Videos** 
 [PULP Platform Youtube](https://www.youtube.com/c/PULPPlatform) channel (subscribe it!)
 - **PULP-Dronet-V1**: [Video1](https://youtu.be/57Vy5cSvnaA) [Video2](https://youtu.be/JKY03NV3C2s).
-- **PULP-Dronet-V2** *coming...*
+- **PULP-Dronet-V2**: [Video1](https://youtu.be/41IwjAXmFQ0) [Video2](https://youtu.be/Cd9GyTl6tHI).
 
 
 ### **Citing**
@@ -21,7 +21,7 @@ Publications:
 * *A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones* [arXiv preprint](https://arxiv.org/abs/1805.01831) -- [IEEE IoT Journal](https://ieeexplore.ieee.org/document/8715489)
 * *An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs* [arXiv preprint](https://arxiv.org/abs/1905.04166) -- [IEEE DCOSS](https://ieeexplore.ieee.org/document/8804776)
 * *Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones* [IEEE AICAS](https://ieeexplore.ieee.org/document/9458550)
-
+* *Improving Autonomous Nano-Drones Performance via Automated End-to-End Optimization and Deployment of DNNs* -- [IEEE JETCAS](https://ieeexplore.ieee.org/document/9606685)
 
 
 
