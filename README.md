@@ -22,7 +22,7 @@ Publications:
 * *An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs* [arXiv preprint](https://arxiv.org/abs/1905.04166) -- [IEEE DCOSS](https://ieeexplore.ieee.org/document/8804776)
 * *Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones* [IEEE AICAS](https://ieeexplore.ieee.org/document/9458550)
 * *Improving Autonomous Nano-Drones Performance via Automated End-to-End Optimization and Deployment of DNNs* -- [IEEE JETCAS](https://ieeexplore.ieee.org/document/9606685)
-
+* *Tiny-PULP-Dronets: Squeezing Neural Networks for Faster and Lighter Inference on Multi-Tasking Autonomous Nano-Drones* -- [IEEE AICAS](https://ieeexplore.ieee.org/document/9869931)
 
 
 
@@ -76,6 +76,20 @@ Publications:
   pages={1-1},
   doi={10.1109/JETCAS.2021.3126259}}
 ~~~~
+
+~~~~
+@INPROCEEDINGS{lamberti_tinydronet,
+  author={Lamberti, Lorenzo and Niculescu, Vlad and Barciś, Michał and Bellone, Lorenzo and Natalizio, Enrico and Benini, Luca and Palossi, Daniele},
+  booktitle={2022 IEEE 4th International Conference on Artificial Intelligence Circuits and Systems (AICAS)}, 
+  title={Tiny-PULP-Dronets: Squeezing Neural Networks for Faster and Lighter Inference on Multi-Tasking Autonomous Nano-Drones}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={287-290},
+  doi={10.1109/AICAS54282.2022.9869931}}
+~~~~
+
+
 
 
 
