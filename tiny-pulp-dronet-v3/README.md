@@ -1,16 +1,94 @@
-# Tiny-PULP-Dronet v3
+# PULP-DroNet: *Do or do not. There is no try. --Yoda, TESB*
+
+Author: *Daniele Palossi* <dpalossi@iis.ee.ethz.ch>
+        *Vlad Niculescu* <vladn@iis.ee.ethz.ch>
+        *Lorenzo Lamberti* <lorenzo.lamberti@unibo.it>
+Copyright (C) 2021 ***ETH Zürich***. All rights reserved.
+
+<img style="float: right;" src="imgs/PULP_drone.png" width="100%">
+
+**Citing**
+
+If you use **PULP-DroNet** in an academic or industrial context, please cite the following publications:
+
+Publications: 
+* *A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones* [arXiv preprint](https://arxiv.org/abs/1805.01831) -- [IEEE IoT Journal](https://ieeexplore.ieee.org/document/8715489)
+* *An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs* [arXiv preprint](https://arxiv.org/abs/1905.04166) -- [IEEE DCOSS](https://ieeexplore.ieee.org/document/8804776)
+* *Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones* [arXiv preprint]() -- [IEEE AICAS]()
+
+[PULP Platform Youtube](https://www.youtube.com/c/PULPPlatform) channel (subscribe it!): [Video1](https://youtu.be/57Vy5cSvnaA) [Video2](https://youtu.be/JKY03NV3C2s)
+
+~~~~
+@article{palossi2019pulpdronetIoTJ, 
+  author={D. {Palossi} and A. {Loquercio} and F. {Conti} and E. {Flamand} and D. {Scaramuzza} and L. {Benini}}, 
+  title={A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones}, 
+  journal={IEEE Internet of Things Journal}, 
+  doi={10.1109/JIOT.2019.2917066}, 
+  ISSN={2327-4662}, 
+  year={2019}
+}
+~~~~
+
+~~~~
+@inproceedings{palossi2019pulpdronetDCOSS,
+  author={D. {Palossi} and F. {Conti} and L. {Benini}},
+  booktitle={2019 15th International Conference on Distributed Computing in Sensor Systems (DCOSS)},
+  title={An Open Source and Open Hardware Deep Learning-Powered Visual Navigation Engine for Autonomous Nano-UAVs},
+  pages={604-611},
+  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},
+  doi={10.1109/DCOSS.2019.00111},
+  ISSN={2325-2944},
+  month={May},
+  year={2019},
+}
+~~~~
+
+~~~~
+@inproceedings{niculescu2021pulpdronetAICAS,
+  author={V. {Niculescu} and L. {Lamberti} and D. {Palossi} and L. {Benini}},
+  booktitle={2021 IEEE International Conference on Artificial Intelligence Circuits and Systems (AICAS)},
+  title={Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones},
+  pages={},
+  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},
+  doi={},
+  ISSN={},
+  month={},
+  year={2021},
+}
+~~~~
+
+# Getting started
+
 
 The project's structure is the following:
 
 ```
 .
-└── tiny-pulp-dronet-v3/
-
-TODO
-
+└── pulp-dronet/
+    ├── dataset/
+    │   ├── Himax_Dataset/
+    │   ├── Udacity_Dataset/
+    │   └── Zurich_Bicycle_Dataset/
+    ├── deployment/
+    ├── imgs/
+    │   └── PULP_drone.png
+    ├── model/
+    │   ├── dronet_v2_autotiler.pth
+    │   ├── dronet_v2_dory.pth
+    │   ├── dronet_v2_autotiler.py
+    │   └── dronet_v2_dory.py
+    ├── conda_deps.yml
+    ├── config.py
+    ├── evaluation.py
+    ├── quantize.py
+    ├── testing.py
+    ├── training.py
+    ├── utility.py
+    ├── LICENSE.apache.md
+    └── README.md
 ```
 
-# Requirements
+# Requirements 
 
 ### Python dependences
 
@@ -34,9 +112,6 @@ cd dory/
 git clone https://github.com/pulp-platform/dory_examples.git
 git clone https://github.com/pulp-platform/pulp-nn.git```
 ```
-
-_Tested on this commit: a98227263db3f9fd4ba7eca85d4210acee3a4af3_
-
 ### Install the GAP sdk
 
 _Full GWT guide can be found at: https://greenwaves-technologies.com/setting-up-sdk/_
@@ -51,9 +126,9 @@ The PULP-DroNet dataset is composed by the following three sub-sets:
 * [Udacity Dataset](https://github.com/udacity/self-driving-car/tree/master/datasets/CH2);
 * [Zurich Bicycle Dataset](http://rpg.ifi.uzh.ch/dronet.html).
 
-The original Udacity and Zurich Bicycle datasets were previously released in their respective open-source projects.
+The original Udacity and Zurich Bicycle datasets were previously released in their respective open-source projects. 
 
-The Udacity dataset and the Zurich Bicycle dataset must be pre-processed to match out HIMAX configuration, and the hierarchy of the files must be re-arranged.
+The Udacity dataset and the Zurich Bicycle dataset must be pre-processed to match out HIMAX configuration, and the hierarchy of the files must be re-arranged. 
 
 
 **Udacity dataset: download and reorganize**:
@@ -182,7 +257,7 @@ All the python scripts (training.py, testing.py, evaluation.py, quantize.py) tak
 ## Training
 
 ```
-python training.py --data_path=/path/to/pulp_dronet_dataset --dataset=original_and_himax --flow=nemo_dory --gpu=0 --batch_size=32
+python training.py --data_path=/path/to/pulp_dronet_dataset --dataset=original_and_himax --arch=dronet_dory --gpu=0 --batch_size=32
 ```
 
 ## Evaluating all the weights of a training session
@@ -191,7 +266,7 @@ When the "--early_stopping" is disabled, the training script will save the weigh
 evaluation.py script provides a way to test (default:validation dataset) all these weights saved for each training session. After this, you can manually select the best performing set of weights.
 
 ```
-python evaluation.py --data_path=/path/to/pulp_dronet_dataset --dataset=validation --flow=nemo_dory --gpu=0 --batch_size=32 --cherry_picking_path=checkpoints/pulp_dronet_v2/
+python evaluation.py --data_path=/path/to/pulp_dronet_dataset --dataset=validation --arch=dronet_dory --gpu=0 --batch_size=32 --cherry_picking_path=checkpoints/pulp_dronet_v2/
 ```
 
 ## Testing
@@ -199,21 +274,21 @@ python evaluation.py --data_path=/path/to/pulp_dronet_dataset --dataset=validati
 Testing on the original dataset only (Udacity and Zurich bicycle datasets) will provide performances of both Accuracy (collision) and RMSE (steering angle)
 
 ```
-python testing.py --data_path=/path/to/pulp_dronet_dataset --dataset=original --flow=nemo_dory --gpu=0 --batch_size=32
+python testing.py --data_path=/path/to/pulp_dronet_dataset --dataset=original --arch=dronet_dory --gpu=0 --batch_size=32
 ```
 
 Testing on the HIMAX dataset only will provide performances of Accuracy only (kust "collision" labels, no "steering angle" labels)
 
 ```
-python testing.py --data_path=/path/to/pulp_dronet_dataset --dataset=himax --flow=nemo_dory --gpu=0 --batch_size=32
+python testing.py --data_path=/path/to/pulp_dronet_dataset --dataset=himax --arch=dronet_dory --gpu=0 --batch_size=32
 ```
 
-## Deployment flow: NEMO/DORY and GAP8 (GVSoC) flow: quickstart
+## Deployment flow: NEMO/DORY and GAP8 (GVSoC) flow: quickstart  
 
-How to run PULP-DroNet on GAP8 or GVSoC in three steps, starting from a pretrained model.
+How to run PULP-DroNet on GAP8 or GVSoC in three steps, starting from a pretrained model. 
 
 **NEMO (quantization):**
-- **Input**: model definition (pytorch format, can be found in "models/dronet_v2_nemo_dory.py") + pre-trained weights (".pth file", can be found in "models/dronet_v2_dory.pth" )
+- **Input**: model definition (pytorch format, can be found in "models/dronet_v2_dory.py") + pre-trained weights (".pth file", can be found in "models/dronet_v2_dory.pth" ) 
 - **Output**: ONNX graph model (including weights) + golden activations (".txt" files, used by DORY for checksums)
 
 **DORY (generation of optimized C code):**
@@ -228,10 +303,10 @@ How to run PULP-DroNet on GAP8 or GVSoC in three steps, starting from a pretrain
 **1. Generate the onnx model with nemo script**
 ```
 conda activate your_env
-python quantize.py --data_path=/path/to/your/pulpdronet/dataset  --export_path=./nemo_output/
+python quantize.py --data=/path/to/your/pulpdronet/dataset  --export_path=/nemo_output/
 ```
 
-**2. Use DORY to generate the C code**
+**2. Use DORY to generate the C code** 
 
 DORY generates the deployment C code  under the "dory_examples/application/" folder:
 
@@ -249,7 +324,7 @@ _remember: your gap sdk (or pulp sdk) must be correctly installed before you try
 
 ```
 source gap_sdk/configs/ai_deck.sh
-export GAPY_OPENOCD_CABLE=$HOME/work/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg
+export GAPY_OPENOCD_CABLE=$HOME/work/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg 
 ```
 
 then run PULP-DroNet on GAP8 **: )**
@@ -260,8 +335,23 @@ make clean all run CORE=8 platform=gvsoc  (GVSoC)
 make clean all run CORE=8 platform=board  (GAP8)
 ```
 
+## Pre-generated deployment example 
 
-# Bonus: Install GAP SDK
+The code generated by DORY only performs one single forward-pass on the PULP-Dronet network.
+Therefore, it  must be then integrated with other functionalies of the AI-deck (camera, UART, ..) and with the crazyflie main control board (STM32) to actually control the drone's flight.
+
+in the `deployment/` folder we provide an example of of both the GAP8 application and crazyflie-firmware patches required to perform the following operations in a loop:
+
+- Open the himax camera
+- acquire an image
+- forward pass on the PULP-Dronet CNN
+- forward the probability of collision and the steering angle to the main control board (STM32) via UART
+- The control board translates the steering anche and collision probability in flight controls
+
+Follow the [deployment/README.md](./deployment/README.md) instructions to flash this pre-generated example on both the GAP8 and STM32 MCUs.
+
+
+# Bonus: Install GAP SDK 
 
 _Tested versions of the sdk are: 3.8.1_
 
@@ -293,13 +383,13 @@ cd ~/gap_riscv_toolchain_ubuntu_18
 
 > export GAP_RISCV_GCC_TOOLCHAIN="custom/path/that/you/chose"
 
-#### Build GAP SDK
+#### Build GAP SDK 
 
 ```
 git clone https://github.com/GreenWaves-Technologies/gap_sdk.git
 cd gap_sdk
 git submodule update --init --recursive
-source configs/ai-ai_deck.sh
+source configs/ai-ai_deck.sh 
 ```
 
 ```
@@ -343,7 +433,7 @@ after installing, the only commands you need to run on a fresh new terminal in o
 
 ```
 cd gap_sdk
-source configs/ai_deck.sh
+source configs/ai_deck.sh 
 GAPY_OPENOCD_CABLE=$HOME/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg
 
 ```
