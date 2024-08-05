@@ -5,6 +5,7 @@
 runs/
 logs/
 tiny-pulp-dronet-v3/dataset/
+tiny-pulp-dronet-v3/training/
 
 #files
 #  #trained models
