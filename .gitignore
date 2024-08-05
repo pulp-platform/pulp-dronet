@@ -4,7 +4,7 @@
 *bin/
 runs/
 logs/
-dataset/*
+tiny-pulp-dronet-v3/dataset/
 
 #files
 #  #trained models
