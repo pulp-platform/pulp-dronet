@@ -10,3 +10,6 @@
 [submodule "src/autotiler"]
 	path = pulp-dronet-v1/src/autotiler
 	url = https://github.com/pulp-platform/autotiler.git
+[submodule "tiny-pulp-dronet-v3/nemo-dory/nemo"]
+	path = tiny-pulp-dronet-v3/nemo-dory/nemo
+	url = git@github.com:LorenzoLamberti94/nemo.git
