@@ -20,12 +20,12 @@
 #          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
 #          Vlad Niculescu   <vladn@iis.ee.ethz.ch>                            #
 # Date:    18.02.2021                                                         #
-#-----------------------------------------------------------------------------# 
+#-----------------------------------------------------------------------------#
 
 # Description:
-# This script is used to check the PULP-DroNet CNN performance (Accuracy and RMSE) 
-# with a set of pre-trained weights. 
-# You must specify the CNN architecture (dronet_dory or dronet_autotiler) and 
+# This script is used to check the PULP-DroNet CNN performance (Accuracy and RMSE)
+# with a set of pre-trained weights.
+# You must specify the CNN architecture (dronet_dory or dronet_autotiler) and
 # the path to the pre-trained weights that you want to load ('--model_weights').
 # The output will be the testing MSE and Accuracy of such network.
 
@@ -36,16 +36,22 @@ import argparse
 import numpy as np
 from os.path import join
 from tqdm import tqdm
+
 # torch
 import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader
 from torchvision import transforms
+from torchinfo import summary
+
+# import PULP-DroNet CNN architecture
+from model.dronet_v2_dory import ResBlock, Depthwise_Separable, Inverted_Linear_Bottleneck
+from model.dronet_v2_dory import dronet
+from utility import load_weights_into_network
+
 # PULP-dronet
+from classes import Dataset
 from utility import DronetDatasetV3
 from utility import custom_mse, custom_accuracy, custom_bce, custom_loss_v3
 from utility import AverageMeter
-from utility import regression_as_classification, custom_accuracy_yawrate_thresholded
 import matplotlib.pyplot as plt
 # opencv
 import cv2
@@ -63,16 +69,16 @@ def create_parser(cfg):
     parser.add_argument('-d', '--data_path', help='path to dataset',
                         default=cfg.data_path)
     # parser.add_argument('-s', '--dataset', default=cfg.testing_dataset,
-    #                     choices=['original', 'himax'], 
+    #                     choices=['original', 'himax'],
                         # help='train on original or original+himax dataset')
-    parser.add_argument('-m', '--model_weights', default=cfg.model_weights, 
+    parser.add_argument('-m', '--model_weights', default=cfg.model_weights,
                         help='path to the weights of the testing network (.pth file)')
     parser.add_argument('-a', '--arch', metavar='checkpoint.pth', default=cfg.arch,
                         choices=['dronet_dory', 'dronet_autotiler', 'dronet_dory_no_residuals'],
                         help='select the NN architecture backbone:')
-    parser.add_argument('--block_type', action="store", choices=["ResBlock", "Depthwise", "Inverted"], default="ResBlock")
+    parser.add_argument('--block_type', action="store", choices=["ResBlock", "Depthwise", "IRLB"], default="ResBlock")
     parser.add_argument('--depth_mult', default=cfg.depth_mult, type=float,
-                        help='depth multiplier that scales number of channels')                        
+                        help='depth multiplier that scales number of channels')
     parser.add_argument('--gpu', help='which gpu to use. Just one at'
                         'the time is supported', default=cfg.gpu)
     parser.add_argument('-j', '--workers', default=cfg.workers, type=int, metavar='N',
@@ -87,49 +93,16 @@ def create_parser(cfg):
 
     return parser
 
-
-def testing_yawrate_thresholded(model, testing_loader, device):
-    """ 
-    Yaw_rate: trained as regression problem, tested as classification problem (thresholds [-0.1, +0.1])
-    Collision: trained/tested as classification problem
-    """
-    model.eval()
-    # # testing metrics
-    acc_collision_test = AverageMeter('ACC', ':.3f') 
-    acc_yawrate_test = AverageMeter('ACC-yawrate', ':.4f') 
-
-    with tqdm(total=len(testing_loader), desc='Test', disable=not True) as t:
-        with torch.no_grad():
-            for batch_idx, data in enumerate(testing_loader):
-                inputs, labels, filename = data[0].to(device), data[1].to(device), data[2]
-
-                outputs = model(inputs)
-                # accuracy for collision
-                acc_collision = custom_accuracy(labels, outputs, device)
-                # accuracy for regression putting thresholds at [-0.1, +0.1]
-                yaw_rate_labels = labels[:,0].squeeze() 
-                yaw_rate_pred = outputs[0]
-                acc_yawrate = custom_accuracy_yawrate_thresholded(yaw_rate_labels, yaw_rate_pred, device)
-                # store values
-                acc_collision_test.update(acc_collision.item())
-                acc_yawrate_test.update(acc_yawrate.item())
-
-                t.set_postfix({'yr_acc' : acc_yawrate_test.avg, 'col_acc' : acc_collision_test.avg})
-                t.update(1)
-
-    print("Testing Acc yaw_rate: %.4f" % acc_yawrate_test.avg, "Acc collision: %.4f" % acc_collision_test.avg)
-    return acc_yawrate_test.avg, acc_collision_test.avg
-
 def testing(model, testing_loader, device):
-    """ 
+    """
     Yaw_rate: trained/tested as regression problem
     Collision: trained/tested as classification problem
     """
     model.eval()
     # # testing metrics
-    acc_test = AverageMeter('ACC', ':.3f') 
-    bce_test = AverageMeter('BCE', ':.4f') 
-    mse_test = AverageMeter('MSE', ':.4f') 
+    acc_test = AverageMeter('ACC', ':.3f')
+    bce_test = AverageMeter('BCE', ':.4f')
+    mse_test = AverageMeter('MSE', ':.4f')
     loss_test = AverageMeter('Loss', ':.4f')
 
     with tqdm(total=len(testing_loader), desc='Test', disable=not True) as t:
@@ -157,55 +130,9 @@ def testing(model, testing_loader, device):
     print("Testing RMSE: %.4f" % math.sqrt(mse_test.avg), "Acc: %.4f" % acc_test.avg)
     return mse_test.avg, acc_test.avg
 
-def testing_yr_classification(model, testing_loader, device, yawrate_as_classification=True):
-    """ 
-    Yaw_rate:  classification problem
-    Collision: classification problem
-    """
-    model.eval()
-    # # testing metrics
-    acc_test = AverageMeter('ACC', ':.3f') 
-    bce_test = AverageMeter('BCE', ':.4f') 
-    mse_test = AverageMeter('MSE', ':.4f') 
-    loss_test = AverageMeter('Loss', ':.4f')
-    acc_yawrate_test = AverageMeter('ACC-yawrate', ':.4f') 
-
-    with tqdm(total=len(testing_loader), desc='Test', disable=not True) as t:
-        with torch.no_grad():
-            for batch_idx, data in enumerate(testing_loader):
-                inputs, labels, filename = data[0].to(device), data[1].to(device), data[2]
-
-
-
-                outputs = model(inputs)
-                # losses
-                mse = custom_mse(labels, outputs, device)
-                bce = custom_bce(labels, outputs, device)
-                acc = custom_accuracy(labels, outputs, device)
-                loss = custom_loss_v3(labels, outputs, device)
-
-                if yawrate_as_classification:
-                    #yr=yaw-rate
-                    yaw_rate_labels = labels[:,0].squeeze() 
-                    yaw_rate_pred = outputs[0]
-                    acc_yawrate = custom_accuracy_regression_yawrate(yaw_rate_labels, yaw_rate_pred, device)
-                    acc_yawrate_test.update(acc_yawrate.item())
-                # store values
-                acc_test.update(acc.item())
-                bce_test.update(bce.item())
-                mse_test.update(mse.item())
-                loss_test.update(loss.item())
-                t.set_postfix({'mse' : mse_test.avg, 'acc' : acc_test.avg})
-                t.update(1)
-
-    print("Testing MSE: %.4f" % mse_test.avg, "Acc: %.4f" % acc_test.avg)
-    if yawrate_as_classification:
-        print("Testing Acc for yaw_rate: %.4f" % acc_yawrate_test.avg, "Acc for collision: %.4f" % acc_test.avg)
-    return mse_test.avg, acc_test.avg
-
 def list_filenames_labels_outputs(model, testing_loader, device):
     model.eval()
-    
+
     filenames_list = []
     labels_list = []
     outputs_list = []
@@ -246,7 +173,7 @@ def export_comparison_groundtruth_output(filenames_list, labels_list, outputs_li
         # --- Create cv2 image with overlays ---
         from utility import create_cv2_image
         img = create_cv2_image(img_path,yaw_rate_label, collision_label, yaw_rate_output, collision_output)
-    
+
         if export_images:
             image_name = join(output_directory, str(image_idx)+".png")
             print('writing image', image_name)
@@ -264,14 +191,14 @@ def export_comparison_groundtruth_output(filenames_list, labels_list, outputs_li
                             RED,
                             1)
             img_array.append(img)
-    
+
     if export_video:
         # --- CREATE VIDEO ---
         # Video name and size
         video_name = join(output_directory, video_name+'.mp4')
         height, width = img.shape[0:2]
         size = (width,height)
-        # Define the codec 
+        # Define the codec
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         # Create VideoWriter object
         video_out = cv2.VideoWriter(video_name, fourcc, 15, size)
@@ -311,72 +238,51 @@ def plot_outputs(labels_list, outputs_list, depth_mult):
 def main():
     # parse arguments
     global args
-    from config import cfg # load configuration with all default values 
+    from config import cfg # load configuration with all default values
     parser = create_parser(cfg)
     args = parser.parse_args()
     model_weights_path=args.model_weights
     print("Model name:", model_weights_path)
-    
+
     # select device
     os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("CUDA/CPU device:", device)
     print("pyTorch version:", torch.__version__)
 
-    # import PULP-DroNet CNN architecture
-    if args.arch == 'dronet_dory':
-        from model.dronet_v2_dory import dronet, ResBlock, Depthwise_Separable
-    elif args.arch == 'dronet_dory_no_residuals':
-        from model.dronet_v2_dory_no_residuals import dronet, ResBlock, Depthwise_Separable
-    elif args.arch == 'dronet_autotiler':
-        from model.dronet_v2_autotiler import dronet
-    elif args.arch == 'dronet_dory_no_residuals':
-        from model.dronet_v2_dory_no_residuals import dronet
-    else: 
-        raise ValueError('Doublecheck the architecture that you are trying to use.\
-                            Select one between dronet_dory and dronet_autotiler')
-                            
-    # select the CNN model
-    print('You are using a depth multiplier of', args.depth_mult, 'for PULP-Dronet')
+
+
     if args.block_type == "ResBlock":
-        net = dronet(depth_mult=args.depth_mult, block_class=ResBlock)
+        net = dronet(depth_mult=args.depth_mult, block_class=ResBlock, bypass=args.bypass)
     elif args.block_type == "Depthwise":
-        net = dronet(depth_mult=args.depth_mult, block_class=Depthwise_Separable)
+        net = dronet(depth_mult=args.depth_mult, block_class=Depthwise_Separable, bypass=args.bypass)
+    elif args.block_type == "IRLB":
+        net = dronet(depth_mult=args.depth_mult, block_class=Inverted_Linear_Bottleneck, bypass=args.bypass)
+
+    net = load_weights_into_network(args.model_weights_path, net, args.resume_training, device)
+
     net.to(device)
+    summary(net, input_size=(1, 1, 200, 200))
 
-    #load weights into the network
-    if os.path.isfile(model_weights_path):
-        if torch.cuda.is_available():
-            checkpoint = torch.load(model_weights_path, map_location=device)
-            print('loaded checkpoint on cuda')
-        else:
-            checkpoint = torch.load(model_weights_path, map_location='cpu')
-            print('CUDA not available: loaded checkpoint on cpu')
-        if 'state_dict' in checkpoint:
-            checkpoint = checkpoint['state_dict']
-        else:
-            print('Failed to find the [''state_dict''] inside the checkpoint. I will try to open it anyways.')
-        net.load_state_dict(checkpoint)
-    else: 
-        raise RuntimeError('Failed to open checkpoint. provide a checkpoint.pth.tar file')
+    ##############################################
+    # Create dataloaders for PULP-DroNet Dataset #
+    ##############################################
 
-
-    ## Create dataloaders for PULP-DroNet Dataset
-    from dataset_browser.models import Dataset
-    dataset = Dataset(args.data_path)
-    dataset.initialize_from_filesystem()
+    # init testing set
+    dataset_noaug = Dataset(args.data_path_testing)
+    dataset_noaug.initialize_from_filesystem()
+    # transformations
     transformations = transforms.Compose([transforms.CenterCrop(200), transforms.ToTensor()])
+
     # load testing set
     test_dataset = DronetDatasetV3(
         transform=transformations,
-        dataset=dataset,
-        selected_partition='test',
-        remove_yaw_rate_zero=args.remove_yaw_rate_zero,
-        labels_preprocessing=False)
+        dataset=dataset_noaug,
+        selected_partition='test')
     test_loader = torch.utils.data.DataLoader(
-        test_dataset, 
-        batch_size=args.batch_size, 
-        shuffle=False, 
+        test_dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
         num_workers=args.workers)
 
     if args.video:
@@ -389,8 +295,6 @@ def main():
     #### TESTING ####
     print('model tested:', model_weights_path)
     testing(net, test_loader, device)
-    testing_yawrate_thresholded(net, test_loader, device)
-
 
 if __name__ == '__main__':
     main()
