@@ -31,7 +31,7 @@ class cfg:
 # default for all scripts
 cfg.data_path= './dataset/'
 cfg.logs_dir='./logs/'
-cfg.arch='dronet_dory'
+cfg.bypass=True
 cfg.depth_mult=1.0
 cfg.testing_dataset='original'
 cfg.model_weights_path='model/dronet_v2_dory.pth'
