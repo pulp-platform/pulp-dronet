@@ -1,4 +1,3 @@
-
 #-----------------------------------------------------------------------------#
 # Copyright(C) 2024 University of Bologna, Italy, ETH Zurich, Switzerland.    #
 # All rights reserved.                                                        #
@@ -59,10 +58,7 @@ import argparse
 from tqdm import tqdm
 #torch
 import torch; print('\nPyTorch version in use:', torch.__version__, '\ncuda avail: ', torch.cuda.is_available())
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from torchvision import datasets, transforms
+from torchvision import transforms
 #nemo
 sys.path.append('/home/lamberti/work/nemo') # if you want to use your custom installation (git clone) instead of pip version
 import nemo
@@ -157,7 +153,7 @@ def clean_directory(export_path):
             os.remove(f)
             print('removed:', f)
 
-def print_summary(model):
+def print_summary(model, dummy_input_net):
     summary = nemo.utils.get_summary(model, tuple(torch.squeeze(dummy_input_net, 0).size()), verbose=True)
     print(summary['prettyprint'])
 
@@ -177,10 +173,6 @@ def get_intermediate_activations(net, dummy_input_net):
 
     outputs = net(dummy_input_net)
     return buffer_in, buffer_out
-
-def print_summary(model):
-    summary = nemo.utils.get_summary(model, (1, 200, 200),verbose=True)
-    print(summary['prettyprint'])
 
 def network_size(model):
     summary = nemo.utils.get_summary(model, (1, 200, 200),verbose=True)
@@ -303,11 +295,10 @@ def get_quantized_model(model, device, test_loader=None):
 
 
 ################################################################################
-#### MAIN ####
+# MAIN
 ################################################################################
 
-if __name__ == '__main__':
-
+def main():
     # parse arguments
     global args
     from config import cfg # load configuration with all default values
@@ -384,7 +375,7 @@ if __name__ == '__main__':
     names = []
     search_classes=['ReLU6', 'ReLU', 'PACT_IntegerAdd', 'PACT_Act', 'MaxPool2d', 'Linear'] # we need just activations, so Relus, pooling, linears, and adds
     print('The following layers do not belong to search_classes and they will be will be ignored')
-    for key, class_name in model.named_modules():
+    for key, class_name in net.named_modules():
         class_name = str(class_name.__class__).split(".")[-1].split("'")[0]
         if class_name in search_classes:
             names.append(key)
@@ -426,8 +417,11 @@ if __name__ == '__main__':
     network_output_quantum = get_fc_quantum(args, model_q) # This also takes into account ONNX approximation
     print('network_output_quantum (after ONNX rounding):', network_output_quantum)
 
-    if args.save_quantum: 
+    if args.save_quantum:
         with open(join(export_path,'quantum='+str("{:.4f}".format(network_output_quantum.item()))) , 'w') as f:
             f.write('this is the nemo''s quantum')
 
     print('\nEnd.')
+
+if __name__ == '__main__':
+    main()
