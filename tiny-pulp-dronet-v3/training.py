@@ -218,8 +218,6 @@ working_dir = os.path.dirname(os.path.realpath(__file__))
 os.chdir(working_dir)
 print('\nworking directory:', working_dir, "\n")
 
-
-
 def validate(test_set, net, data_loader, tensorboard_writer, logs_dir, df_valid, epoch, device):
     if test_set=='valid':
         dataset_string = 'Validation'
@@ -286,8 +284,10 @@ def main():
     from config import cfg # load configuration with all default values
     parser = create_parser(cfg)
     args = parser.parse_args()
+
+    # parse variables
     save_checkpoints_path = args.checkpoint_path
-    model_name=args.model_name
+    model_name = args.model_name
     model_parameters_path = 'model'
     print("Model name:", model_name)
 
