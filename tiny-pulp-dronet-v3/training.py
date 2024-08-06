@@ -50,8 +50,8 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchinfo import summary
 # import PULP-DroNet CNN architecture
-from model.dronet_v2_dory import ResBlock, Depthwise_Separable, Inverted_Linear_Bottleneck
-from model.dronet_v2_dory import dronet
+from model.dronet_v3 import ResBlock, Depthwise_Separable, Inverted_Linear_Bottleneck
+from model.dronet_v3 import dronet
 from utility import load_weights_into_network
 # PULP-dronet dataset
 from classes import Dataset
@@ -132,6 +132,7 @@ def create_parser(cfg):
                         help=('Mini-batch size (default: 32). This is the total batch size '
                               'across all GPUs.'),
                         metavar='N')
+    # CPU/GPU params
     parser.add_argument('--gpu',
                         help='Which GPU to use (only one GPU supported)',
                         default=cfg.gpu,
@@ -296,7 +297,7 @@ def main():
         f'You defined PULP-Dronet architecture as follows:\n'
         f'Depth multiplier: {args.depth_mult}\n'
         f'Block type: {args.block_type}\n'
-        f'Bypass: {args.bypass}'ù
+        f'Bypass: {args.bypass}'
     )
 
     if args.block_type == "ResBlock":

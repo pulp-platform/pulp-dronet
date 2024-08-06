@@ -44,8 +44,8 @@ from torchvision import transforms
 from torchinfo import summary
 
 # import PULP-DroNet CNN architecture
-from model.dronet_v2_dory import ResBlock, Depthwise_Separable, Inverted_Linear_Bottleneck
-from model.dronet_v2_dory import dronet
+from model.dronet_v3 import ResBlock, Depthwise_Separable, Inverted_Linear_Bottleneck
+from model.dronet_v3 import dronet
 from utility import load_weights_into_network
 
 # PULP-dronet
@@ -250,8 +250,6 @@ def main():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("CUDA/CPU device:", device)
     print("pyTorch version:", torch.__version__)
-
-
 
     if args.block_type == "ResBlock":
         net = dronet(depth_mult=args.depth_mult, block_class=ResBlock, bypass=args.bypass)

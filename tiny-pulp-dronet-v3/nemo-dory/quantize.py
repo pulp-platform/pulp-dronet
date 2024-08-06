@@ -69,6 +69,10 @@ import nemo
 from copy import deepcopy
 from collections import OrderedDict
 from dataset_browser.models import Dataset
+# import PULP-DroNet CNN architecture
+from model.dronet_v3 import ResBlock, Depthwise_Separable, Inverted_Linear_Bottleneck
+from model.dronet_v3 import dronet
+from utility import load_weights_into_network
 # PULP-dronet
 from utility import (
     DronetDatasetV3,
@@ -292,52 +296,30 @@ if __name__ == '__main__':
     print("CUDA/CPU device:", device)
     print("pyTorch version:", torch.__version__)
 
-    # import PULP-DroNet CNN architecture
-    if args.arch == 'dronet_dory':
-        from model.dronet_v2_dory import dronet, ResBlock, Depthwise_Separable
-    elif args.arch == 'dronet_dory_no_residuals':
-        from model.dronet_v2_dory_no_residuals import dronet, ResBlock, Depthwise_Separable
-    else:
-        raise ValueError('Doublecheck the architecture that you are trying to use.\
-                          and make sure that you are not tring to use a network that \
-                          was intended for GAPflow (NNtool +AutoTiler). You must select \
-                          dronet_dory, because dronet_autotiler should be quantized with \
-                          the corresponding Greenwaves Technologies tool called NNTools.')
-
     # select the CNN model
-    print('You are using the following building blocks:', args.block_type ,' with a depth multiplier of', args.depth_mult, 'for PULP-Dronet',)
+    print(
+        f'You defined PULP-Dronet architecture as follows:\n'
+        f'Depth multiplier: {args.depth_mult}\n'
+        f'Block type: {args.block_type}\n'
+        f'Bypass: {args.bypass}'ù
+    )
+
     if args.block_type == "ResBlock":
-        model = dronet(depth_mult=args.depth_mult, block_class=ResBlock, nemo=True)
+        net = dronet(depth_mult=args.depth_mult, block_class=ResBlock, bypass=args.bypass)
     elif args.block_type == "Depthwise":
-        model = dronet(depth_mult=args.depth_mult, block_class=Depthwise_Separable, nemo=True)
-        
+        net = dronet(depth_mult=args.depth_mult, block_class=Depthwise_Separable, bypass=args.bypass)
+    elif args.block_type == "IRLB":
+        net = dronet(depth_mult=args.depth_mult, block_class=Inverted_Linear_Bottleneck, bypass=args.bypass)
+
+    net = load_weights_into_network(args.model_weights_path, net, args.resume_training, device)
+
     # pass to device
-    model.to(device)
+    net.to(device)
     dummy_input_net = torch.randn((1, 1, 200, 200)).to(device) # images are 200x200 px in dronet
 
     # print model structure
     print("model structure summary: \n")
-    print_summary(model)
-
-    # if args.init_random_weights:
-    #     from utility import init_weights
-    #     net.apply(init_weights)
-
-    #load weights
-    if os.path.isfile(model_weights_path):
-        if torch.cuda.is_available():
-            checkpoint = torch.load(model_weights_path, map_location=device)
-            print('loaded checkpoint on cuda')
-        else:
-            checkpoint = torch.load(model_weights_path, map_location='cpu')
-            print('CUDA not available: loaded checkpoint on cpu')
-        if 'state_dict' in checkpoint:
-            checkpoint = checkpoint['state_dict']
-        else:
-            print('Failed to find the [''state_dict''] inside the checkpoint. I will try to open it as a checkpoint.')
-        model.load_state_dict(checkpoint)
-    else:
-        raise RuntimeError('Failed to open checkpoint. provide a checkpoint.pth.tar file')
+    print_summary(net, dummy_input_net)
 
     ## Create dataloaders for PULP-DroNet Dataset
     transformations = transforms.Compose([transforms.CenterCrop(200), transforms.ToTensor()])

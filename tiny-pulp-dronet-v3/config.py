@@ -34,7 +34,7 @@ cfg.logs_dir='./logs/'
 cfg.bypass=True
 cfg.depth_mult=1.0
 cfg.testing_dataset='original'
-cfg.model_weights_path='model/dronet_v2_dory.pth'
+cfg.model_weights_path='model/dronet_v3.pth'
 cfg.gpu='0'
 cfg.workers=4
 
@@ -54,10 +54,6 @@ cfg.resume_training = False
 
 # testing.py
 cfg.testing_batch_size=32
-
-# evaluation.py
-cfg.testing_dataset_evaluation='validation'
-cfg.cherry_picking_path='./checkpoints/pulp_dronet_v3/'
 
 # quantize.py
 cfg.nemo_export_path = 'nemo_output/'
