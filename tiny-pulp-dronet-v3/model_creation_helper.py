@@ -6,7 +6,7 @@ import torch
 from torchvision import transforms
 
 from config import cfg
-from dataset_browser.models import Dataset
+from classes import Dataset
 from utility import DronetDatasetV3, DronetDatasetV2
 
 import argparse
