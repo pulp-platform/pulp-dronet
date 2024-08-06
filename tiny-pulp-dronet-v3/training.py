@@ -327,25 +327,35 @@ def main():
     if args.early_stopping:
         early_stopping = EarlyStopping(patience=args.patience, delta=args.delta, verbose=True, path=save_checkpoints_path+model_name+'/'+early_stop_checkpoint)
 
+    # print model's state_dict and optimizer's state_dict
     if args.verbose:
-        # Print model's state_dict
         print("Model's state_dict:")
         for param_tensor in net.state_dict():
             print(param_tensor, "\t\t\t", net.state_dict()[param_tensor].size())
-        # Print optimizer's state_dict
+
         print("Optimizer's state_dict:")
         for var_name in optimizer.state_dict():
             print(var_name, "\t", optimizer.state_dict()[var_name])
 
-    ## Create dataloaders for PULP-DroNet Dataset
-    transformations = transforms.Compose([transforms.CenterCrop(200), transforms.ToTensor()])
+    # print dataset paths
     if not args.data_path_testing:
         args.data_path_testing = args.data_path
-    print('Training and Validation set paths:', args.data_path)
+    print('Training set path:', args.data_path)
     print('Testing set path (you should select the non augmented dataset):', args.data_path_testing)
 
+    ##############################################
+    # Create dataloaders for PULP-DroNet Dataset #
+    ##############################################
+
+    # init training set
     dataset = Dataset(args.data_path)
     dataset.initialize_from_filesystem()
+    # init testing set
+    dataset_noaug = Dataset(args.data_path_testing)
+    dataset_noaug.initialize_from_filesystem()
+    # transformations
+    transformations = transforms.Compose([transforms.CenterCrop(200), transforms.ToTensor()])
+
     # load training set
     train_dataset = DronetDatasetV3(
         transform=transformations,
@@ -366,9 +376,6 @@ def main():
         batch_size=args.batch_size,
         shuffle=False,
         num_workers=args.workers)
-
-    dataset_noaug = Dataset(args.data_path_testing)
-    dataset_noaug.initialize_from_filesystem()
     # load testing set
     test_dataset = DronetDatasetV3(
         transform=transformations,
