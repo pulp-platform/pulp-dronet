@@ -34,7 +34,7 @@ cfg.logs_dir='./logs/'
 cfg.arch='dronet_dory'
 cfg.depth_mult=1.0
 cfg.testing_dataset='original'
-cfg.model_weights='model/dronet_v2_dory.pth'
+cfg.model_weights_path='model/dronet_v2_dory.pth'
 cfg.gpu='0'
 cfg.workers=4
 

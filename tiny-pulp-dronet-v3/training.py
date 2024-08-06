@@ -61,7 +61,7 @@ from torchinfo import summary
 # import PULP-DroNet CNN architecture
 from model.dronet_v2_dory import ResBlock, Depthwise_Separable, Inverted_Linear_Bottleneck
 from model.dronet_v2_dory import dronet
-import model_creation_helper
+from utility import load_weights_into_network
 # PULP-dronet dataset
 from classes import Dataset
 from utility import DronetDatasetV3
@@ -109,8 +109,8 @@ def create_parser(cfg):
                         default=cfg.model_name,
                         help='Name of the model to be created during training',
                         metavar='STRING')
-    parser.add_argument('-w', '--model_weights',
-                        default=cfg.model_weights,
+    parser.add_argument('-w', '--model_weights_path',
+                        default=cfg.model_weights_path,
                         help='Path to the weights file for resuming training (.pth file)',
                         metavar='WEIGHTS_FILE')
     # CNN architecture
@@ -315,24 +315,8 @@ def main():
     elif args.block_type == "IRLB":
         net = dronet(depth_mult=args.depth_mult, block_class=Inverted_Linear_Bottleneck, bypass=args.bypass)
 
-    # initialize weights and biases for training
-    if not args.resume_training:
-        net.apply(init_weights)
-    else: # load previous weights # TO BE TESTED
-        if os.path.isfile(args.model_weights):
-            if torch.cuda.is_available():
-                checkpoint = torch.load(args.model_weights, map_location=device)
-                print('loaded checkpoint on cuda')
-            else:
-                checkpoint = torch.load(args.model_weights, map_location='cpu')
-                print('CUDA not available: loaded checkpoint on cpu')
-            if 'state_dict' in checkpoint:
-                checkpoint = checkpoint['state_dict']
-            else:
-                print('Failed to find the [''state_dict''] inside the checkpoint. I will try to open it anyways.')
-            net.load_state_dict(checkpoint)
-        else:
-            raise RuntimeError('Failed to open checkpoint. provide a checkpoint.pth.tar file')
+    net = load_weights_into_network(args.model_weights_path, net, args.resume_training, device)
+
     net.to(device)
     summary(net, input_size=(1,1, 200, 200))
 

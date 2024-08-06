@@ -257,6 +257,31 @@ def write_log(logs_path, log_str, prefix='train', should_print=True, mode='a', e
         print(log_str)
 
 ################################################################################
+# Network Initialization
+################################################################################
+
+def load_weights_into_network(model_weights_path, net, resume_training, device):
+    # initialize weights and biases for training
+    if not resume_training:
+        net.apply(init_weights)
+    else: # load previous weights # TO BE TESTED
+        if os.path.isfile(model_weights_path):
+            if torch.cuda.is_available():
+                checkpoint = torch.load(model_weights_path, map_location=device)
+                print('loaded checkpoint on cuda')
+            else:
+                checkpoint = torch.load(model_weights_path, map_location='cpu')
+                print('CUDA not available: loaded checkpoint on cpu')
+            if 'state_dict' in checkpoint:
+                checkpoint = checkpoint['state_dict']
+            else:
+                print('Failed to find the [''state_dict''] inside the checkpoint. I will try to open it anyways.')
+            net.load_state_dict(checkpoint)
+        else:
+            raise RuntimeError('Failed to open checkpoint. provide a checkpoint.pth.tar file')
+    return net
+
+################################################################################
 # Loss Functions and Evaluation Metrics
 ################################################################################
 
