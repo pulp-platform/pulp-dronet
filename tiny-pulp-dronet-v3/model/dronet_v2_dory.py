@@ -19,11 +19,7 @@
 # Author:           Lorenzo Lamberti <lorenzo.lamberti@unibo.it>
 # Date:    5.1.2021
 
-import torch
-import torchvision
-import torchvision.transforms as transforms
 import torch.nn as nn
-import torch.optim as optim
 import nemo
 
 ################################################################################
