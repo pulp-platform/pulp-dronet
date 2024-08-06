@@ -44,7 +44,7 @@ from torch.utils.data import Dataset
 class DronetDatasetV3(Dataset):
     """Dronet dataset."""
 
-    def __init__(self, transform=None, dataset=None, selected_partition=None, labels_preprocessing=False, classification=False, remove_yaw_rate_zero=False):
+    def __init__(self, transform=None, dataset=None, selected_partition=None, remove_yaw_rate_zero=False):
         """
         Args:
             root (string): Directory with all the images.
@@ -56,7 +56,6 @@ class DronetDatasetV3(Dataset):
         self.labels = [[],[]]
         self.dataset= dataset
         self.selected_partition = selected_partition
-        self.labels_preprocessing = labels_preprocessing
 
         assert selected_partition in ['train', 'valid', 'test'], 'Error in the partition name you selected'
 
@@ -79,16 +78,6 @@ class DronetDatasetV3(Dataset):
                 names = np.delete(names, zeros)
                 collision = np.delete(collision, zeros)
                 # print('after',yaw_rate.size, 'deleted', zeros.sum())
-
-            if labels_preprocessing:
-                # transform regression labels to classification
-                yaw_rate[yaw_rate>0] = 1
-                yaw_rate[yaw_rate<0] = -1
-            if classification:
-                # transform regression labels to classification
-                yaw_rate[yaw_rate==0] = 0
-                yaw_rate[yaw_rate>0]  = 1
-                yaw_rate[yaw_rate<0]  = 2
 
             # append labels and filenames to a list
             self.filenames.extend(names)
