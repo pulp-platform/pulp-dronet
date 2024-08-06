@@ -318,7 +318,7 @@ def main():
     net = load_weights_into_network(args.model_weights_path, net, args.resume_training, device)
 
     net.to(device)
-    summary(net, input_size=(1,1, 200, 200))
+    summary(net, input_size=(1, 1, 200, 200))
 
     # initialize the optimizer for training
     optimizer = optim.Adam(net.parameters(), lr=args.lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=args.lr_decay, amsgrad=False)
@@ -336,7 +336,6 @@ def main():
         print("Optimizer's state_dict:")
         for var_name in optimizer.state_dict():
             print(var_name, "\t", optimizer.state_dict()[var_name])
-
 
     ## Create dataloaders for PULP-DroNet Dataset
     transformations = transforms.Compose([transforms.CenterCrop(200), transforms.ToTensor()])
@@ -417,7 +416,6 @@ def main():
     ############################################################################
     for epoch in range(args.epochs+1):
         for obj in [mse_train, bce_train, acc_train, loss_train]: obj.reset()
-        # for obj in [mse_valid, bce_valid, acc_valid, loss_valid]: obj.reset()
         #### TRAINING ####
         print("Epoch: %d/%d" %  (epoch, args.epochs))
         net.train()
