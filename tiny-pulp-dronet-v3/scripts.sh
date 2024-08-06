@@ -1,27 +1,39 @@
 #!/bin/sh
 # ResBlock with bypass
-python training.py --gpu=0 --block_type=ResBlock --model_name=resblock_1.0    --depth_mult=1.0    --arch=dronet_dory --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=ResBlock --model_name=resblock_0.5    --depth_mult=0.5    --arch=dronet_dory --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=ResBlock --model_name=resblock_0.25   --depth_mult=0.25   --arch=dronet_dory --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=ResBlock --model_name=resblock_0.125  --depth_mult=0.125  --arch=dronet_dory --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
+python training.py --gpu=0 --model_name=resblock_1.0    --block_type=ResBlock   --depth_mult=1.0    --bypass=True
+python training.py --gpu=0 --model_name=resblock_0.5    --block_type=ResBlock   --depth_mult=0.5    --bypass=True
+python training.py --gpu=0 --model_name=resblock_0.25   --block_type=ResBlock   --depth_mult=0.25   --bypass=True
+python training.py --gpu=0 --model_name=resblock_0.125  --block_type=ResBlock   --depth_mult=0.125  --bypass=True
 
-# DW+PW with no bypass
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_noby_0.125   --depth_mult=0.125  --arch=dronet_dory_no_residuals --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_noby_0.25    --depth_mult=0.25   --arch=dronet_dory_no_residuals --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_noby_0.5     --depth_mult=0.5    --arch=dronet_dory_no_residuals --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_noby_1.0     --depth_mult=1.0    --arch=dronet_dory_no_residuals --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_noby_2.0     --depth_mult=2.0    --arch=dronet_dory_no_residuals --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_noby_4.0     --depth_mult=4.0    --arch=dronet_dory_no_residuals --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_noby_8.0     --depth_mult=8.0    --arch=dronet_dory_no_residuals --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
+# ResBlock without bypass
+python training.py --gpu=0 --model_name=resblock_noby_1.0     --block_type=ResBlock   --depth_mult=1.0    --bypass=False
+python training.py --gpu=0 --model_name=resblock_noby_0.5     --block_type=ResBlock   --depth_mult=0.5    --bypass=False
+python training.py --gpu=0 --model_name=resblock_noby_0.25    --block_type=ResBlock   --depth_mult=0.25   --bypass=False
+python training.py --gpu=0 --model_name=resblock_noby_0.125   --block_type=ResBlock   --depth_mult=0.125  --bypass=False
 
-# # DW+PW with with bypass
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_0.125 --depth_mult=0.125  --arch=dronet_dory --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_0.25  --depth_mult=0.25   --arch=dronet_dory --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_0.5   --depth_mult=0.5    --arch=dronet_dory --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_1.0   --depth_mult=1.0    --arch=dronet_dory --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_2.0   --depth_mult=2.0    --arch=dronet_dory --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_4.0   --depth_mult=4.0    --arch=dronet_dory --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
-python training.py --gpu=0 --block_type=Depthwise --model_name=dw_pw_8.0   --depth_mult=8.0    --arch=dronet_dory --data_path=/home/lamberti/work/dataset/Dataset-PULP-Dronet-V3_aug/  --data_path_testing=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
+# DW+PW with with bypass
+python training.py --gpu=0 --model_name=dw_pw_1.0       --block_type=Depthwise   --depth_mult=1.0    --bypass=True
+python training.py --gpu=0 --model_name=dw_pw_0.5       --block_type=Depthwise   --depth_mult=0.5    --bypass=True
+python training.py --gpu=0 --model_name=dw_pw_0.25      --block_type=Depthwise   --depth_mult=0.25   --bypass=True
+python training.py --gpu=0 --model_name=dw_pw_0.125     --block_type=Depthwise   --depth_mult=0.125  --bypass=True
+
+# DW+PW without bypass
+python training.py --gpu=0 --model_name=dw_pw_noby_1.0   --block_type=Depthwise  --depth_mult=1.0    --bypass=False
+python training.py --gpu=0 --model_name=dw_pw_noby_0.5   --block_type=Depthwise  --depth_mult=0.5    --bypass=False
+python training.py --gpu=0 --model_name=dw_pw_noby_0.25  --block_type=Depthwise  --depth_mult=0.25   --bypass=False
+python training.py --gpu=0 --model_name=dw_pw_noby_0.125 --block_type=Depthwise  --depth_mult=0.125  --bypass=False
+
+# IRLB with bypass
+python training.py --gpu=0 --model_name=irlb_1.0       --block_type=IRLB   --depth_mult=1.0    --bypass=True
+python training.py --gpu=0 --model_name=irlb_0.5       --block_type=IRLB   --depth_mult=0.5    --bypass=True
+python training.py --gpu=0 --model_name=irlb_0.25      --block_type=IRLB   --depth_mult=0.25   --bypass=True
+python training.py --gpu=0 --model_name=irlb_0.125     --block_type=IRLB   --depth_mult=0.125  --bypass=True
+
+# IRLB without bypass
+python training.py --gpu=0 --model_name=irlb_noby_1.0   --block_type=IRLB  --depth_mult=1.0    --bypass=False
+python training.py --gpu=0 --model_name=irlb_noby_0.5   --block_type=IRLB  --depth_mult=0.5    --bypass=False
+python training.py --gpu=0 --model_name=irlb_noby_0.25  --block_type=IRLB  --depth_mult=0.25   --bypass=False
+python training.py --gpu=0 --model_name=irlb_noby_0.125 --block_type=IRLB  --depth_mult=0.125  --bypass=False
 
 ## TESTING
-python testing.py --gpu=0 --block_type=ResBlock --model_weights=/home/lamberti/work/tii/pulp-dronet-v3/training/ResBlocks/with_byp/resblock_1.0/resblock_1.0_100.pth   --depth_mult=1.0    --arch=dronet_dory  --data_path=/home/lamberti/work/dataset/temp/Dataset-PULP-Dronet-V3
+python testing.py --gpu=0 --block_type=ResBlock --model_weights./training/ResBlocks/with_byp/resblock_1.0/resblock_1.0_100.pth   --depth_mult=1.0    --bypass=True
