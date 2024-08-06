@@ -468,7 +468,9 @@ def main():
         # early_stopping needs the validation loss to check if it has decresed,
         # and if it has, it will make a checkpoint of the current model
         if args.early_stopping:
-            early_stopping(val_mse*alpha+val_bce*(1.0-beta), net)
+            val_mse = df_valid['MSE'].iloc[-1]
+            val_bce = df_valid['BCE'].iloc[-1]
+            early_stopping(val_mse*alpha + val_bce*(1.0-beta), net)
             if early_stopping.early_stop:
                 print('Early stopping')
                 break
