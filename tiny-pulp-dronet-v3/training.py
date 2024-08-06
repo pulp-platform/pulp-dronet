@@ -35,6 +35,7 @@
 # essentials
 import os
 import sys
+sys.path.append('/home/llamberti/work/opensource/pulp-dronet/tiny-pulp-dronet-v3/nemo-dory/nemo/') # if you want to use your custom installation (git clone) instead of pip version
 import argparse
 import numpy as np
 import shutil
@@ -62,7 +63,6 @@ from utility import custom_mse, custom_accuracy, custom_bce, custom_loss_v3
 from utility import AverageMeter
 from utility import write_log
 #nemo
-sys.path.append('/home/llamberti/work/opensource/pulp-dronet/tiny-pulp-dronet-v3/nemo-dory/nemo/') # if you want to use your custom installation (git clone) instead of pip version
 import nemo
 
 
@@ -289,9 +289,7 @@ def main():
     print("CUDA/CPU device:", device)
     print("pyTorch version:", torch.__version__)
     # device = 'cpu' # force CPU
-
-    print('You are using the', args.arch ,'CNN architecture\n')
-
+    
     # select the CNN model
     print(
         f'You defined PULP-Dronet architecture as follows:\n'
