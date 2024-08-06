@@ -334,7 +334,7 @@ def main():
         else:
             raise RuntimeError('Failed to open checkpoint. provide a checkpoint.pth.tar file')
     net.to(device)
-    # summary(net, input_size=(1,1, 200, 200))
+    summary(net, input_size=(1,1, 200, 200))
 
     # initialize the optimizer for training
     optimizer = optim.Adam(net.parameters(), lr=args.lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=args.lr_decay, amsgrad=False)
