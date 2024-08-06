@@ -333,7 +333,6 @@ def custom_bce(y_true, y_pred, device): # Debunking loss functions
     return output_BCE
 
 
-
 # Labels: steering = 0, collision = 1
 def custom_loss_v3(y_true, y_pred, device, partial_training=None):
 
@@ -370,45 +369,6 @@ def custom_mse_id_nemo(y_true, y_pred, fc_quantum, device): # Mean Squared Error
     return output_MSE
 
 
-# steering type=0
-def custom_mse_id_nemo_v2(y_true, y_pred, t, fc_quantum, device): # Mean Squared Error
-
-    output_MSE = torch.zeros(1, 1, dtype=torch.float32, requires_grad=False)
-
-    if (t==0).sum().item() > 0:
-        target_s = y_true[t==0]
-        input_s  = y_pred[0][t==0]
-        input_s_id =input_s * fc_quantum
-        loss_MSE = nn.MSELoss(size_average=None, reduce=None, reduction='mean')
-        output_MSE = loss_MSE(input_s_id, target_s).to(device)
-        return output_MSE, 1
-    else:
-        return output_MSE, 0
-
-
-# collision type=1
-def custom_accuracy_yawrate_thresholded(y_true, y_pred, device):
-    # Takes in a floating point yaw rate prediction, it transformas it into a
-    # classification problem by applying thresholds:
-    # left=[-1,-0.1], straight=[-0.1,+0.1], right=[+0.1,+1]
-    # then it outputs an accuracy
-    yaw_rate_labels_c = regression_as_classification(
-                                y_true,
-                                low_thresh=-0.1,
-                                high_thresh=0.1,
-                                low_value=-1.0,
-                                high_value=1.0)
-    yaw_rate_pred_c = regression_as_classification(
-                                y_pred,
-                                low_thresh=-0.1,
-                                high_thresh=0.1,
-                                low_value=-1.0,
-                                high_value=1.0)
-
-    # print('float true/predictions:\n',torch.stack([y_true, y_pred], axis=1))
-    # print('int true/predictions:\n',torch.stack([yaw_rate_labels_c, yaw_rate_pred_c], axis=1))
-    acc = (yaw_rate_labels_c==yaw_rate_pred_c).float().mean()
-    return acc
 
 ################################################################################
 # Other Utils
@@ -487,18 +447,11 @@ class EarlyStopping:
         torch.save(model.state_dict(), self.path)
         self.val_loss_min = val_loss
 
+################################################################################
+# Visualization
+################################################################################
 
-# def get_wrong_predictions(labels, outputs, filename, device):
-#     output_regression     = outputs[0]
-#     output_classification = outputs[1]
-#     label_regression     = labels[:,0]
-#     label_classification = labels[:,1]
-#     correct_classification_idx  = (output_classification == label_classification)
-#     wrong_classification_idx    = ~correct_classification_idx
-#     filenames_wrong = labels[wrong_classification_idx]
-#     return
-
-# import cv2
+import cv2
 # Colors (B, G, R)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -588,17 +541,6 @@ def create_cv2_image(img_path, yaw_rate_label, collision_label, yaw_rate_output,
         img = cv2.ellipse(img, center, axes, angle, startAngle, endAngle, LIGHT_GREEN, thickness)
 
         return img
-
-
-def regression_as_classification(input_tensor, low_thresh, high_thresh, low_value, high_value):
-    # if tensor[i]<low_thresh: tensor[i]=low_value
-    # elif tensor[i]>high_thresh: tensor[i]=high_value
-    # else: tensor[i]=0
-    tensor=input_tensor.clone()
-    tensor[tensor>high_thresh]=high_value
-    tensor[tensor<low_thresh]=low_value
-    tensor[torch.logical_and(tensor>low_thresh, tensor<high_thresh)] = 0.0
-    return tensor
 
 ################################################################################
 # V2 Utils
@@ -741,126 +683,17 @@ def custom_loss_v2(y_true, y_pred, t, epoch, args, device):  #prime 10 epoche tr
         return output_MSE+output_BCE
 
 
-################################################################################
-# V3 Legacy
-################################################################################
+# steering type=0
+def custom_mse_id_nemo_v2(y_true, y_pred, t, fc_quantum, device): # Mean Squared Error
 
+    output_MSE = torch.zeros(1, 1, dtype=torch.float32, requires_grad=False)
 
-'''
-def custom_loss_v2_adaptedto_v3(y_true, y_pred, epoch, args, device):
-    output_MSE = torch.zeros(1, 1, dtype=torch.float32, requires_grad=True).to(device)
-    output_BCE = torch.zeros(1, 1, dtype=torch.float32, requires_grad=True).to(device)
-
-    if args.hard_mining_train:
-        global alpha, beta
-        batch_size_training = args.batch_size
-        k_mse = np.round(batch_size_training-(batch_size_training-10)*(np.maximum(0.0,1.0-np.exp(-1.0/30.0*(epoch-30.0)))))
-        k_entropy = np.round(batch_size_training-(batch_size_training-5)*(np.maximum(0.0,1.0-np.exp(-1.0/30.0*(epoch-30.0)))))
-        alpha = 1.0
-        beta = np.maximum(0.0, 1.0-np.exp(-1.0/10.0*(epoch-10)))
-
-    n_samples_mse = args.batch_size
-    n_samples_entropy = args.batch_size
-
-    if n_samples_mse > 0:
-        target_s = y_true[:,0].squeeze()
-        input_s  = y_pred[0]
-        if args.hard_mining_train:
-            k = int(min(k_mse, n_samples_mse)) # k_mse è quello effettivo: prendiamo i top k. calcolo come minimo tra k' (si aggiorna cin modo dinamico) e il minimo delle label tra steering e collision
-            # output_MSE = torch.mul((input_s-target_s),(input_s-target_s)).mean()
-            l_mse = torch.mul((input_s-target_s),(input_s-target_s))
-            output_MSE_value, output_MSE_idx = torch.topk(l_mse, k)
-            output_MSE = output_MSE_value.mean().to(device)
-        else:
-            loss_MSE = nn.MSELoss(size_average=None, reduce=None, reduction='mean')
-            output_MSE = loss_MSE(input_s, target_s).to(device)
-
-    if n_samples_entropy > 0:
-        target_c = y_true[:,1].squeeze()
-        input_c  = y_pred[1]
-        if args.hard_mining_train:
-            k = int(min(k_entropy, n_samples_entropy))
-            # output_BCE = F.binary_cross_entropy(input_c, target_c, reduce=False).mean()
-            l_bce = F.binary_cross_entropy(input_c, target_c, reduce=False)
-            output_BCE_value, output_BCE_idx = torch.topk(l_bce, k)
-            output_BCE = output_BCE_value.mean().to(device)
-        else:
-            loss_BCE = nn.BCELoss(weight=None, size_average=None, reduce=None, reduction='mean')
-            output_BCE = loss_BCE(input_c, target_c).to(device)
-
-    if args.hard_mining_train:
-        return output_MSE*alpha+output_BCE*beta
+    if (t==0).sum().item() > 0:
+        target_s = y_true[t==0]
+        input_s  = y_pred[0][t==0]
+        input_s_id =input_s * fc_quantum
+        loss_MSE = nn.MSELoss(size_average=None, reduce=None, reduction='mean')
+        output_MSE = loss_MSE(input_s_id, target_s).to(device)
+        return output_MSE, 1
     else:
-        return output_MSE+output_BCE
-'''
-
-
-# class DronetDatasetV3_single_acquisition(Dataset):
-#     """Dronet dataset."""
-
-#     def __init__(self, root, transform=None, dirs=None):
-#         """
-#         Args:
-#             root (string): Directory with all the images.
-#             transform (callable, optional): Optional transform to be applied
-#                 on a sample.
-#         """
-#         self.root = root
-#         self.transform = transform
-#         self.filenames = []
-#         self.labels = [[],[]]
-
-#         if dirs == None:
-#             dirs = os.listdir(root)
-
-#         # sorted directory names
-#         for dir in sorted(dirs):
-#             full_dir_path = os.path.join(root, dir)
-#             for sub_root, sub_dirs, files in os.walk(full_dir_path):
-#                 # sorted file names
-#                 for file in sorted(files):
-#                     # print(os.path.join(full_dir_path, file))
-#                     if file.endswith(".jpg")  or file.endswith(".jpeg"):
-#                         self.filenames.append(os.path.join(full_dir_path+"/images", file))
-#                     if file.endswith("yaw_collision.csv"):
-#                         names, yaw_rate, collision = self.read_csv_label(os.path.join(full_dir_path, file))
-#                         self.labels[0].extend(yaw_rate/90)
-#                         self.labels[1].extend(collision)
-#                     if not (file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".csv")):
-#                         print('WARNING: file not loaded', os.path.join(full_dir_path, file))
-#         # check if number of images is matching number of labels:
-#         if not (len(self.filenames) == len(self.labels[0]) == len(self.labels[1])):
-#             raise RuntimeError("Mismatch in the number of images and labels: images %d, labels_yaw %d, labels_collision %d" % (len(self.filenames), len(self.labels[0]), len(self.labels[1])))
-
-#     def __len__(self):
-#         # check if number of images is matching number of labels:
-#         if len(self.filenames) == len(self.labels[0]) == len(self.labels[1]):
-#             return len(self.filenames)
-#         else:
-#             raise RuntimeError("DronetDataset size error: filenames %d, label_yaw %d, label_collision %d", len(self.filenames), len(self.labels[0]), len(self.labels[1]))
-
-#     def __getitem__(self, idx):
-#         if torch.is_tensor(idx):
-#             idx = idx.tolist()
-
-#         with open(self.filenames[idx], 'rb') as f:
-#             _image = Image.open(f)
-#             _image.load()
-#         _label = [self.labels[0][idx], self.labels[1][idx]]  #[yaw_rate, collision=0/1]
-#         _filename = self.filenames[idx]
-
-#         if self.transform:
-#             _image = self.transform(_image)
-#             _label = torch.tensor(_label, dtype=torch.float32)
-
-#         sample = (_image, _label, _filename)
-#         return sample
-
-#     def read_csv_label(self, filename):
-#         try:
-#             filenames = np.loadtxt(filename, usecols=0, delimiter=',', skiprows=1, dtype=np.str)
-#             yaw_rate  = np.loadtxt(filename, usecols=1, delimiter=',', skiprows=1)
-#             collision = np.loadtxt(filename, usecols=2, delimiter=',', skiprows=1)
-#             return filenames, yaw_rate, collision
-#         except OSError as e:
-#             print("No labels found in dir", filename)
+        return output_MSE, 0
