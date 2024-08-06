@@ -114,13 +114,13 @@ def create_parser(cfg):
                         help='Path to the weights file for resuming training (.pth file)',
                         metavar='WEIGHTS_FILE')
     # CNN architecture
-    parser.add_argument('-a', '--arch',
-                        metavar='ARCHITECTURE',
-                        default=cfg.arch,
-                        choices=['dronet_dory', 'dronet_dory_no_residuals'],
-                        help='Select the neural network architecture backbone')
+    parser.add_argument('--bypass',
+                        metavar='BYPASS_BRANCH',
+                        default=cfg.bypass,
+                        type=bool,
+                        help='Select if you want by-pass branches in the neural network architecture')
     parser.add_argument('--block_type',
-                        choices=["ResBlock", "Depthwise", "Inverted"],
+                        choices=["ResBlock", "Depthwise", "IRLB"],
                         default="ResBlock",
                         help='Type of blocks used in the network architecture',
                         metavar='BLOCK_TYPE')
@@ -298,24 +298,22 @@ def main():
     print("pyTorch version:", torch.__version__)
     # device = 'cpu' # force CPU
 
-    # import PULP-DroNet CNN architecture
-    if args.arch == 'dronet_dory':
-        from model.dronet_v2_dory import dronet, ResBlock, Depthwise_Separable
-    elif args.arch == 'dronet_autotiler':
-        from model.dronet_v2_autotiler import dronet
-    elif args.arch == 'dronet_dory_no_residuals':
-        from model.dronet_v2_dory_no_residuals import dronet, ResBlock, Depthwise_Separable
-    else:
-        raise ValueError('Doublecheck the architecture that you are trying to use.\
-                            Select one between dronet_dory and dronet_autotiler')
     print('You are using the', args.arch ,'CNN architecture\n')
 
     # select the CNN model
-    print('You are using a depth multiplier of', args.depth_mult, 'for PULP-Dronet')
+    print(
+        f'You defined PULP-Dronet architecture as follows:\n'
+        f'Depth multiplier: {args.depth_mult}\n'
+        f'Block type: {args.block_type}\n'
+        f'Bypass: {args.bypass}'ù
+    )
+
     if args.block_type == "ResBlock":
-        net = dronet(depth_mult=args.depth_mult, block_class=ResBlock)
+        net = dronet(depth_mult=args.depth_mult, block_class=ResBlock, bypass=args.bypass)
     elif args.block_type == "Depthwise":
-        net = dronet(depth_mult=args.depth_mult, block_class=Depthwise_Separable)
+        net = dronet(depth_mult=args.depth_mult, block_class=Depthwise_Separable, bypass=args.bypass)
+    elif args.block_type == "IRLB":
+        net = dronet(depth_mult=args.depth_mult, block_class=Inverted_Linear_Bottleneck, bypass=args.bypass)
 
     # initialize weights and biases for training
     if not args.resume_training:
