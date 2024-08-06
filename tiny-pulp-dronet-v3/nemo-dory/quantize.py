@@ -1,6 +1,6 @@
 
 #-----------------------------------------------------------------------------#
-# Copyright(C) 2021-2022 ETH Zurich, Switzerland, University of Bologna, Italy#
+# Copyright(C) 2024 University of Bologna, Italy, ETH Zurich, Switzerland.    #
 # All rights reserved.                                                        #
 #                                                                             #
 # Licensed under the Apache License, Version 2.0 (the "License");             #
@@ -16,18 +16,19 @@
 # See the License for the specific language governing permissions and         #
 # limitations under the License.                                              #
 #                                                                             #
-# File:    quantize.py                                                         #
-# Author:  Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
+# File:    quantize.py                                                        #
+# Authors:                                                                    #
+#          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
+#          Francesco Conti <f.conti@unibo.it>                                 #
 #          Daniele Palossi  <dpalossi@iis.ee.ethz.ch>                         #
-#          Vlad Niculescu   <vladn@iis.ee.ethz.ch>                            #
-# Date:    3.05.2021                                                         #
+# Date:    01.03.2024                                                         #
 #-----------------------------------------------------------------------------#
 
 # Description:
 # Script of NEMO quantization tool for automatic export of a pytorch-defined NN
 # architecture in Dory format
-# Input: a pytorch network definition ("--arch=dronet_dory") and a set of
-#        pre-trained weights (".pth" file given through '--model_weights').
+# Input: a pytorch network definition (--bypass, --depth_mul, --block_type ) and a set of
+#        pre-trained weights (".pth" file given through '--model_weights_path').
 # Output: - ONNX graph representation file (of the 8-bit quantized network)
 #                (Note: this file is comprehensive of NN weights)
 #         - Golden activations for all the layers (used by DORY only for checksums)

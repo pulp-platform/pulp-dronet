@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------#
-# Copyright(C) 2021-2022 ETH Zurich, Switzerland, University of Bologna, Italy#
+# Copyright(C) 2024 University of Bologna, Italy, ETH Zurich, Switzerland.    #
 # All rights reserved.                                                        #
 #                                                                             #
 # Licensed under the Apache License, Version 2.0 (the "License");             #
@@ -16,18 +16,19 @@
 # limitations under the License.                                              #
 #                                                                             #
 # File:    testing.py                                                         #
-# Author:  Daniele Palossi  <dpalossi@iis.ee.ethz.ch>                         #
+# Authors:                                                                    #
 #          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
-#          Vlad Niculescu   <vladn@iis.ee.ethz.ch>                            #
-# Date:    18.02.2021                                                         #
+#          Daniele Palossi  <dpalossi@iis.ee.ethz.ch>                         #
+# Date:    01.03.2024                                                         #
 #-----------------------------------------------------------------------------#
 
-# Description:
+# Script Description:
 # This script is used to check the PULP-DroNet CNN performance (Accuracy and RMSE)
 # with a set of pre-trained weights.
-# You must specify the CNN architecture (dronet_dory or dronet_autotiler) and
-# the path to the pre-trained weights that you want to load ('--model_weights').
+# You must specify the CNN architecture and
+# the path to the pre-trained weights that you want to load ('--model_weights_path').
 # The output will be the testing MSE and Accuracy of such network.
+# this script can also be used to generate a video with the comparison between the ground truth and the predicted values.
 
 # essentials
 import os

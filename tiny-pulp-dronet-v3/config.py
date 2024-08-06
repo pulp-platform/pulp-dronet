@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------#
-# Copyright(C) 2021-2022 ETH Zurich, Switzerland, University of Bologna, Italy#
+# Copyright(C) 2024 University of Bologna, Italy, ETH Zurich, Switzerland.    #
 # All rights reserved.                                                        #
 #                                                                             #
 # Licensed under the Apache License, Version 2.0 (the "License");             #
@@ -16,10 +16,10 @@
 # limitations under the License.                                              #
 #                                                                             #
 # File:    config.py                                                          #
-# Author:  Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
+# Authors:                                                                    #
+#          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
 #          Daniele Palossi  <dpalossi@iis.ee.ethz.ch>                         #
-#          Vlad Niculescu   <vladn@iis.ee.ethz.ch>                            #
-# Date:    18.02.2021                                                         #
+# Date:    01.03.2024                                                         #
 #-----------------------------------------------------------------------------#
 
 # This file gathers all the default values for the following scripts:

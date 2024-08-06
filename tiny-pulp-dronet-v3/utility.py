@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------#
-# Copyright(C) 2021-2022 ETH Zurich, Switzerland, University of Bologna, Italy#
+# Copyright(C) 2024 University of Bologna, Italy, ETH Zurich, Switzerland.    #
 # All rights reserved.                                                        #
 #                                                                             #
 # Licensed under the Apache License, Version 2.0 (the "License");             #
@@ -15,11 +15,11 @@
 # See the License for the specific language governing permissions and         #
 # limitations under the License.                                              #
 #                                                                             #
-# File:    utility .py                                                        #
-# Author:  Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
+# File:    testing.py                                                         #
+# Authors:                                                                    #
+#          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
 #          Daniele Palossi  <dpalossi@iis.ee.ethz.ch>                         #
-#          Vlad Niculescu   <vladn@iis.ee.ethz.ch>                            #
-# Date:    01.06.2021                                                         #
+# Date:    01.03.2024                                                         #
 #-----------------------------------------------------------------------------#
 
 # essentials

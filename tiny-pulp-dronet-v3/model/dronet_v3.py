@@ -1,23 +1,27 @@
-# Copyright (C) 2020 ETH Zurich, Switzerland
-# All rights reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# See LICENSE.apache.md in the top directory for details.
-# You may obtain a copy of the License at
-
-    # http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# File:    dronet_v2.py
-# Original author:  Daniele Palossi <dpalossi@iis.ee.ethz.ch>
-# Author:           Lorenzo Lamberti <lorenzo.lamberti@unibo.it>
-# Date:    5.1.2021
+#-----------------------------------------------------------------------------#
+# Copyright(C) 2024 University of Bologna, Italy, ETH Zurich, Switzerland.    #
+# All rights reserved.                                                        #
+#                                                                             #
+# Licensed under the Apache License, Version 2.0 (the "License");             #
+# you may not use this file except in compliance with the License.            #
+# See LICENSE.apache.md in the top directory for details.                     #
+# You may obtain a copy of the License at                                     #
+#                                                                             #
+#   http://www.apache.org/licenses/LICENSE-2.0                                #
+#                                                                             #
+# Unless required by applicable law or agreed to in writing, software         #
+# distributed under the License is distributed on an "AS IS" BASIS,           #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    #
+# See the License for the specific language governing permissions and         #
+# limitations under the License.                                              #
+#                                                                             #
+# File:    dronet_v3.py                                                       #
+# Authors:                                                                    #
+#          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
+#          Lorenzo Bellone  <lorenzo.bellone@tii.ae>                          #
+#          Daniele Palossi  <dpalossi@iis.ee.ethz.ch>                         #
+# Date:    01.03.2024                                                         #
+#-----------------------------------------------------------------------------#
 
 import torch.nn as nn
 import nemo

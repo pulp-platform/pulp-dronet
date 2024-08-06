@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------#
-# Copyright(C) 2021-2022 ETH Zurich, Switzerland, University of Bologna, Italy#
+# Copyright(C) 2024 University of Bologna, Italy, ETH Zurich, Switzerland.    #
 # All rights reserved.                                                        #
 #                                                                             #
 # Licensed under the Apache License, Version 2.0 (the "License");             #
@@ -16,30 +16,21 @@
 # limitations under the License.                                              #
 #                                                                             #
 # File:    training.py                                                        #
-# Author:  Daniele Palossi  <dpalossi@iis.ee.ethz.ch>                         #
+# Authors:                                                                    #
 #          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
-#          Vlad Niculescu   <vladn@iis.ee.ethz.ch>                            #
-# Date:    18.02.2021                                                         #
+#          Daniele Palossi  <dpalossi@iis.ee.ethz.ch>                         #
+# Date:    01.03.2024                                                         #
 #-----------------------------------------------------------------------------#
-#
-# Description:
+
+# Script Description:
 # This script is used to train the weights of the PULP-DroNet CNN.
-# You must specify the CNN architecture (dronet_dory or dronet_autotiler) and
-# which dataset would you like to use:
-#   - original: this dataset is composed of images from Udacity and Zurich Bicycle
-#               datasets. The images have been preprocessed to a 200x200 size
-#               and grayscale format to mimic the HIMAX camera format
-#   - original_and_himax: this dataset adds a small set of images acquired with
-#                         the HIMAX camera (on-board of the nano drone).
-#                         It is used to help the network generalizing better.
-# '--early_stopping': When deactivated, this script will save the trained weights
+# You must specify the CNN architecture (--bypass, --depth_mul, --block_type ).
+# Additional utils:
+#       --early_stopping: When deactivated, this script will save the trained weights
 #                     (".pth" files) for all the epochs (i.e., for 100 epochs the
 #                     output will be a set of 100 weights).
 #                     When activated, the script will save just one set of weights
 #                     (the last one, which is not necessarily the best performing one).
-
-# TODO (minor)
-# [] alpha and beta variables for hard mining are global. should be local
 
 # essentials
 import os
