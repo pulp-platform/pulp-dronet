@@ -84,35 +84,61 @@ from utility import (
 
 def create_parser(cfg):
     parser = argparse.ArgumentParser(description='PyTorch PULP-DroNet quantization with NEMO tool (pulp-platform)')
-    parser.add_argument('-d', '--data_path', help='path to dataset',
-                        default=cfg.data_path)
-    parser.add_argument('--data_path_testing', help='path to dataset')
-    parser.add_argument('-m', '--model_weights', default=cfg.model_weights,
-                        help='path to the weights of the testing network (.pth file)')
-    parser.add_argument('-a', '--arch', metavar='ARCH', default='dronet_dory',
-                        choices=['dronet_dory', 'dronet_dory_no_residuals'],
-                        help='select the NN architecture backbone. '
-                        'Note that dory_autotiler should be quantized with the'
-                        'corresponding Greenwaves Technologies tool called NNTools')
-    parser.add_argument('--depth_mult', default=cfg.depth_mult, type=float,
-                        help='depth multiplier that scales number of channels')                        
-    parser.add_argument('--export_path', default=cfg.nemo_export_path,
-                        help='folder where the nemo output (onnx and layer activations)'
-                        'will be saved')
-    parser.add_argument('--onnx_name', default=cfg.nemo_onnx_name,
+    # Path to dataset
+    parser.add_argument('-d', '--data_path',
+                        help='Path to the training dataset',
+                        default=cfg.data_path,
+                        metavar='DIRECTORY')
+    parser.add_argument('--data_path_testing',
+                        help='Path to the testing dataset',
+                        metavar='DIRECTORY')
+    # Model weights
+    parser.add_argument('-w', '--model_weights_path',
+                        default=cfg.model_weights_path,
+                        help='Path to the weights file for resuming training (.pth file)',
+                        metavar='WEIGHTS_FILE')
+    # CNN architecture
+    parser.add_argument('--bypass',
+                        metavar='BYPASS_BRANCH',
+                        default=cfg.bypass,
+                        type=bool,
+                        help='Select if you want by-pass branches in the neural network architecture')
+    parser.add_argument('--block_type',
+                        choices=["ResBlock", "Depthwise", "IRLB"],
+                        default="ResBlock",
+                        help='Type of blocks used in the network architecture',
+                        metavar='BLOCK_TYPE')
+    parser.add_argument('--depth_mult',
+                        default=cfg.depth_mult,
+                        type=float,
+                        help='Depth multiplier that scales the number of channels',
+                        metavar='FLOAT')
+    # Output
+    parser.add_argument('--save_quantum',
+                        action='store_false',
+                        help='append the value of the CNN quantum to the onnx file name')
+    parser.add_argument('--export_path',
+                        default=cfg.nemo_export_path,
+                        help='folder where the nemo output (onnx and layer activations) will be saved')
+    parser.add_argument('--onnx_name',
+                        default=cfg.nemo_onnx_name,
                         help='the name for the output onnx graph')
-    parser.add_argument('--gpu', help='which gpu to use. Just one at'
-                        'the time is supported', default=cfg.gpu)
-    parser.add_argument('-j', '--workers', default=1, type=int, metavar='N',
-                        help='number of data loading workers (default: 4)')
+    # CPU/GPU params
+    parser.add_argument('--gpu',
+                        help='Which GPU to use (only one GPU supported)',
+                        default=cfg.gpu,
+                        metavar='GPU_ID')
+    parser.add_argument('-j', '--workers',
+                        default=cfg.workers,
+                        type=int,
+                        metavar='N',
+                        help='Number of data loading workers (default: 4)')
+    # utilities
     parser.add_argument('-b', '--batch_size', default=cfg.testing_batch_size, type=int,
                         metavar='N',
                         help='mini-batch size (default: 32), this is the total '
                             'batch size of all GPUs')
-    parser.add_argument('--block_type', action="store", choices=["ResBlock", "Depthwise", "Inverted"], default="ResBlock")
-    parser.add_argument('--save_quantum', action='store_false', help='append the value of the CNN quantum to the onnx file name')
     parser.add_argument('--test_only_one', action='store_true', help='only one image of the testing set')
-
     return parser
 
 def clean_directory(export_path):
@@ -287,7 +313,8 @@ if __name__ == '__main__':
     from config import cfg # load configuration with all default values
     parser = create_parser(cfg)
     args = parser.parse_args()
-    model_weights_path=args.model_weights
+
+    model_weights_path=args.model_weights_path
     print("Model name:", model_weights_path)
 
     # select device
