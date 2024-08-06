@@ -58,10 +58,15 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchinfo import summary
-# PULP-dronet
+# import PULP-DroNet CNN architecture
+from model.dronet_v2_dory import ResBlock, Depthwise_Separable, Inverted_Linear_Bottleneck
+from model.dronet_v2_dory import dronet
+import model_creation_helper
+# PULP-dronet dataset
 from classes import Dataset
-from utility import EarlyStopping, init_weights
 from utility import DronetDatasetV3
+# PULP-dronet utilities
+from utility import EarlyStopping, init_weights
 from utility import custom_mse, custom_accuracy, custom_bce, custom_loss_v3
 from utility import AverageMeter
 from utility import write_log
