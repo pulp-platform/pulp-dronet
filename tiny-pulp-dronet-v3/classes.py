@@ -55,20 +55,6 @@ class Dataset:
             # print(f"--- acquisition '{acquisition_path}' initialized successfully")
         print("Dataset successfully initialized")
 
-        ## Michal's solution
-        # acquisition_names = os.listdir(join(self.path))
-        # for name in acquisition_names:
-        #     print(f"--- initializing acquisition '{name}'")
-        #     try:
-        #         self.acquisitions.append(
-        #             Acquisition(join(self.path, name))
-        #         )
-        #     except Acquisition.InitializationError:
-        #         print(f"acquisition '{name}' initialization error, skipping")
-        #         continue
-        #     print(f"--- acquisition '{name}' initialized successfully")
-        # print("Dataset successfully initialized")
-
     def create_dataframe(self):
         """ This method allows you to create a dataframe with all the
             characteristics of the acquisitions stored in a table. This will
