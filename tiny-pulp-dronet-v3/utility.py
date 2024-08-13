@@ -532,6 +532,26 @@ def create_cv2_image(img_path, yaw_rate_label, collision_label, yaw_rate_output,
         return img
 
 ################################################################################
+# Argument Parsing
+################################################################################
+
+import argparse
+def str2bool(value):
+    """
+    Convert a string to a boolean.
+    Accepts 'yes', 'true', 't', 'y', '1' as True, and 'no', 'false', 'f', 'n', '0' as False.
+    """
+    if isinstance(value, bool):
+        return value
+    if value.lower() in {'yes', 'true', 't', 'y', '1'}:
+        return True
+    elif value.lower() in {'no', 'false', 'f', 'n', '0'}:
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
+
+################################################################################
 # V2 Utils
 ################################################################################
 

@@ -36,6 +36,7 @@
 import os
 import sys
 import argparse
+from utility import str2bool # custom function to convert string to boolean in argparse
 import numpy as np
 import shutil
 from os.path import join
@@ -104,7 +105,7 @@ def create_parser(cfg):
     parser.add_argument('--bypass',
                         metavar='BYPASS_BRANCH',
                         default=cfg.bypass,
-                        type=bool,
+                        type=str2bool,
                         help='Select if you want by-pass branches in the neural network architecture')
     parser.add_argument('--block_type',
                         choices=["ResBlock", "Depthwise", "IRLB"],
@@ -141,7 +142,7 @@ def create_parser(cfg):
     # Training utilities
     parser.add_argument('--resume_training',
                         default=cfg.resume_training,
-                        type=bool,
+                        type=str2bool,
                         help='Resume training from a checkpoint',
                         metavar='RESUME')
     parser.add_argument('--hard_mining_train',
@@ -151,7 +152,7 @@ def create_parser(cfg):
                         metavar='HARD_MINING')
     parser.add_argument('--early_stopping',
                         default=cfg.early_stopping,
-                        type=bool,
+                        type=str2bool,
                         help='Enable early stopping during training, with patience and delta parameters',
                         metavar='EARLY_STOP')
     parser.add_argument('--patience',
