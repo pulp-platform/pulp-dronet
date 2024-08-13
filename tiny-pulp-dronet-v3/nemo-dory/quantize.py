@@ -324,7 +324,7 @@ def main():
         f'You defined PULP-Dronet architecture as follows:\n'
         f'Depth multiplier: {args.depth_mult}\n'
         f'Block type: {args.block_type}\n'
-        f'Bypass: {args.bypass}'ù
+        f'Bypass: {args.bypass}'
     )
 
     if args.block_type == "ResBlock":
