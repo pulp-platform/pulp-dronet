@@ -55,28 +55,33 @@ import os
 from os.path import join
 import numpy as np
 import argparse
+# Add the parent directory to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))) # Now you can import the module from the parent directory
+from utility import str2bool # custom function to convert string to boolean in argparse
 from tqdm import tqdm
-#torch
-import torch; print('\nPyTorch version in use:', torch.__version__, '\ncuda avail: ', torch.cuda.is_available())
-from torchvision import transforms
-#nemo
-sys.path.append('/home/lamberti/work/nemo') # if you want to use your custom installation (git clone) instead of pip version
-import nemo
 from copy import deepcopy
 from collections import OrderedDict
-from dataset_browser.models import Dataset
+#torch
+import torch
+from torchvision import transforms
+#nemo
+sys.path.append('./nemo-dory/nemo/')
+try:
+    import nemo
+    print("nemo imported successfully")
+except ModuleNotFoundError:
+    print("Failed to import nemo")
+    print(sys.path)
 # import PULP-DroNet CNN architecture
 from model.dronet_v3 import ResBlock, Depthwise_Separable, Inverted_Linear_Bottleneck
 from model.dronet_v3 import dronet
 from utility import load_weights_into_network
-# PULP-dronet
-from utility import (
-    DronetDatasetV3,
-    custom_mse,
-    custom_accuracy,
-    custom_mse_id_nemo,
-    get_fc_quantum,
-)
+# PULP-dronet dataset
+from classes import Dataset
+from utility import DronetDatasetV3
+# PULP-dronet utilities
+from utility import custom_mse, custom_accuracy, custom_mse_id_nemo, get_fc_quantum
+
 
 def create_parser(cfg):
     parser = argparse.ArgumentParser(description='PyTorch PULP-DroNet quantization with NEMO tool (pulp-platform)')
