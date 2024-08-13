@@ -370,61 +370,124 @@ def main():
     )
 
     ############################################################################
-    # get activation layers names
+    # Get Activation Layer Names
     ############################################################################
-    # By defining the union of Conv-BN-ReLU, this function extracts the activations
-    # (by meaning of output) of each layer so defined.
 
-    names = []
-    search_classes=['ReLU6', 'ReLU', 'PACT_IntegerAdd', 'PACT_Act', 'MaxPool2d', 'Linear'] # we need just activations, so Relus, pooling, linears, and adds
-    print('The following layers do not belong to search_classes and they will be will be ignored')
-    for key, class_name in net.named_modules():
-        class_name = str(class_name.__class__).split(".")[-1].split("'")[0]
-        if class_name in search_classes:
-            names.append(key)
+    # Define the classes of layers for which activations should be extracted
+    activation_target_classes = ['ReLU6', 'ReLU', 'PACT_IntegerAdd', 'PACT_Act', 'MaxPool2d', 'Linear']
+
+    # Lists to store the names of layers that will be processed or ignored
+    layers_to_extract = []
+    layers_to_ignore = []
+
+    # Iterate through all the layers in the network and categorize them
+    for layer_name, layer_module in net.named_modules():
+        layer_class_name = layer_module.__class__.__name__
+        if layer_class_name in activation_target_classes:
+            layers_to_extract.append(layer_name)
         else:
-            print(class_name)
+            layers_to_ignore.append(layer_name)
+
+    # Print the layers that will have their activations extracted
+    print(f"Selected layers for activation extraction ({len(layers_to_extract)}):")
+    for name in layers_to_extract:
+        print(f"  - {name}")
+
+    # Print the layers that will be ignored
+    print(f"\nIgnored layers (not part of target classes) ({len(layers_to_ignore)}):")
+    for name in layers_to_ignore:
+        print(f"  - {name}")
+
 
     ############################################################################
-    # Export ONNX and Activations
+    # Export ONNX Model and Extract Activations
     ############################################################################
 
-    # define onnx and activations save path
-    export_path = args.export_path # for both onnx and activations
-    export_onnx_path = join(export_path,args.onnx_name)
-    # If not existing already, create a new folder for all the NEMO output (ONNX + activations)
+    # Set up the directory for exporting the ONNX model and activations
+    export_path = args.export_path  # Directory to save both the ONNX model and activation files
+    onnx_export_path = os.path.join(export_path, args.onnx_name)
+
+    # Ensure the export directory exists; create it if it does not
     os.makedirs(export_path, exist_ok=True)
 
-    # remove old NEMO's activations
+    # Clean up any existing activation files in the export directory
     clean_directory(export_path)
 
-    # export graph
-    nemo.utils.export_onnx(export_onnx_path, net_q, net_q, dummy_input_net.shape[1:])
-    print('\nExport of ONNX graph was successful\n.')
+    # Export the quantized network model to ONNX format
+    nemo.utils.export_onnx(onnx_export_path, net_q, net_q, dummy_input_net.shape[1:])
+    print('\nONNX model exported successfully.\n')
 
-    # Extract activations buffers
-    buf_in, buf_out , _ = nemo.utils.get_intermediate_activations(net_q, test_on_one_image, net_q, test_dataset, device, id_stage = True)
+    # Extract intermediate activations from the network
+    activation_buffers_in, activation_buffers_out, _ = nemo.utils.get_intermediate_activations(
+        net_q, test_on_one_image, net_q, test_dataset, device, id_stage=True
+    )
 
-    # Save the input buffer
-    t = buf_in['first_conv'][0][-1].cpu().detach().numpy()
-    np.savetxt(join(export_path,'input.txt'), t.flatten(), '%.3f', newline=',\\\n', header = 'input (shape %s)' % str(list(t.shape)))
+    # Save the input activations from the first layer to a text file
+    first_layer_input_activations = activation_buffers_in['first_conv'][0][-1].cpu().detach().numpy()
+    np.savetxt(
+        os.path.join(export_path, 'input_activations.txt'),
+        first_layer_input_activations.flatten(),
+        fmt='%.3f',
+        newline=',\\\n',
+        header='Input Activations (shape %s)' % str(list(first_layer_input_activations.shape))
+    )
 
-    # Save the output buffers
-    for l in range(len(names)):
-        t = np.moveaxis(buf_out[names[l]][-1].cpu().detach().numpy(), 0, -1)
-        if t.max()>255: print('Warning: activation of layer %d is >255, this will result in incorrect checksums in DORY. This is probably due to an incorrect bitwidth problem (>8bits). NOTE: This is not a problem if the overflow happens in the last layer (Fully connected)!' %(l))
-        np.savetxt(join(export_path,'out_layer%d.txt') % l, t.flatten(), '%.3f', newline=',\\\n', header = names[l] + ' (shape %s)' % str(list(t.shape)))
+    # Save the output activations of each selected layer to separate text files
+    for idx, layer_name in enumerate(layers_to_extract):
+        layer_output_activations = np.moveaxis(
+            activation_buffers_out[layer_name][-1].cpu().detach().numpy(),
+            0, -1
+        )
 
-    print('\nExport of golden activations was successful \n')
+        # Check for any overflow in activation values (above 255) and warn if necessary
+        if layer_output_activations.max() > 255:
+            print(
+                f'Warning in layer {idx} ({layer_name}): Activation values exceed 255. '
+                'This may indicate a bitwidth issue (>8 bits) and could lead to incorrect checksums in DORY. '
+                'Note: Overflow in the last layer (fully connected) is typically not a problem!'
+            )
 
-    network_output_quantum = get_fc_quantum(args, net_q) # This also takes into account ONNX approximation
-    print('network_output_quantum (after ONNX rounding):', network_output_quantum)
+        # Save the activations to a text file
+        np.savetxt(
+            os.path.join(export_path, f'layer_{idx}_activations.txt'),
+            layer_output_activations.flatten(),
+            fmt='%.3f',
+            newline=',\\\n',
+            header=f'{layer_name} Activations (shape {list(layer_output_activations.shape)})'
+        )
 
+    print('\nActivation extraction and export completed successfully.\n')
+
+    # Calculate the network output quantum, considering ONNX rounding
+    network_output_quantum = get_fc_quantum(args, net_q)
+    print('Network output quantum (after ONNX rounding):', network_output_quantum.item())
+
+    # Save the quantum value to a file if specified
     if args.save_quantum:
-        with open(join(export_path,'quantum='+str("{:.4f}".format(network_output_quantum.item()))) , 'w') as f:
-            f.write('this is the nemo''s quantum')
+        quantum_file_path = os.path.join(export_path, f'quantum={network_output_quantum.item():.6f}')
+        with open(quantum_file_path, 'w') as quantum_file:
+            quantum_file.write("This is the NEMO's quantum")
 
-    print('\nEnd.')
+    ############################################################################
+    # Export Network Characteristics to info.txt
+    ############################################################################
+
+    info_file_path = os.path.join(export_path, 'info.txt')
+    with open(info_file_path, 'w') as info_file:
+        info_file.write("Network Information\n")
+        info_file.write("===================\n")
+        info_file.write(f"Model name: {model_weights_path}\n")
+        info_file.write(f"Depth multiplier: {args.depth_mult}\n")
+        info_file.write(f"Block type: {args.block_type}\n")
+        info_file.write(f"Bypass: {args.bypass}\n")
+        info_file.write(f"Network output quantum: {network_output_quantum.item()}\n")
+        info_file.write(f"PyTorch version: {torch.__version__}\n")
+        info_file.write(f"Export path: {export_path}\n")
+        info_file.write(f"ONNX file path: {onnx_export_path}\n")
+        info_file.write(f"Testing dataset path: {args.data_path_testing}\n")
+    print(f'\nNetwork information saved to {info_file_path}\n')
+
+    print('\nEnd.\n')
 
 if __name__ == '__main__':
     main()
