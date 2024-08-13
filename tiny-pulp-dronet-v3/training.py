@@ -286,7 +286,7 @@ def main():
     print("CUDA/CPU device:", device)
     print("pyTorch version:", torch.__version__)
     # device = 'cpu' # force CPU
-    
+
     # select the CNN model
     print(
         f'You defined PULP-Dronet architecture as follows:\n'
@@ -302,7 +302,11 @@ def main():
     elif args.block_type == "IRLB":
         net = dronet(depth_mult=args.depth_mult, block_class=Inverted_Linear_Bottleneck, bypass=args.bypass)
 
-    net = load_weights_into_network(args.model_weights_path, net, args.resume_training, device)
+
+    if not args.resume_training:
+        net.apply(init_weights)
+    else: # load previous weights # TO BE TESTED
+        net = load_weights_into_network(args.model_weights_path, net, device)
 
     net.to(device)
     summary(net, input_size=(1, 1, 200, 200))
