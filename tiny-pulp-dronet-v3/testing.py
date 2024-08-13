@@ -34,6 +34,7 @@
 import os
 import sys
 import argparse
+from utility import str2bool # custom function to convert string to boolean in argparse
 import numpy as np
 from os.path import join
 from tqdm import tqdm
@@ -95,7 +96,7 @@ def create_parser(cfg):
     parser.add_argument('--bypass',
                         metavar='BYPASS_BRANCH',
                         default=cfg.bypass,
-                        type=bool,
+                        type=str2bool,
                         help='Select if you want by-pass branches in the neural network architecture')
     parser.add_argument('--block_type',
                         choices=["ResBlock", "Depthwise", "IRLB"],
