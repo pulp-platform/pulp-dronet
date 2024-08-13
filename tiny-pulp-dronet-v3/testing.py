@@ -115,7 +115,7 @@ def create_parser(cfg):
                             'batch size of all GPUs')
     # video
     parser.add_argument('--video', action='store_true')
-    parser.add_argument('--video_path', default='./output_images/', type=str)
+    parser.add_argument('--video_path', default='./output_video/', type=str)
     # additional options
     parser.add_argument('--remove_yaw_rate_zero', action='store_true')
 
@@ -180,7 +180,7 @@ def list_filenames_labels_outputs(model, testing_loader, device):
     return filenames_list,labels_list, outputs_list
 
 RED = (0, 0, 255)
-def export_comparison_groundtruth_output(filenames_list, labels_list, outputs_list, export_images=False, export_video=False,  video_name = 'video', output_directory='./output_images/'):
+def export_comparison_groundtruth_output(filenames_list, labels_list, outputs_list, export_images=False, export_video=False,  video_name = 'video', output_directory='./output_video/'):
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
 
@@ -237,7 +237,7 @@ def export_comparison_groundtruth_output(filenames_list, labels_list, outputs_li
         video_out.release()
         print('video saved!')
 
-def plot_outputs(labels_list, outputs_list, depth_mult):
+def plot_outputs(labels_list, outputs_list, depth_mult, output_directory):
     ground_yaw = [label[0] for label in labels_list]
     pred_yaw = [label[0] for label in outputs_list]
     ground_coll = [label[1] for label in labels_list]
@@ -249,7 +249,7 @@ def plot_outputs(labels_list, outputs_list, depth_mult):
     plt.xlabel("Step")
     plt.ylabel("Prob. of Collision")
     plt.grid()
-    plt.savefig("output_images/pulp_dronet_v3_ResBlock_coll" + str(depth_mult) + ".png")
+    plt.savefig(join(output_directory, "pulp_dronet_v3_coll_" + str(depth_mult) + ".png"))
 
 
     plt.figure(figsize=(15, 7))
@@ -260,7 +260,7 @@ def plot_outputs(labels_list, outputs_list, depth_mult):
     plt.ylabel("Yaw Rate")
     plt.legend()
     plt.grid()
-    plt.savefig("output_images/pulp_dronet_v3_ResBlok_yaw" + str(depth_mult) + ".png")
+    plt.savefig(join(output_directory, "pulp_dronet_v3_yaw_" + str(depth_mult) + ".png"))
 
 
 def main():
