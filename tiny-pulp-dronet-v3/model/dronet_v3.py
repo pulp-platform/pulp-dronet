@@ -110,11 +110,12 @@ class Depthwise_Separable(nn.Module):
         self.relu4 = nn.ReLU6(inplace=False)
 
         # Bypass connection
-        self.bypass_conv= nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
-                                    kernel_size=1, stride=stride, padding=0, groups=1, bias=False)
-        self.bypass_bn = nn.BatchNorm2d(num_features=out_channels)
-        self.relu_bypass = nn.ReLU6(inplace=False)
-        self.add = nemo.quant.pact.PACT_IntegerAdd()
+        if self.bypass:
+            self.bypass_conv= nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
+                                        kernel_size=1, stride=stride, padding=0, groups=1, bias=False)
+            self.bypass_bn = nn.BatchNorm2d(num_features=out_channels)
+            self.relu_bypass = nn.ReLU6(inplace=False)
+            self.add = nemo.quant.pact.PACT_IntegerAdd()
 
     def forward(self, input):
         identity = input
