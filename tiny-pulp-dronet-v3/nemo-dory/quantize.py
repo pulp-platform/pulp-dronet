@@ -469,10 +469,10 @@ def main():
             quantum_file.write("This is the NEMO's quantum")
 
     ############################################################################
-    # Export Network Characteristics to info.txt
+    # Export Network Characteristics to info file
     ############################################################################
 
-    info_file_path = os.path.join(export_path, 'info.txt')
+    info_file_path = os.path.join(export_path, 'info')
     with open(info_file_path, 'w') as info_file:
         info_file.write("Network Information\n")
         info_file.write("===================\n")
