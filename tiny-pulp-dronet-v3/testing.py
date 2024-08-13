@@ -57,16 +57,7 @@ from utility import AverageMeter
 import matplotlib.pyplot as plt
 # opencv
 import cv2
-#nemo
-sys.path.append('/home/lamberti/work/nemo') # if you want to use your custom installation (git clone) instead of pip version
-import nemo
-
-# change working directory to the folder of the project
-working_dir = os.path.dirname(os.path.realpath(__file__))
-os.chdir(working_dir)
-print('\nworking directory:', working_dir, "\n")
-
-
+#argparse
 import argparse
 
 def create_parser(cfg):
