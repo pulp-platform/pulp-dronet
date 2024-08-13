@@ -147,7 +147,7 @@ def create_parser(cfg):
                         metavar='RESUME')
     parser.add_argument('--hard_mining_train',
                         default=cfg.hard_mining_train,
-                        type=bool,
+                        type=str2bool,
                         help='Enable training with hard mining',
                         metavar='HARD_MINING')
     parser.add_argument('--early_stopping',
