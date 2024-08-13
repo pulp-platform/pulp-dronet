@@ -62,8 +62,6 @@ from utility import EarlyStopping, init_weights
 from utility import custom_mse, custom_accuracy, custom_bce, custom_loss_v3
 from utility import AverageMeter
 from utility import write_log
-# argparse
-import argparse
 
 def create_parser(cfg):
     """
