@@ -86,10 +86,10 @@ from utility import custom_mse, custom_accuracy, custom_mse_id_nemo, get_fc_quan
 def create_parser(cfg):
     parser = argparse.ArgumentParser(description='PyTorch PULP-DroNet quantization with NEMO tool (pulp-platform)')
     # Path to dataset
-    parser.add_argument('-d', '--data_path',
-                        help='Path to the training dataset',
-                        default=cfg.data_path,
-                        metavar='DIRECTORY')
+    # parser.add_argument('-d', '--data_path',
+    #                     help='Path to the training dataset',
+    #                     default=cfg.data_path,
+    #                     metavar='DIRECTORY')
     parser.add_argument('--data_path_testing',
                         help='Path to the testing dataset',
                         metavar='DIRECTORY')
@@ -346,9 +346,7 @@ def main():
 
     ## Create dataloaders for PULP-DroNet Dataset
     transformations = transforms.Compose([transforms.CenterCrop(200), transforms.ToTensor()])
-    if not args.data_path_testing:
-        args.data_path_testing = args.data_path
-    print('Training and Validation set paths:', args.data_path)
+    # print('Training and Validation set paths:', args.data_path)
     print('Testing set path (you should select the non augmented dataset):', args.data_path_testing)
 
     dataset_noaug = Dataset(args.data_path_testing)
