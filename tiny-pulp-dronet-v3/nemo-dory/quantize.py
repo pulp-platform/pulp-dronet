@@ -334,7 +334,7 @@ def main():
     elif args.block_type == "IRLB":
         net = dronet(depth_mult=args.depth_mult, block_class=Inverted_Linear_Bottleneck, bypass=args.bypass)
 
-    net = load_weights_into_network(args.model_weights_path, net, args.resume_training, device)
+    net = load_weights_into_network(args.model_weights_path, net, device)
 
     # pass to device
     net.to(device)
