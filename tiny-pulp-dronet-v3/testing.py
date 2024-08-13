@@ -269,7 +269,7 @@ def main():
     from config import cfg # load configuration with all default values
     parser = create_parser(cfg)
     args = parser.parse_args()
-    model_weights_path=args.model_weights
+    model_weights_path=args.model_weights_path
     print("Model name:", model_weights_path)
 
     # select device
