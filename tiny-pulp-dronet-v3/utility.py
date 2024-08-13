@@ -422,14 +422,14 @@ def custom_mse_id_nemo(y_true, y_pred, fc_quantum, device): # Mean Squared Error
 def get_fc_quantum(args, model):
     if args.bypass:
         fc_quantum = model.fc.get_output_eps(
-            model.resBlock3.add.get_output_eps(
-                model.get_eps_at('resBlock3.add', eps_in=1./255)
+            model.Block3.add.get_output_eps(
+                model.get_eps_at('Block3.add', eps_in=1./255)
             )
         )
     else:
         fc_quantum = model.fc.get_output_eps(
-            model.resBlock3.relu2.get_output_eps(
-                model.get_eps_at('resBlock3.relu2', eps_in=1./255)
+            model.Block3.relu2.get_output_eps(
+                model.get_eps_at('Block3.relu2', eps_in=1./255)
             )
         )
     return fc_quantum
