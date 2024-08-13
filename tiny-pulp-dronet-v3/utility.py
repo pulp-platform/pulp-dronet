@@ -420,20 +420,18 @@ def custom_mse_id_nemo(y_true, y_pred, fc_quantum, device): # Mean Squared Error
 ################################################################################
 
 def get_fc_quantum(args, model):
-    if args.arch == 'dronet_dory':
+    if args.bypass:
         fc_quantum = model.fc.get_output_eps(
             model.resBlock3.add.get_output_eps(
                 model.get_eps_at('resBlock3.add', eps_in=1./255)
             )
         )
-    elif args.arch == 'dronet_dory_no_residuals':
+    else:
         fc_quantum = model.fc.get_output_eps(
             model.resBlock3.relu2.get_output_eps(
                 model.get_eps_at('resBlock3.relu2', eps_in=1./255)
             )
         )
-    else:
-        raise ValueError('Doublecheck the architecture that you are trying to use.')
     return fc_quantum
 
 def init_weights(m):
