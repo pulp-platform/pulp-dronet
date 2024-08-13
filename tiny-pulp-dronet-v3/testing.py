@@ -316,7 +316,7 @@ def main():
         filenames_list, labels_list, outputs_list = list_filenames_labels_outputs(net, test_loader, device)
         output_directory=args.video_path
         export_comparison_groundtruth_output(filenames_list, labels_list, outputs_list, export_images=False, export_video=True,  video_name = 'video', output_directory=output_directory)
-        plot_outputs(labels_list, outputs_list, args.depth_mult)
+        plot_outputs(labels_list=labels_list, outputs_list=outputs_list, depth_mult=args.depth_mult, output_directory=output_directory)
 
     #### TESTING ####
     print('model tested:', model_weights_path)
