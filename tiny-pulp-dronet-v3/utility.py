@@ -266,6 +266,66 @@ def load_weights_into_network(model_weights_path, net, device):
         raise RuntimeError('Failed to open checkpoint. provide a checkpoint.pth.tar file')
     return net
 
+def rename_and_save_checkpoint(weights_path):
+    """
+    Rename layers in the state dictionary of a checkpoint and save it to a new file.
+    If you change the definition of the block names in dronet_v3.py, you need to rename the layers in the pre trained
+    checkpoint files as well!
+
+    Parameters:
+        weights_path (str): Path to the original .pth file.
+
+    Returns:
+        str: Path to the new weights file.
+
+    Example usage:
+        weights_path = "./model/tiny-pulp-dronet-v3-dw-pw-0.125.pth"
+        new_weights_path = rename_and_save_checkpoint(weights_path)
+    """
+
+    # Define old and new layer names
+    old_layer_names = ['resBlock1', 'resBlock2', 'resBlock3']
+    new_layer_names = ['Block1', 'Block2', 'Block3']
+
+    # Split the path into directory and filename
+    directory, filename = os.path.split(weights_path)
+    # Create a new filename by prefixing "new_"
+    new_filename = "new_" + filename
+    # Join the directory with the new filename to get the new path
+    new_weights_path = os.path.join(directory, new_filename)
+
+    # Load the checkpoint
+    checkpoint = torch.load(weights_path)
+
+    # Extract the state dictionary
+    state_dict = checkpoint['state_dict'] if 'state_dict' in checkpoint else checkpoint
+
+    # Rename layers or parameters
+    new_state_dict = {}
+    for key, value in state_dict.items():
+        for old_layer_name, new_layer_name in zip(old_layer_names, new_layer_names):
+            new_key = key.replace(old_layer_name, new_layer_name)
+            new_state_dict[new_key] = value
+
+    # Remove all entries with keys that contain any of the old layer names
+    keys_to_remove = [key for key in new_state_dict.keys() if any(old_layer_name in key for old_layer_name in old_layer_names)]
+    for key in keys_to_remove:
+        del new_state_dict[key]
+
+    # Update the checkpoint with the new state dictionary
+    if 'state_dict' in checkpoint:
+        checkpoint['state_dict'] = new_state_dict
+    else:
+        checkpoint = new_state_dict
+
+    # Save the modified checkpoint
+    torch.save(checkpoint, new_weights_path)
+    print(f"Renamed layers and saved the new model to {new_weights_path}")
+
+    return new_weights_path
+
+
+
 ################################################################################
 # Loss Functions and Evaluation Metrics
 ################################################################################
