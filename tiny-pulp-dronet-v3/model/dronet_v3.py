@@ -24,7 +24,16 @@
 #-----------------------------------------------------------------------------#
 
 import torch.nn as nn
-import nemo
+import sys
+# sys.path.append('./nemo-dory/nemo/')
+sys.path.append('./nemo-dory/nemo')
+try:
+    import nemo
+    print("nemo imported successfully")
+except ModuleNotFoundError:
+    print("Failed to import nemo")
+    print(sys.path)
+
 
 ################################################################################
 # PULP-Dronet building blocks #
