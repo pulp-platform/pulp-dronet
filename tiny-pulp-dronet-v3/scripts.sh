@@ -42,12 +42,14 @@ python training.py --gpu=0 --model_weights_path=irlb_noby_0.125 --block_type=IRL
 
 ## TESTING
 # pulp dronet v3
-python testing.py --gpu=0 --model_weights_path=./model/pulp-dronet-v3-resblock-1.0.pth --block_type=ResBlock  --depth_mult=1.0 --bypass=True --data_path_testing=/home/llamberti/work/opensource/pulp-dronet/tiny-pulp-dronet-v3/dataset/
+python testing.py --gpu=0 --model_weights_path=./model/pulp-dronet-v3-resblock-1.0.pth --block_type=ResBlock  --depth_mult=1.0    --bypass=True  --data_path_testing=/home/llamberti/work/opensource/pulp-dronet/tiny-pulp-dronet-v3/dataset/
 #tiny pulp dronet v3
-python testing.py --gpu=0 --model_weights_path=./model/new_dw_pw_noby_0.125_100.pth --block_type=Depthwise  --depth_mult=0.125 --bypass=False --data_path_testing=/home/llamberti/work/opensource/pulp-dronet/tiny-pulp-dronet-v3/dataset/
+python testing.py --gpu=0 --model_weights_path=./model/new_dw_pw_noby_0.125_100.pth    --block_type=Depthwise  --depth_mult=0.125 --bypass=False --data_path_testing=/home/llamberti/work/opensource/pulp-dronet/tiny-pulp-dronet-v3/dataset/
 
 #################################################
 ################# Quantization ##################
 #################################################
-
-python quantize.py --gpu=0 --model_weights_path=./model/pulp-dronet-v3-resblock-1.0.pth --block_type=ResBlock  --depth_mult=1.0 --bypass=True --data_path_testing=/home/llamberti/work/opensource/pulp-dronet/tiny-pulp-dronet-v3/dataset/
+# pulp dronet v3
+python quantize.py --gpu=0 --model_weights_path=./model/pulp-dronet-v3-resblock-1.0.pth --block_type=ResBlock   --depth_mult=1.0   --bypass=True  --data_path_testing=/home/llamberti/work/opensource/pulp-dronet/tiny-pulp-dronet-v3/dataset/
+#tiny pulp dronet v3
+python quantize.py --gpu=0 --model_weights_path=./model/new_dw_pw_noby_0.125_100.pth    --block_type=Depthwise  --depth_mult=0.125 --bypass=False --data_path_testing=/home/llamberti/work/opensource/pulp-dronet/tiny-pulp-dronet-v3/dataset/

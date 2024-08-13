@@ -13,3 +13,6 @@
 [submodule "tiny-pulp-dronet-v3/nemo-dory/nemo"]
 	path = tiny-pulp-dronet-v3/nemo-dory/nemo
 	url = git@github.com:LorenzoLamberti94/nemo.git
+[submodule "tiny-pulp-dronet-v3/nemo-dory/dory"]
+	path = tiny-pulp-dronet-v3/nemo-dory/dory
+	url = git@github.com:LorenzoLamberti94/dory_dronet.git
