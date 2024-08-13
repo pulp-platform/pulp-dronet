@@ -232,7 +232,7 @@ def testing_nemo(model, testing_loader, device, id_stage=False, test_only_one=Fa
 
 
 #pulp dronet
-def test_on_one_image(model, testing_dataset, device, id_stage=False):
+def test_on_one_image(model, test_dataset, device, id_stage=False):
     # this function takes just one image and makes a forward pass into the model.
     # it is used for saving the intermediate activations values of the network,
     # and DORY uses them for calculating checksums.
