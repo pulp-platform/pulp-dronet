@@ -266,37 +266,37 @@ def get_quantized_model(model, device, test_loader=None):
     # FakeQuantized (FQ) stage
     ############################################################################
 
-    model_q = nemo.transform.quantize_pact(deepcopy(model), dummy_input=dummy_input_net, remove_dropout=True)
-    model_q.change_precision(bits=8, scale_weights=False, scale_activations=True)
-    model_q.change_precision(bits=7, scale_weights=True, scale_activations=False)
+    net_q = nemo.transform.quantize_pact(deepcopy(model), dummy_input=dummy_input_net, remove_dropout=True)
+    net_q.change_precision(bits=8, scale_weights=False, scale_activations=True)
+    net_q.change_precision(bits=7, scale_weights=True, scale_activations=False)
 
     if test_loader is not None:
-        test_mse, test_acc = testing_nemo(model_q, test_loader, device, id_stage=False, test_only_one=args.test_only_one)
-        model_size = network_size(model_q)
+        test_mse, test_acc = testing_nemo(net_q, test_loader, device, id_stage=False, test_only_one=args.test_only_one)
+        model_size = network_size(net_q)
         print("FakeQuantized MSE: %.4f , Acc: %.4f, Model size: %.2fkB"  % (test_mse,  test_acc, model_size) )
 
     ############################################################################
     # QuantizedDeployable (QD) stage
     ############################################################################
 
-    model_q.qd_stage(eps_in=1./255)  # eps_in is the input quantum, and must be set by the user
+    net_q.qd_stage(eps_in=1./255)  # eps_in is the input quantum, and must be set by the user
 
     if test_loader is not None:
-        test_mse, test_acc = testing_nemo(model_q, test_loader, device, id_stage=False, test_only_one=args.test_only_one)
-        model_size = network_size(model_q)
+        test_mse, test_acc = testing_nemo(net_q, test_loader, device, id_stage=False, test_only_one=args.test_only_one)
+        model_size = network_size(net_q)
         print("QuantizedDeployable MSE: %.4f , Acc: %.4f, Model size: %.2fkB"  % (test_mse,  test_acc, model_size))
 
     ############################################################################
     # IntegerDeployable (ID) stage
     ############################################################################
 
-    model_q.id_stage()
+    net_q.id_stage()
 
     if test_loader is not None:
-        test_mse, test_acc = testing_nemo(model_q, test_loader, device, id_stage=True, test_only_one = False)
-        model_size = network_size(model_q)
+        test_mse, test_acc = testing_nemo(net_q, test_loader, device, id_stage=True, test_only_one = False)
+        model_size = network_size(net_q)
         print("IntegerDeployable MSE: %.4f , Acc: %.4f, Model size: %.2fkB"  % (test_mse,  test_acc, model_size))
-    return model_q
+    return net_q
 
 
 ################################################################################
@@ -367,8 +367,8 @@ def main():
 
     # quantizing the network
 
-    model_q = get_quantized_model(
-        model, device, test_loader
+    net_q = get_quantized_model(
+        net, device, test_loader
     )
 
     ############################################################################
@@ -401,11 +401,11 @@ def main():
     clean_directory(export_path)
 
     # export graph
-    nemo.utils.export_onnx(export_onnx_path, model_q, model_q, dummy_input_net.shape[1:])
+    nemo.utils.export_onnx(export_onnx_path, net_q, net_q, dummy_input_net.shape[1:])
     print('\nExport of ONNX graph was successful\n.')
 
     # Extract activations buffers
-    buf_in, buf_out , _ = nemo.utils.get_intermediate_activations(model_q, test_on_one_image, model_q, test_dataset, device, id_stage = True)
+    buf_in, buf_out , _ = nemo.utils.get_intermediate_activations(net_q, test_on_one_image, net_q, test_dataset, device, id_stage = True)
 
     # Save the input buffer
     t = buf_in['first_conv'][0][-1].cpu().detach().numpy()
@@ -419,7 +419,7 @@ def main():
 
     print('\nExport of golden activations was successful \n')
 
-    network_output_quantum = get_fc_quantum(args, model_q) # This also takes into account ONNX approximation
+    network_output_quantum = get_fc_quantum(args, net_q) # This also takes into account ONNX approximation
     print('network_output_quantum (after ONNX rounding):', network_output_quantum)
 
     if args.save_quantum:
