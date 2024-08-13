@@ -35,7 +35,6 @@
 # essentials
 import os
 import sys
-sys.path.append('/home/llamberti/work/opensource/pulp-dronet/tiny-pulp-dronet-v3/nemo-dory/nemo/') # if you want to use your custom installation (git clone) instead of pip version
 import argparse
 import numpy as np
 import shutil
@@ -62,10 +61,7 @@ from utility import EarlyStopping, init_weights
 from utility import custom_mse, custom_accuracy, custom_bce, custom_loss_v3
 from utility import AverageMeter
 from utility import write_log
-#nemo
-import nemo
-
-
+# argparse
 import argparse
 
 def create_parser(cfg):
