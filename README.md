@@ -18,43 +18,58 @@
 
 ## **Citing**
 
-If you use **PULP-DroNet** in an academic or industrial context, please cite the following publications:
+If you use PULP-Dronet in an academic or industrial context, please cite the listed publications:
 
-Publications:
-* *A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones* [arXiv preprint](https://arxiv.org/abs/1805.01831) -- [IEEE IoT Journal](https://ieeexplore.ieee.org/document/8715489)
-* *An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs* [arXiv preprint](https://arxiv.org/abs/1905.04166) -- [IEEE DCOSS](https://ieeexplore.ieee.org/document/8804776)
-* *Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones* [IEEE AICAS](https://ieeexplore.ieee.org/document/9458550)
-* *Improving Autonomous Nano-Drones Performance via Automated End-to-End Optimization and Deployment of DNNs* -- [IEEE JETCAS](https://ieeexplore.ieee.org/document/9606685)
-* *Tiny-PULP-Dronets: Squeezing Neural Networks for Faster and Lighter Inference on Multi-Tasking Autonomous Nano-Drones* -- [IEEE AICAS](https://ieeexplore.ieee.org/document/9869931)
+**&#x23F5;** *"Distilling Tiny and Ultra-fast Deep Neural Networks for Autonomous Navigation on Nano-UAVs"*, 2024([IEEE IoT Journal](https://ieeexplore.ieee.org/abstract/document/10606040), [arXiv](https://arxiv.org/abs/2407.12675#))
+**&#x23F5;** *"Tiny-PULP-Dronets: Squeezing Neural Networks for Faster and Lighter Inference on Multi-Tasking Autonomous Nano-Drones"*, 2022([IEEE AICAS](https://ieeexplore.ieee.org/document/9869931), [arXiv](https://arxiv.org/abs/2407.02405))
+**&#x23F5;** *"Improving Autonomous Nano-Drones Performance via Automated End-to-End Optimization and Deployment of DNNs"*, 2021 ([IEEE JETCAS](https://ieeexplore.ieee.org/document/9606685))
+**&#x23F5;** *"Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones"*, 2021 ([IEEE AICAS](https://ieeexplore.ieee.org/document/9458550))
+**&#x23F5;** *"A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones"*, 2019 ( [IEEE IoT Journal](https://ieeexplore.ieee.org/document/8715489), [arXiv preprint](https://arxiv.org/abs/1805.01831))
+**&#x23F5;** *"An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs"*, 2019 ([IEEE DCOSS](https://ieeexplore.ieee.org/document/8804776), [arXiv preprint](https://arxiv.org/abs/1905.04166))
 
 
-
-~~~~
-@article{palossi2019pulpdronetIoTJ,
-  author={D. {Palossi} and A. {Loquercio} and F. {Conti} and E. {Flamand} and D. {Scaramuzza} and L. {Benini}},
-  title={A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones},
+```bibtex
+@article{lamberti2024pulpdronetIOTJ,
+  author={Lamberti, Lorenzo and Bellone, Lorenzo and Macan, Luka and Natalizio, Enrico and Conti, Francesco and Palossi, Daniele and Benini, Luca},
   journal={IEEE Internet of Things Journal},
-  doi={10.1109/JIOT.2019.2917066},
-  ISSN={2327-4662},
-  year={2019}
+  title={Distilling Tiny and Ultra-fast Deep Neural Networks for Autonomous Navigation on Nano-UAVs},
+  year={2024},
+  volume={},
+  number={},
+  pages={1-1},
+  keywords={Navigation;Task analysis;Artificial intelligence;Internet of Things;Autonomous robots;Throughput;Collision avoidance;Autonomous Nano-UAV;Embedded Devices;Ultra-low-power;Artificial Intelligence;Mobile and Ubiquitous Systems},
+  doi={10.1109/JIOT.2024.3431913}
 }
-~~~~
+```
 
-~~~~
-@inproceedings{palossi2019pulpdronetDCOSS,
-  author={D. {Palossi} and F. {Conti} and L. {Benini}},
-  booktitle={2019 15th International Conference on Distributed Computing in Sensor Systems (DCOSS)},
-  title={An Open Source and Open Hardware Deep Learning-Powered Visual Navigation Engine for Autonomous Nano-UAVs},
-  pages={604-611},
-  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},
-  doi={10.1109/DCOSS.2019.00111},
-  ISSN={2325-2944},
-  month={May},
-  year={2019},
+```bibtex
+@INPROCEEDINGS{lamberti2022tinypulpdronetAICAS,
+  author={Lamberti, Lorenzo and Niculescu, Vlad and Barciś, Michał and Bellone, Lorenzo and Natalizio, Enrico and Benini, Luca and Palossi, Daniele},
+  booktitle={2022 IEEE 4th International Conference on Artificial Intelligence Circuits and Systems (AICAS)},
+  title={Tiny-PULP-Dronets: Squeezing Neural Networks for Faster and Lighter Inference on Multi-Tasking Autonomous Nano-Drones},
+  year={2022},
+  volume={},
+  number={},
+  pages={287-290},
+  doi={10.1109/AICAS54282.2022.9869931}
 }
-~~~~
+```
 
-~~~~
+
+```bibtex
+@ARTICLE{niculescu2021pulpdronetJETCAS,
+  author={Niculescu, Vlad and Lamberti, Lorenzo and Conti, Francesco and Benini, Luca and Palossi, Daniele},
+  journal={IEEE Journal on Emerging and Selected Topics in Circuits and Systems},
+  title={Improving Autonomous Nano-drones Performance via Automated End-to-End Optimization and Deployment of DNNs},
+  year={2021},
+  volume={},
+  number={},
+  pages={1-1},
+  doi={10.1109/JETCAS.2021.3126259}
+}
+```
+
+```bibtex
 @inproceedings{niculescu2021pulpdronetAICAS,
   author={V. {Niculescu} and L. {Lamberti} and D. {Palossi} and L. {Benini}},
   booktitle={2021 IEEE International Conference on Artificial Intelligence Circuits and Systems (AICAS)},
@@ -66,34 +81,32 @@ Publications:
   month={},
   year={2021},
 }
-~~~~
+```
 
-~~~~
-@ARTICLE{pulpdronetv2JETCAS,
-  author={Niculescu, Vlad and Lamberti, Lorenzo and Conti, Francesco and Benini, Luca and Palossi, Daniele},
-  journal={IEEE Journal on Emerging and Selected Topics in Circuits and Systems},
-  title={Improving Autonomous Nano-drones Performance via Automated End-to-End Optimization and Deployment of DNNs},
-  year={2021},
-  volume={},
-  number={},
-  pages={1-1},
-  doi={10.1109/JETCAS.2021.3126259}}
-~~~~
+```bibtex
+@article{palossi2019pulpdronetIoTJ,
+  author={D. {Palossi} and A. {Loquercio} and F. {Conti} and E. {Flamand} and D. {Scaramuzza} and L. {Benini}},
+  title={A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones},
+  journal={IEEE Internet of Things Journal},
+  doi={10.1109/JIOT.2019.2917066},
+  ISSN={2327-4662},
+  year={2019}
+}
+```
 
-~~~~
-@INPROCEEDINGS{lamberti_tinydronet,
-  author={Lamberti, Lorenzo and Niculescu, Vlad and Barciś, Michał and Bellone, Lorenzo and Natalizio, Enrico and Benini, Luca and Palossi, Daniele},
-  booktitle={2022 IEEE 4th International Conference on Artificial Intelligence Circuits and Systems (AICAS)},
-  title={Tiny-PULP-Dronets: Squeezing Neural Networks for Faster and Lighter Inference on Multi-Tasking Autonomous Nano-Drones},
-  year={2022},
-  volume={},
-  number={},
-  pages={287-290},
-  doi={10.1109/AICAS54282.2022.9869931}}
-~~~~
-
-
-
+```bibtex
+@inproceedings{palossi2019pulpdronetDCOSS,
+  author={D. {Palossi} and F. {Conti} and L. {Benini}},
+  booktitle={2019 15th International Conference on Distributed Computing in Sensor Systems (DCOSS)},
+  title={An Open Source and Open Hardware Deep Learning-Powered Visual Navigation Engine for Autonomous Nano-UAVs},
+  pages={604-611},
+  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},
+  doi={10.1109/DCOSS.2019.00111},
+  ISSN={2325-2944},
+  month={May},
+  year={2019},
+}
+```
 
 
 ## 1. Introduction
