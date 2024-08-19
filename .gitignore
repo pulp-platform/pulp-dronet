@@ -1,4 +1,4 @@
-    #my folders
+# my folders
 *checkpoints/
 *nemo_output/
 *bin/
@@ -6,10 +6,6 @@ runs/
 logs/
 tiny-pulp-dronet-v3/dataset/
 tiny-pulp-dronet-v3/training/
-
-#files
-#  #trained models
-model/*pulp_dronet_v3_*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
