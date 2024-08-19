@@ -111,8 +111,8 @@ If you use PULP-Dronet in an academic or industrial context, please cite the lis
 
 ## 1. Introduction
 ### What is PULP-Dronet ?
-**PULP-DroNet** is a deep learning-powered *visual navigation engine* that enables autonomous navigation of a pocket-size quadrotor in a previously unseen environment.
-Thanks to PULP-DroNet the nano-drone can explore the environment, avoiding collisions also with dynamic obstacles, in complete autonomy -- **no human operator, no ad-hoc external signals, and no remote laptop!**
+**PULP-Dronet** is a deep learning-powered *visual navigation engine* that enables autonomous navigation of a pocket-size quadrotor in a previously unseen environment.
+Thanks to PULP-Dronet the nano-drone can explore the environment, avoiding collisions also with dynamic obstacles, in complete autonomy -- **no human operator, no ad-hoc external signals, and no remote laptop!**
 This means that all the complex computations are done directly aboard the vehicle and very fast.
 The visual navigation engine is composed of both a software and a hardware part.
 
@@ -121,13 +121,16 @@ The software part is based on the previous [DroNet](https://github.com/uzh-rpg/r
 DroNet is a shallow convolutional neural network (CNN) which has been used to control a standard-size quadrotor in a set of environments via remote computation.
 
 - **Hardware components:**
-The hardware soul of PULP-DroNet is an ultra-low power visual navigation module embodied by a pluggable PCB (called *shield* or *deck*) for the [Crazyflie 2.0](https://www.bitcraze.io/crazyflie-2/)/[2.1](https://www.bitcraze.io/crazyflie-2-1/) nano-drone. The shield features a Parallel Ultra-Low-Power (PULP) GAP8 System-on-Chip (SoC) from GreenWaves Technologies (GWT), an ultra-low power HiMax HBM01 camera, and off-chip Flash/DRAM memory; This pluggable PCB has evolved over time, from the [*PULP-Shield*](https://ieeexplore.ieee.org/document/8715489) , the first custom-made prototype version developed at ETH Zürich, and its commercial off-the-shelf evolution, the [*AI-deck*](https://store.bitcraze.io/products/ai-deck).
+The hardware soul of PULP-Dronet is an ultra-low power visual navigation module embodied by a pluggable PCB (called *shield* or *deck*) for the [Crazyflie 2.0](https://www.bitcraze.io/crazyflie-2/)/[2.1](https://www.bitcraze.io/crazyflie-2-1/) nano-drone. The shield features a Parallel Ultra-Low-Power (PULP) GAP8 System-on-Chip (SoC) from GreenWaves Technologies (GWT), an ultra-low power HiMax HBM01 camera, and off-chip Flash/DRAM memory; This pluggable PCB has evolved over time, from the [*PULP-Shield*](https://ieeexplore.ieee.org/document/8715489) , the first custom-made prototype version developed at ETH Zürich, and its commercial off-the-shelf evolution, the [*AI-deck*](https://store.bitcraze.io/products/ai-deck).
 
 
 
 ## Evolution of PULP-Dronet
 
-###  **PULP-Dronet-V1:**
+<img style="float: center;" src="imgs/pulp_dronet_evolution.png" width="100%">
+
+
+###  **PULP-Dronet v1:**
 The first version of PULP-Dronet, which gave the birth to the PULP-Shield: a lightweight, modular and configurable printed circuit board (PCB) with highly optimized layout and a form factor compatible with the Crazyflie nano-sized quad-rotor.
 We developed a [general methodology](https://arxiv.org/abs/1805.01831) for deploying state-of-the-art deep learning algorithms on top of ultra-low power embedded computation nodes, like a miniaturized drone, and then we [automated the whole process](https://ieeexplore.ieee.org/document/9458550).
 Our novel methodology allowed us first to deploy DroNet on the _PULP-Shield_, and then demonstrating how it enables the execution the CNN on board the CrazyFlie 2.0 within only 64-284mW and with a throughput of 6-18 frame-per-second!
@@ -146,12 +149,12 @@ Summary of characteristics:
 
 We release here, as open source, all our code, hardware designs, datasets, and trained networks.
 
-###  **PULP-Dronet-V2:**
+###  **PULP-Dronet v2:**
 
 This follow-up takes advantage of a new commercial-off-the-shelf PCB design based on the PULP-Shield, now developed and distributed by Bitcraze: the AI-deck. Our work focused in automating the whole deployment process of a convolutional neural network, which required significant complexity reduction and fine-grained hand-tuning to be successfully deployed aboard a flying nano-drone.
 Therefore, we introduce methodologies and software tools to streamline and automate all the deployment stages on a low-power commercial
-multicore SoC, investigating both academic (NEMO + DORY) and industrial (GAPflow by GreenWaves) tool-sets. We reduced by 2× the memory footprint of PULP-DronetV1, employing a fixed-point 8 bit quantization, achieving a speedup of 1.6× in the inference time, compared to the original hand-crafted CNN, with the same prediction accuracy.
-Our fully automated deployment methodology allowed us first to deploy DroNet on the AI-Deck, and then demonstrating how it enables the execution the CNN on board the CrazyFlie 2.1 within only 35-102mW and with a throughput of 9-17 frame-per-second!
+multicore SoC, investigating both academic (NEMO + DORY) and industrial (GAPflow by GreenWaves) tool-sets. We reduced by 2× the memory footprint of PULP-Dronet v1, employing a fixed-point 8 bit quantization, achieving a speedup of 1.6× in the inference time, compared to the original hand-crafted CNN, with the same prediction accuracy.
+Our fully automated deployment methodology allowed us first to deploy DroNet on the AI-Deck, and then demonstrating how it enables the execution the CNN on board the CrazyFlie 2.1 within only 35-102mW and with a throughput of 9-17 frames/s!
 
 Summary of characteristics:
 
@@ -165,4 +168,26 @@ Summary of characteristics:
 
 
 
-We release here, as open source, all our code, hardware designs, datasets, and trained networks.
+We release here, as open source, all our code, hardware designs, and trained networks.
+
+###  **PULP-Dronet v3:**
+
+Achieving AI multi tasking perception on a nano-UAV presents significant challenges.
+The extremely limited payload on nano-UAVs restricts them to accommodate only ultra-low-power microcontroller units that have stringent computational and memory constraint, which have prevented the deployment of multiple AI tasks onboard.
+Therefore, we focus on optimizing and minimizing the AI workloads without compromising the drone’s behavior when stressed in real-world testing scenarios.
+We achieve a speedup of 8.5× in the inference time, compared to PULP-Dronet v2, with an inference throughput of 139 frames/s.
+Moreover, we develop amethodology for dataset collection on a nano-UAV. We collect unified collision avoidance and steering information onlywith nano-UAV onboard resources, without dependence on external infrastructures.The resulting PULP-Dronet v3 dataset consists of 66k labeled images, which we release open-source along with our ;
+
+We release here, as open source, all our code, including: the PULP-Dronet v3 dataset, our dataset collection framework, and our trained networks.
+
+Summary of characteristics:
+
+- **Hardware:** [*AI-deck*](https://store.bitcraze.io/products/ai-deck)
+
+- **Deep learning framework:** Pytorch
+
+- **Quantization**: fixed-point 8 bits, fully automated with the academic [NEMO](https://github.com/pulp-platform/nemo).
+
+- **Deployment**: fully automated with the academic [DORY](https://github.com/pulp-platform/dory).
+
+- **Dataset**: custom made, collected with the nano-drone.
