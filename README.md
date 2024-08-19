@@ -1,353 +1,153 @@
-# Tiny-PULP-Dronet v3
+# PULP-DroNet: *Judge me by my size, do you? --Yoda, TESB*
+
+Authors: *Daniele Palossi* <dpalossi@iis.ee.ethz.ch>
+        *Lorenzo Lamberti* <lorenzo.lamberti@unibo.it>
+        *Vlad Niculescu* <vladn@iis.ee.ethz.ch>
+Copyright (C) 2021 ***ETH Zürich, University of Bologna***. All rights reserved.
+
+<img style="float: right;" src="imgs/PULP_drone.png" width="100%">
+
+
+### **Videos**
+[PULP Platform Youtube](https://www.youtube.com/c/PULPPlatform) channel (subscribe it!)
+- **PULP-Dronet-V1**: [Video1](https://youtu.be/57Vy5cSvnaA) [Video2](https://youtu.be/JKY03NV3C2s).
+- **PULP-Dronet-V2**: [Video1](https://youtu.be/41IwjAXmFQ0) [Video2](https://youtu.be/Cd9GyTl6tHI).
+
+
+### **Citing**
+
+If you use **PULP-DroNet** in an academic or industrial context, please cite the following publications:
+
+Publications:
+* *A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones* [arXiv preprint](https://arxiv.org/abs/1805.01831) -- [IEEE IoT Journal](https://ieeexplore.ieee.org/document/8715489)
+* *An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs* [arXiv preprint](https://arxiv.org/abs/1905.04166) -- [IEEE DCOSS](https://ieeexplore.ieee.org/document/8804776)
+* *Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones* [IEEE AICAS](https://ieeexplore.ieee.org/document/9458550)
+* *Improving Autonomous Nano-Drones Performance via Automated End-to-End Optimization and Deployment of DNNs* -- [IEEE JETCAS](https://ieeexplore.ieee.org/document/9606685)
+* *Tiny-PULP-Dronets: Squeezing Neural Networks for Faster and Lighter Inference on Multi-Tasking Autonomous Nano-Drones* -- [IEEE AICAS](https://ieeexplore.ieee.org/document/9869931)
+
+
+
+~~~~
+@article{palossi2019pulpdronetIoTJ,
+  author={D. {Palossi} and A. {Loquercio} and F. {Conti} and E. {Flamand} and D. {Scaramuzza} and L. {Benini}},
+  title={A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones},
+  journal={IEEE Internet of Things Journal},
+  doi={10.1109/JIOT.2019.2917066},
+  ISSN={2327-4662},
+  year={2019}
+}
+~~~~
+
+~~~~
+@inproceedings{palossi2019pulpdronetDCOSS,
+  author={D. {Palossi} and F. {Conti} and L. {Benini}},
+  booktitle={2019 15th International Conference on Distributed Computing in Sensor Systems (DCOSS)},
+  title={An Open Source and Open Hardware Deep Learning-Powered Visual Navigation Engine for Autonomous Nano-UAVs},
+  pages={604-611},
+  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},
+  doi={10.1109/DCOSS.2019.00111},
+  ISSN={2325-2944},
+  month={May},
+  year={2019},
+}
+~~~~
 
-The project's structure is the following:
+~~~~
+@inproceedings{niculescu2021pulpdronetAICAS,
+  author={V. {Niculescu} and L. {Lamberti} and D. {Palossi} and L. {Benini}},
+  booktitle={2021 IEEE International Conference on Artificial Intelligence Circuits and Systems (AICAS)},
+  title={Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones},
+  pages={},
+  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},
+  doi={},
+  ISSN={},
+  month={},
+  year={2021},
+}
+~~~~
 
-```
-.
-└── tiny-pulp-dronet-v3/
+~~~~
+@ARTICLE{pulpdronetv2JETCAS,
+  author={Niculescu, Vlad and Lamberti, Lorenzo and Conti, Francesco and Benini, Luca and Palossi, Daniele},
+  journal={IEEE Journal on Emerging and Selected Topics in Circuits and Systems},
+  title={Improving Autonomous Nano-drones Performance via Automated End-to-End Optimization and Deployment of DNNs},
+  year={2021},
+  volume={},
+  number={},
+  pages={1-1},
+  doi={10.1109/JETCAS.2021.3126259}}
+~~~~
 
-TODO
+~~~~
+@INPROCEEDINGS{lamberti_tinydronet,
+  author={Lamberti, Lorenzo and Niculescu, Vlad and Barciś, Michał and Bellone, Lorenzo and Natalizio, Enrico and Benini, Luca and Palossi, Daniele},
+  booktitle={2022 IEEE 4th International Conference on Artificial Intelligence Circuits and Systems (AICAS)},
+  title={Tiny-PULP-Dronets: Squeezing Neural Networks for Faster and Lighter Inference on Multi-Tasking Autonomous Nano-Drones},
+  year={2022},
+  volume={},
+  number={},
+  pages={287-290},
+  doi={10.1109/AICAS54282.2022.9869931}}
+~~~~
 
-```
 
-# Requirements
 
-### Python dependences
 
-Install all the python dependences (for CNN training and testing):
 
-```
-conda env create -f conda_deps.yml
-```
+## 1. Introduction
+### What is PULP-Dronet ?
+**PULP-DroNet** is a deep learning-powered *visual navigation engine* that enables autonomous navigation of a pocket-size quadrotor in a previously unseen environment.
+Thanks to PULP-DroNet the nano-drone can explore the environment, avoiding collisions also with dynamic obstacles, in complete autonomy -- **no human operator, no ad-hoc external signals, and no remote laptop!**
+This means that all the complex computations are done directly aboard the vehicle and very fast.
+The visual navigation engine is composed of both a software and a hardware part.
 
-### Install NEMO (quantization tool)
+- **Software component:**
+The software part is based on the previous [DroNet](https://github.com/uzh-rpg/rpg_public_dronet) project developed by the [RPG](http://rpg.ifi.uzh.ch/) from the University of Zürich (UZH).
+DroNet is a shallow convolutional neural network (CNN) which has been used to control a standard-size quadrotor in a set of environments via remote computation.
 
-NEMO can be installed with `pip install pytorch-nemo` and it is already included in the python dependences `conda_deps.yml`. Therefore, no further actions required.
+- **Hardware components:**
+The hardware soul of PULP-DroNet is an ultra-low power visual navigation module embodied by a pluggable PCB (called *shield* or *deck*) for the [Crazyflie 2.0](https://www.bitcraze.io/crazyflie-2/)/[2.1](https://www.bitcraze.io/crazyflie-2-1/) nano-drone. The shield features a Parallel Ultra-Low-Power (PULP) GAP8 System-on-Chip (SoC) from GreenWaves Technologies (GWT), an ultra-low power HiMax HBM01 camera, and off-chip Flash/DRAM memory; This pluggable PCB has evolved over time, from the [*PULP-Shield*](https://ieeexplore.ieee.org/document/8715489) , the first custom-made prototype version developed at ETH Zürich, and its commercial off-the-shelf evolution, the [*AI-deck*](https://store.bitcraze.io/products/ai-deck).
 
-### Clone DORY (deployment tool)
 
-[DORY](https://github.com/pulp-platform/dory) is the automatic tool for deploying DNNs on low-cost MCUs with typically less than 1MB of on-chip SRAM memory.
 
-```
-git clone https://github.com/pulp-platform/dory
-cd dory/
-git clone https://github.com/pulp-platform/dory_examples.git
-git clone https://github.com/pulp-platform/pulp-nn.git```
-```
+## Evolution of PULP-Dronet
 
-_Tested on this commit: a98227263db3f9fd4ba7eca85d4210acee3a4af3_
+###  **PULP-Dronet-V1:**
+The first version of PULP-Dronet, which gave the birth to the PULP-Shield: a lightweight, modular and configurable printed circuit board (PCB) with highly optimized layout and a form factor compatible with the Crazyflie nano-sized quad-rotor.
+We developed a [general methodology](https://arxiv.org/abs/1805.01831) for deploying state-of-the-art deep learning algorithms on top of ultra-low power embedded computation nodes, like a miniaturized drone, and then we [automated the whole process](https://ieeexplore.ieee.org/document/9458550).
+Our novel methodology allowed us first to deploy DroNet on the _PULP-Shield_, and then demonstrating how it enables the execution the CNN on board the CrazyFlie 2.0 within only 64-284mW and with a throughput of 6-18 frame-per-second!
+Finally, we field-prove our methodology presenting a closed-loop fully working demonstration of vision-driven autonomous navigation relying only on onboard resources, and within an ultra-low power budget.
+See the videos on the [PULP Platform Youtube](https://www.youtube.com/channel/UCpad_lwSfoMZkb6X7FdjU0g) channel: [video](https://youtu.be/JKY03NV3C2s).
 
-### Install the GAP sdk
+Summary of characteristics:
 
-_Full GWT guide can be found at: https://greenwaves-technologies.com/setting-up-sdk/_
+- **Hardware:** [*PULP-Shield*](https://ieeexplore.ieee.org/document/8715489)
 
-We provide some basic instructions at the end of the README: ([Go to GAP sdk setup](#gap-sdk))
+- **Deep learning framework:** Tensorflow/Keras
 
-### Download and prepare the dataset
+- **Quantization**: fixed-point 16 bits, hand crafted
 
-The PULP-DroNet dataset is composed by the following three sub-sets:
+- **Deployment tool**: _AutoTiler_ (early release, developed in collaboration with GreenWaves Technologies)
 
-* [Himax Dataset](https://github.com/pulp-platform/Himax_Dataset) (only testing set);
-* [Udacity Dataset](https://github.com/udacity/self-driving-car/tree/master/datasets/CH2);
-* [Zurich Bicycle Dataset](http://rpg.ifi.uzh.ch/dronet.html).
+We release here, as open source, all our code, hardware designs, datasets, and trained networks.
 
-The original Udacity and Zurich Bicycle datasets were previously released in their respective open-source projects.
+###  **PULP-Dronet-V2:**
 
-The Udacity dataset and the Zurich Bicycle dataset must be pre-processed to match out HIMAX configuration, and the hierarchy of the files must be re-arranged.
+This follow-up takes advantage of a new commercial-off-the-shelf PCB design based on the PULP-Shield, now developed and distributed by Bitcraze: the AI-deck. Our work focused in automating the whole deployment process of a convolutional neural network, which required significant complexity reduction and fine-grained hand-tuning to be successfully deployed aboard a flying nano-drone.
+Therefore, we introduce methodologies and software tools to streamline and automate all the deployment stages on a low-power commercial
+multicore SoC, investigating both academic (NEMO + DORY) and industrial (GAPflow by GreenWaves) tool-sets. We reduced by 2× the memory footprint of PULP-DronetV1, employing a fixed-point 8 bit quantization, achieving a speedup of 1.6× in the inference time, compared to the original hand-crafted CNN, with the same prediction accuracy.
+Our fully automated deployment methodology allowed us first to deploy DroNet on the AI-Deck, and then demonstrating how it enables the execution the CNN on board the CrazyFlie 2.1 within only 35-102mW and with a throughput of 9-17 frame-per-second!
 
+Summary of characteristics:
 
-**Udacity dataset: download and reorganize**:
+- **Hardware:** [*AI-deck*](https://store.bitcraze.io/products/ai-deck)
 
-_Please follow the step-by-step guide of the original [DroNet](https://github.com/uzh-rpg/rpg_public_dronet) repository for downloading and extracting the Udacity and Zurich bicycle datasets._
+- **Deep learning framework:** Pytorch
 
-Our summary:
+- **Quantization**: fixed-point 8 bits, fully automated (with both academic [NEMO](https://github.com/pulp-platform/nemo) and the industrial [NNTool](https://greenwaves-technologies.com/sdk-manuals/nn_quick_start_guide/))
 
-- Download the three torrent files from [here](https://github.com/udacity/self-driving-car/tree/master/datasets/CH2): Ch2_001.tar.gz.torrent, Ch2_002.tar.gz.torrent, HMB_3.bag.tar.gz.torrent
-- Once downloaded, you get:
+- **Deployment**: fully automated (with both the academic [DORY](https://github.com/pulp-platform/dory) and the industrial [AutoTiler](https://greenwaves-technologies.com/sdk-manuals/nn_quick_start_guide/))
 
-```
-Ch2_001.tar.gz   (4.4 GB)-> includes the training set HMB_1 HMB_2 HMB_4 HMB_5 HMB_6
-Ch2_002.tar.gz   (456 MB)-> includes the testing set HMB_3 (no labels!) -> discard
-HMB_3.bag.tar.gz (896 MB)-> testing set HMB_3 (with labels!)
-```
-
-- untar all files: `tar -xvf file_name.tar.gz`
-
-```
-Ch2_001 and HMB_3.bag.tar.gz, once extracted:
-HMB.txt	  	  -> info on dataset, discard
-HMB_1.bag 	  -> bag file to be extracted with udacity-driving-reader
-HMB_2.bag 	  -> bag file to be extracted with udacity-driving-reader
-HMB_3.bag 	  -> bag file to be extracted with udacity-driving-reader
-HMB_4.bag 	  -> bag file to be extracted with udacity-driving-reader
-HMB_5.bag 	  -> bag file to be extracted with udacity-driving-reader
-HMB_6.bag 	  -> bag file to be extracted with udacity-driving-reader
-```
 
-- Create a directory for each file: `mkdir -p ./extract/HMB_1 ./extract/HMB_2 ./extract/HMB_3 ./extract/HMB_4 ./extract/HMB_5 ./extract/HMB_6`
-- Extract the .bag files with [udacity-driving-reader](https://github.com/rwightman/udacity-driving-reader) in these separate folders (then we will merge them). for example:
 
-```
-mv Ch2_002/HMB_1.bag  extract/HMB_1/
-cd udacity-driving-reader/
-./run-bagdump.sh -i /<absolute_path_to>/extract/HMB_1/ -o /<absolute_path_to>/extract/HMB_1/ -- -f png
-```
-_How to use run-bagdump.sh:_  `./run-bagdump.sh -i [absolute dir with folders containing bag files] -o [absolute output dir] -- [args to pass to python script]`
-
-
-- Clean unecessary files
-
-```
-cd extract/HMB_1/
-rm -r brake.csv camera.csv gear.csv gps.csv HMB_2.bag HMB_2.yaml imu.csv steering.csv throttle.csv left/ right/
-```
-
-- We are left wit only `center/` folder and `interpolated.csv`
-- Rename the `center/` folder to `images/
-- As explained in [DroNet](https://github.com/uzh-rpg/rpg_public_dronet), process the `interpolated.csv` labels file with this [time_stamp_matching.py](https://github.com/uzh-rpg/rpg_public_dronet/blob/master/data_preprocessing/time_stamp_matching.py) script.
-
-- Process the images to convert them to the HIMAX format:cropping (center bottom) to 200x200 pixels format, conversion to grapyscale colormap, conversion to jpeg format
-
-**Zurich Bicycles dataset: download and reorganize**
-
-- download from [here](http://rpg.ifi.uzh.ch/dronet.html).
-- Process the images to convert them to the HIMAX format:cropping (center bottom) to 200x200 pixels format, conversion to grapyscale colormap, conversion to jpeg format
-
-
-**The final hierarchy of the dataset files:**
-
-```
-.
-├── Readme.md
-|
-├── fine_tuning/
-│   ├── DSCN2561/ # Zurich_Bicycle_Dataset
-│   ├── ...
-│   ├── DSCN2697/
-│   ├── GOPR0201/
-│   ├── ...
-│   ├── GOPR0387/
-|
-│   ├── HMB_1_3900/ # Udacity_Dataset
-│   ├── ...
-│   ├── HMB_6/
-|
-│   ├── test_01/ # Himax_Dataset
-│   ├── ...
-│   └── test_24/
-├── himax/
-│   └── jpg/
-│       └── testing/
-│           ├── test_02/ # Himax_Dataset
-│           ├── ...
-│           └── test_23/
-├── testing/
-│   ├── DSCN2571/ # Zurich_Bicycle_Dataset
-│   ├── GOPR0200/
-│   ├── ...
-│   ├── GOPR0386/
-|   |
-│   └── HMB_3/ # Udacity_Dataset
-├── training/
-│   ├── DSCN2561/ # Zurich_Bicycle_Dataset
-│   ├── ...
-│   ├── DSCN2697/
-│   ├── GOPR0201/
-│   ├── ...
-│   ├── GOPR0387/
-|
-│   ├── HMB_1_3900/ # Udacity_Dataset
-│   ├── ...
-│   ├── HMB_6/
-|
-│   ├── test_01/ # Himax_Dataset
-│   ├── ...
-│   └── test_24/
-|
-└── validation/
-    ├── DSCN2682/ # Zurich_Bicycle_Dataset
-    ├── GOPR0227/
-    |
-    └── HMB_1_501# Zurich_Bicycle_Dataset
-```
-
-#### Important note
-
-The himax dataset folders (`test_*`) must be named with 2 figures, for example: test_01 and **not** test_1.
-
-# How to use
-
-All the python scripts (training.py, testing.py, evaluation.py, quantize.py) take default values of variables from the config.py file. Each argument added by command line will override default values.
-
-## Training
-
-```
-python training.py --data_path=/path/to/pulp_dronet_dataset --dataset=original_and_himax --flow=nemo_dory --gpu=0 --batch_size=32
-```
-
-## Evaluating all the weights of a training session
-
-When the "--early_stopping" is disabled, the training script will save the weights of the network after each epoch (by default in the "checkpoints/pulp_dronet_v2" folder)
-evaluation.py script provides a way to test (default:validation dataset) all these weights saved for each training session. After this, you can manually select the best performing set of weights.
-
-```
-python evaluation.py --data_path=/path/to/pulp_dronet_dataset --dataset=validation --flow=nemo_dory --gpu=0 --batch_size=32 --cherry_picking_path=checkpoints/pulp_dronet_v2/
-```
-
-## Testing
-
-Testing on the original dataset only (Udacity and Zurich bicycle datasets) will provide performances of both Accuracy (collision) and RMSE (steering angle)
-
-```
-python testing.py --data_path=/path/to/pulp_dronet_dataset --dataset=original --flow=nemo_dory --gpu=0 --batch_size=32
-```
-
-Testing on the HIMAX dataset only will provide performances of Accuracy only (kust "collision" labels, no "steering angle" labels)
-
-```
-python testing.py --data_path=/path/to/pulp_dronet_dataset --dataset=himax --flow=nemo_dory --gpu=0 --batch_size=32
-```
-
-## Deployment flow: NEMO/DORY and GAP8 (GVSoC) flow: quickstart
-
-How to run PULP-DroNet on GAP8 or GVSoC in three steps, starting from a pretrained model.
-
-**NEMO (quantization):**
-- **Input**: model definition (pytorch format, can be found in "models/dronet_v2_nemo_dory.py") + pre-trained weights (".pth file", can be found in "models/dronet_v2_dory.pth" )
-- **Output**: ONNX graph model (including weights) + golden activations (".txt" files, used by DORY for checksums)
-
-**DORY (generation of optimized C code):**
-- **Input**: ONNX graph model + golden activations (".txt" files)
-- **Output**: optimized C code for deployment on GAP8, generated in the "dory_examples/application/" folder
-
-**GAP8 (run on platform):**
-- **Input**: optimized C code generated by DORY (dory_examples/application/" folder)
-
-### Detailed steps:
-
-**1. Generate the onnx model with nemo script**
-```
-conda activate your_env
-python quantize.py --data_path=/path/to/your/pulpdronet/dataset  --export_path=./nemo_output/
-```
-
-**2. Use DORY to generate the C code**
-
-DORY generates the deployment C code  under the "dory_examples/application/" folder:
-
-```
-cd /dory/dory_example/
-conda activate your_env
-python network_generate.py --network_dir ../nemo_output/ --verbose_level Check_all+Perf_final --Bn_Relu_Bits 64 --l2_buffer_size 420000 --sdk=gap_sdk
-```
-
-**3. Build and run on GAP8 (or GVSoC)**
-
-_remember: open a new terminal, source your sdk and export the cfg for your debugger_
-
-_remember: your gap sdk (or pulp sdk) must be correctly installed before you try to run on GAP8_ ([Go to GAP sdk setup](#gap-sdk))
-
-```
-source gap_sdk/configs/ai_deck.sh
-export GAPY_OPENOCD_CABLE=$HOME/work/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg
-```
-
-then run PULP-DroNet on GAP8 **: )**
-
-```
-cd dory/dory_example/application
-make clean all run CORE=8 platform=gvsoc  (GVSoC)
-make clean all run CORE=8 platform=board  (GAP8)
-```
-
-
-# Bonus: Install GAP SDK
-
-_Tested versions of the sdk are: 3.8.1_
-
-You must install the GAP sdk (or the [PULP sdk](https://github.com/pulp-platform/pulp-sdk)) to use GVSoC or to run code on GAP8 SoC. Here you can find the basic steps to install the GAP sdk.
-
-_Full GWT guide can be found at: https://greenwaves-technologies.com/setting-up-sdk/_
-
-#### Prerequisites
-```
-sudo apt-get install -y build-essential git libftdi-dev libftdi1 doxygen python3-pip libsdl2-dev curl cmake libusb-1.0-0-dev scons gtkwave libsndfile1-dev rsync autoconf automake texinfo libtool pkg-config libsdl2-ttf-dev
-```
-
-Tip: create also a conda environment (and call it gap_sdk) to install all the packets needed by the sdk
-
-```
-conda create --name gap_sdk python numpy cython
-conda activate gap_sdk
-```
-
-#### Toolchain
-
-```
-git clone https://github.com/GreenWaves-Technologies/gap_riscv_toolchain_ubuntu_18.git
-cd ~/gap_riscv_toolchain_ubuntu_18
-./install.sh
-```
-
-**TIP**: if you chose a custom path for install, add this to your .bashrc file:
-
-> export GAP_RISCV_GCC_TOOLCHAIN="custom/path/that/you/chose"
-
-#### Build GAP SDK
-
-```
-git clone https://github.com/GreenWaves-Technologies/gap_sdk.git
-cd gap_sdk
-git submodule update --init --recursive
-source configs/ai-ai_deck.sh
-```
-
-```
-pip install -r requirements.txt
-pip install -r tools/nntool/requirements.txt
-```
-
-```
-make sdk
-```
-
-**IMPORTANT:** always run the sourceme.sh in a fresh new terminal. Never source this file two times in the same terminal (might have issues)
-
-
-#### TEST: To check everything works
-
-**Test on GVSoC**
-```
-cd examples/pmsis/helloworld
-make clean all run platform=gvsoc
-```
-
-**Test on the board**
-
-```
-export GAPY_OPENOCD_CABLE=interface/ftdi/olimex-arm-usb-ocd-h.cfg
-cd examples/pmsis/helloworld
-make clean all run platform=board
-```
-
-There are different cables setup by default for each board ([here the list of defices supported](https://github.com/GreenWaves-Technologies/gap_sdk/tree/master/tools/gap8-openocd/tcl/interface/ftdi)). In case you want to use a different cable, you can define this environment variable:
-
-> GAPY_OPENOCD_CABLE=$HOME/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg
-
-
-
-
-#### How can I use the GAP sdk a second time?:
-
-after installing, the only commands you need to run on a fresh new terminal in order to use the gap sdk are:
-
-```
-cd gap_sdk
-source configs/ai_deck.sh
-GAPY_OPENOCD_CABLE=$HOME/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg
-
-```
-
-
-
-
+We release here, as open source, all our code, hardware designs, datasets, and trained networks.
