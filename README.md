@@ -1,20 +1,22 @@
-# PULP-DroNet: *Judge me by my size, do you? --Yoda, TESB*
-
-Authors: *Daniele Palossi* <dpalossi@iis.ee.ethz.ch>
-        *Lorenzo Lamberti* <lorenzo.lamberti@unibo.it>
-        *Vlad Niculescu* <vladn@iis.ee.ethz.ch>
-Copyright (C) 2021 ***ETH Zürich, University of Bologna***. All rights reserved.
-
-<img style="float: right;" src="imgs/PULP_drone.png" width="100%">
 
 
-### **Videos**
-[PULP Platform Youtube](https://www.youtube.com/c/PULPPlatform) channel (subscribe it!)
-- **PULP-Dronet-V1**: [Video1](https://youtu.be/57Vy5cSvnaA) [Video2](https://youtu.be/JKY03NV3C2s).
-- **PULP-Dronet-V2**: [Video1](https://youtu.be/41IwjAXmFQ0) [Video2](https://youtu.be/Cd9GyTl6tHI).
+<h1 align="center">PULP-Dronet: <i>Judge me by my size, do you? --Yoda, TESB</i></h1>
+
+<p align="center"> <i> Copyright (C) 2024 ETH Zürich, University of Bologna. All rights reserved. </i> </p>
 
 
-### **Citing**
+<img style="float: center;" src="imgs/PULP_drone.png" width="100%">
+
+## **Videos**
+**&#x23F5; PULP-Dronet v1:** [video1](https://youtu.be/57Vy5cSvnaA), [video2](https://youtu.be/JKY03NV3C2s).
+**&#x23F5; PULP-Dronet v2:** [video1](https://youtu.be/41IwjAXmFQ0), [video2](https://youtu.be/Cd9GyTl6tHI).
+**&#x23F5; PULP-Dronet v3:** [video](https://youtu.be/ehNlDyhsVSc)
+
+
+*Subscribe to our [PULP Platform](https://www.youtube.com/c/PULPPlatform) youtube channel!*
+
+
+## **Citing**
 
 If you use **PULP-DroNet** in an academic or industrial context, please cite the following publications:
 
