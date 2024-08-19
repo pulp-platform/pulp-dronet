@@ -1,4 +1,4 @@
-name: pulp-dronet-v3-opensource
+name: pulp-dronet-v3
 channels:
   - defaults
 dependencies:
