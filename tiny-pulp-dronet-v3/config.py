@@ -32,31 +32,35 @@ class cfg:
 # dataset
 cfg.data_path= './dataset/training/'
 cfg.data_path_testing = './dataset/testing/'
+# logging
 cfg.logs_dir='./logs/'
-cfg.bypass=True
+cfg.model_weights_path='model/pulp-dronet-v3-resblock-1.0.pth' # testing.py = pretrained model, training.py = model to resume training.
+# CNN architecture
+cfg.block_type='ResBlock'
 cfg.depth_mult=1.0
-cfg.testing_dataset='original'
-cfg.model_weights_path='model/dronet_v3.pth'
+cfg.bypass=True
+# cpu/gpu
 cfg.gpu='0'
 cfg.workers=4
 
-# training.py
-cfg.training_dataset = 'original_and_himax'
+# == training.py ==
+# paths for saving the models
+cfg.checkpoint_path = './checkpoints/'
 cfg.model_name = 'pulp_dronet_v3'
-cfg.training_batch_size=32
+# training params
+cfg.resume_training = False
 cfg.epochs=100
+cfg.training_batch_size=32
 cfg.learning_rate = 1e-3
 cfg.lr_decay = 1e-5
-cfg.checkpoint_path = './checkpoints/'
 cfg.hard_mining_train = False
 cfg.early_stopping = False
 cfg.patience = 15
 cfg.delta = 0
-cfg.resume_training = False
 
-# testing.py
+# == testing.py ==
 cfg.testing_batch_size=32
 
-# quantize.py
+# == quantize.py ==
 cfg.nemo_export_path = 'nemo_output/'
 cfg.nemo_onnx_name = 'pulp_dronet_id_4dory.onnx'
