@@ -28,8 +28,10 @@
 class cfg:
     pass
 
-# default for all scripts
-cfg.data_path= './dataset/'
+# == For all scripts ==
+# dataset
+cfg.data_path= './dataset/training/'
+cfg.data_path_testing = './dataset/testing/'
 cfg.logs_dir='./logs/'
 cfg.bypass=True
 cfg.depth_mult=1.0
