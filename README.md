@@ -1,5 +1,3 @@
-
-
 <h1 align="center">PULP-Dronet: <i>Judge me by my size, do you? --Yoda, TESB</i></h1>
 
 <p align="center"> <i> Copyright (C) 2024 ETH Zürich, University of Bologna. All rights reserved. </i> </p>
@@ -191,3 +189,10 @@ Summary of characteristics:
 - **Deployment**: fully automated with the academic [DORY](https://github.com/pulp-platform/dory).
 
 - **Dataset**: custom made, collected with the nano-drone.
+
+
+## License
+
+All files in this repository are original and licensed under Apache-2.0, see LICENSE.Apache.md.
+
+We release the dataset ([zenodo.org/records/13348430](https://zenodo.org/records/13348430)) as open source under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
