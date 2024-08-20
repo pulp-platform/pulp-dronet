@@ -1,443 +1,465 @@
-# PULP-DroNet: *Do or do not. There is no try. --Yoda, TESB*
-
-Author: *Daniele Palossi* <dpalossi@iis.ee.ethz.ch>
-        *Vlad Niculescu* <vladn@iis.ee.ethz.ch>
-        *Lorenzo Lamberti* <lorenzo.lamberti@unibo.it>
-Copyright (C) 2021 ***ETH Zürich***. All rights reserved.
-
-<img style="float: right;" src="imgs/PULP_drone.png" width="100%">
-
-**Citing**
-
-If you use **PULP-DroNet** in an academic or industrial context, please cite the following publications:
-
-Publications:
-* *A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones* [arXiv preprint](https://arxiv.org/abs/1805.01831) -- [IEEE IoT Journal](https://ieeexplore.ieee.org/document/8715489)
-* *An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs* [arXiv preprint](https://arxiv.org/abs/1905.04166) -- [IEEE DCOSS](https://ieeexplore.ieee.org/document/8804776)
-* *Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones* [arXiv preprint]() -- [IEEE AICAS]()
-
-[PULP Platform Youtube](https://www.youtube.com/c/PULPPlatform) channel (subscribe it!): [Video1](https://youtu.be/57Vy5cSvnaA) [Video2](https://youtu.be/JKY03NV3C2s)
-
-~~~~
-@article{palossi2019pulpdronetIoTJ,
-  author={D. {Palossi} and A. {Loquercio} and F. {Conti} and E. {Flamand} and D. {Scaramuzza} and L. {Benini}},
-  title={A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones},
-  journal={IEEE Internet of Things Journal},
-  doi={10.1109/JIOT.2019.2917066},
-  ISSN={2327-4662},
-  year={2019}
-}
-~~~~
-
-~~~~
-@inproceedings{palossi2019pulpdronetDCOSS,
-  author={D. {Palossi} and F. {Conti} and L. {Benini}},
-  booktitle={2019 15th International Conference on Distributed Computing in Sensor Systems (DCOSS)},
-  title={An Open Source and Open Hardware Deep Learning-Powered Visual Navigation Engine for Autonomous Nano-UAVs},
-  pages={604-611},
-  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},
-  doi={10.1109/DCOSS.2019.00111},
-  ISSN={2325-2944},
-  month={May},
-  year={2019},
-}
-~~~~
-
-~~~~
-@inproceedings{niculescu2021pulpdronetAICAS,
-  author={V. {Niculescu} and L. {Lamberti} and D. {Palossi} and L. {Benini}},
-  booktitle={2021 IEEE International Conference on Artificial Intelligence Circuits and Systems (AICAS)},
-  title={Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones},
-  pages={},
-  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},
-  doi={},
-  ISSN={},
-  month={},
-  year={2021},
-}
-~~~~
-
-# Getting started
-
+# Tiny-PULP-Dronet v3
 
 The project's structure is the following:
 
 ```
 .
-└── pulp-dronet/
-    ├── dataset/
-    │   ├── Himax_Dataset/
-    │   ├── Udacity_Dataset/
-    │   └── Zurich_Bicycle_Dataset/
-    ├── deployment/
-    ├── imgs/
-    │   └── PULP_drone.png
+└── tiny-pulp-dronet-v3/
+    ├── dataset/ # directory where you must put the PULP-Dronet v3 dataset
+    ├── training/ # directory where all training checkpoints, logs, and tensorboard files are saved.
+    │   ├── crazyflie-app/ # Crazyflie STM32 code (flight controller)
+    │   │   ├── inc/ ...
+    │   │   ├── src/ ...
+    │   │   └── Makefile
+    │   └── gap8_app/ # AI-Deck GAP8 code (CNN processing + camera)
+    │       ├── pulp-dronet-v3/ # main running pulp-dronet v3 (19fps, 320kB)
+    │       │   ├── DORY_network/
+    │       │   │   ├── inc/ ...
+    │       │   │   └── src/ ...
+    │       │   └── Makefile
+    │       └── tiny-pulp-dronet-v3/ # main running tiny-pulp-dronet v3 (139fps, 2.9kB)
+    │           ├── DORY_network/
+    │           │   ├── inc/ ...
+    │           │   └── src/ ...
+    │           └── Makefile
     ├── model/
-    │   ├── dronet_v2_autotiler.pth
-    │   ├── dronet_v3.pth
-    │   ├── dronet_v2_autotiler.py
-    │   └── dronet_v3.py
-    ├── conda_deps.yml
-    ├── config.py
-    ├── evaluation.py
-    ├── quantize.py
-    ├── testing.py
-    ├── training.py
-    ├── utility.py
-    ├── LICENSE.apache.md
-    └── README.md
+    │   ├── dronet_v3.py # pytorch definition of the PULP-Dronet v3 CNN.
+    │   ├── pulp-dronet-v3-resblock-1.0.pth # pre-trained pytorch model of PULP-Dronet v3
+    │   └── tiny-pulp-dronet-v3-dw-pw-0.125.pth # pre-trained pytorch model of Tiny-PULP-Dronet v3
+    ├── training/ # directory where all training checkpoints, logs, and tensorboard files are saved.
+    ├── classes.py # class definitions used in the project.
+    ├── conda_deps.yml # conda environment file.
+    ├── config.py # default args for .py files.
+    ├── README.md
+    ├── testing.py # Test a pre-trained model on the testing set in pytorch
+    ├── training.py # training and validation of a PULP-Dronet v3 CNN.
+    └── utility.py # utility for python scripts: dataset loader, loss functions, checkpoint loading
 ```
 
 # Requirements
+
+### Clone
+
+Clone recursively to get all submodules
+
+```bash
+git clone --recurive git@github.com:pulp-platform/pulp-dronet.git
+```
 
 ### Python dependences
 
 Install all the python dependences (for CNN training and testing):
 
-```
+```bash
 conda env create -f conda_deps.yml
 ```
 
 ### Install NEMO (quantization tool)
 
-NEMO can be installed with `pip install pytorch-nemo` and it is already included in the python dependences `conda_deps.yml`. Therefore, no further actions required.
+Nemo is already added as a submodule inside `tiny-pulp-dronet-v3/nemo-dory/nemo/` folder.
+If the recursive clone fails for anyu reason, download it from here: [github.com/pulp-platform/nemo](https://github.com/pulp-platform/nemo).
 
 ### Clone DORY (deployment tool)
 
-[DORY](https://github.com/pulp-platform/dory) is the automatic tool for deploying DNNs on low-cost MCUs with typically less than 1MB of on-chip SRAM memory.
+Nemo is already added as a submodule inside `tiny-pulp-dronet-v3/nemo-dory/dory_dronet/` folder.
+If the recursive clone fails for anyu reason, download it from here: [github.com/LorenzoLamberti94/dory_dronet](https://github.com/LorenzoLamberti94/dory_dronet).
 
-```
-git clone https://github.com/pulp-platform/dory
-cd dory/
-git clone https://github.com/pulp-platform/dory_examples.git
-git clone https://github.com/pulp-platform/pulp-nn.git```
-```
+_Tested on this commit: caa1becddf06eac121f0d424374d37d395f29b8c_
+
 ### Install the GAP sdk
 
-_Full GWT guide can be found at: https://greenwaves-technologies.com/setting-up-sdk/_
+We use **version 3.9.1**
+The most complete guide for installing the GAP-sdk can be found on the Greenwaves website: [greenwaves-technologies.com/setting-up-sdk/](https://greenwaves-technologies.com/setting-up-sdk/)
 
-We provide some basic instructions at the end of the README: ([Go to GAP sdk setup](#gap-sdk))
+We provide some basic instructions at the end of the README. [Go to gap-sdk setup](#how-to-install-the-gap-sdk)
 
-### Download and prepare the dataset
+# The PULP-Dronet v3 dataset
 
-The PULP-DroNet dataset is composed by the following three sub-sets:
+We collected a dataset of 77k images for nano-drones' autonomous navigation, for a total of 600MB of data.
+We used the Bitcraze Crazyflie 2.1, collecting images from the AI-Deck's Himax HM01B0 monocrome camera.
 
-* [Himax Dataset](https://github.com/pulp-platform/Himax_Dataset) (only testing set);
-* [Udacity Dataset](https://github.com/udacity/self-driving-car/tree/master/datasets/CH2);
-* [Zurich Bicycle Dataset](http://rpg.ifi.uzh.ch/dronet.html).
+The images in the PULP-Dronet v3 dataset have the following characteristics:
+- **Resolution**: each image has a QVGA resolution of 324x244 pixels.
+- **Color**: all images are grayscale, so they have 1 single channel.
+- **Format**: the images are stored in `.jpeg` format.
 
-The original Udacity and Zurich Bicycle datasets were previously released in their respective open-source projects.
+A human pilot manually flew the drone, collecting *i*) images from the grayscale QVGA Himax camera sensor of the AI-deck, *ii*) the gamepad's yaw-rate, normalized in the [-1;+1] range, inputted from the human pilot, *iii*) the drone's estimated state,  and *iv*) the distance between obstacles and the drone measured by the front-looking ToF sensor.
 
-The Udacity dataset and the Zurich Bicycle dataset must be pre-processed to match out HIMAX configuration, and the hierarchy of the files must be re-arranged.
+After the data collection, we labeled all the images with a binary collision label whenever an obstacle was in the line of sight and closer than 2m.
+We recorded 301 sequences in 20 different environments.
+Each sequence of data is labeled with high-level characteristics, listed in `characteristics.json`:
+**&#x23F5;** scenario (i.e., indoor or outdoor);
+**&#x23F5;** path type (i.e., presence or absence of turns);
+**&#x23F5;** obstacle types (e.g., pedestrians, chairs);
+**&#x23F5;** flight height (i.e., 0.5, 1.0, 1.5 m/s);
+**&#x23F5;** light conditions (dark, normal, bright);
+**&#x23F5;** acquisition date;
+**&#x23F5;** a location name identifier.
 
+For training our CNNs, we augmented the training images by applying random cropping, flipping, brightness augmentation, vignetting, and blur.
+The resulting dataset has 157k images, split as follows: 110k, 7k, 15k images for training, validation, and testing, respectively.
 
-**Udacity dataset: download and reorganize**:
-
-_Please follow the step-by-step guide of the original [DroNet](https://github.com/uzh-rpg/rpg_public_dronet) repository for downloading and extracting the Udacity and Zurich bicycle datasets._
-
-Our summary:
-
-- Download the three torrent files from [here](https://github.com/udacity/self-driving-car/tree/master/datasets/CH2): Ch2_001.tar.gz.torrent, Ch2_002.tar.gz.torrent, HMB_3.bag.tar.gz.torrent
-- Once downloaded, you get:
-
-```
-Ch2_001.tar.gz   (4.4 GB)-> includes the training set HMB_1 HMB_2 HMB_4 HMB_5 HMB_6
-Ch2_002.tar.gz   (456 MB)-> includes the testing set HMB_3 (no labels!) -> discard
-HMB_3.bag.tar.gz (896 MB)-> testing set HMB_3 (with labels!)
-```
-
-- untar all files: `tar -xvf file_name.tar.gz`
-
-```
-Ch2_001 and HMB_3.bag.tar.gz, once extracted:
-HMB.txt	  	  -> info on dataset, discard
-HMB_1.bag 	  -> bag file to be extracted with udacity-driving-reader
-HMB_2.bag 	  -> bag file to be extracted with udacity-driving-reader
-HMB_3.bag 	  -> bag file to be extracted with udacity-driving-reader
-HMB_4.bag 	  -> bag file to be extracted with udacity-driving-reader
-HMB_5.bag 	  -> bag file to be extracted with udacity-driving-reader
-HMB_6.bag 	  -> bag file to be extracted with udacity-driving-reader
-```
-
-- Create a directory for each file: `mkdir -p ./extract/HMB_1 ./extract/HMB_2 ./extract/HMB_3 ./extract/HMB_4 ./extract/HMB_5 ./extract/HMB_6`
-- Extract the .bag files with [udacity-driving-reader](https://github.com/rwightman/udacity-driving-reader) in these separate folders (then we will merge them). for example:
-
-```
-mv Ch2_002/HMB_1.bag  extract/HMB_1/
-cd udacity-driving-reader/
-./run-bagdump.sh -i /<absolute_path_to>/extract/HMB_1/ -o /<absolute_path_to>/extract/HMB_1/ -- -f png
-```
-_How to use run-bagdump.sh:_  `./run-bagdump.sh -i [absolute dir with folders containing bag files] -o [absolute output dir] -- [args to pass to python script]`
+To address the labels' bias towards the center of the [-1;+1] yaw-rate range in our testing dataset, we balanced the dataset by selectively removing a portion of images that had a yaw-rate of 0.
+Specifically, we removed (only from the test set) some images having `yaw_rate==0` and `collision==1`.
 
 
-- Clean unecessary files
-
-```
-cd extract/HMB_1/
-rm -r brake.csv camera.csv gear.csv gps.csv HMB_2.bag HMB_2.yaml imu.csv steering.csv throttle.csv left/ right/
-```
-
-- We are left wit only `center/` folder and `interpolated.csv`
-- Rename the `center/` folder to `images/
-- As explained in [DroNet](https://github.com/uzh-rpg/rpg_public_dronet), process the `interpolated.csv` labels file with this [time_stamp_matching.py](https://github.com/uzh-rpg/rpg_public_dronet/blob/master/data_preprocessing/time_stamp_matching.py) script.
-
-- Process the images to convert them to the HIMAX format:cropping (center bottom) to 200x200 pixels format, conversion to grapyscale colormap, conversion to jpeg format
-
-**Zurich Bicycles dataset: download and reorganize**
-
-- download from [here](http://rpg.ifi.uzh.ch/dronet.html).
-- Process the images to convert them to the HIMAX format:cropping (center bottom) to 200x200 pixels format, conversion to grapyscale colormap, conversion to jpeg format
+| Dataset                 |   Train Images    | Validation Images |    Test Images    |    Total    |
+|-------------------------|:-----------------:|:-----------------:|:-----------------:|:-----------:|
+| Not Augmented           |      53,830       |      7,798        |      15,790       |   77,418    |
+| Not Augmented Balanced  |      53,830       |    **7,798**      |     **3,071**     |   64,699    |
+| Augmented               |   **110,138**     |     15,812        |      31,744       |  157,694    |
 
 
-**The final hierarchy of the dataset files:**
+we use the `Augmented` for training and the  `Not Augmented Balanced` for validation/testing, this is the final split:
+
+| Dataset |   Train Images    | Validation Images |    Test Images    |    Total    |
+|:-------:|:-----------------:|:-----------------:|:-----------------:|:-----------:|
+| Final   |      110,138      |      7,798        |      3,071        |   121,007   |
+
+
+**Notes:**
+
+- **Not Augmented** and **Not Augmented Balanced** datasets: Images are in full QVGA resolution (324x244px), uncropped.
+- **Augmented** dataset: Images are cropped to `200x200px`, matching the PULP-Dronet input resolution. Cropping was done randomly on the full-resolution images to create variations.
+
+
+## **Dataset download**:
+
+[TODO] zenodo
+
+
+### **Dataset Structure**
 
 ```
 .
-├── Readme.md
-|
-├── fine_tuning/
-│   ├── DSCN2561/ # Zurich_Bicycle_Dataset
-│   ├── ...
-│   ├── DSCN2697/
-│   ├── GOPR0201/
-│   ├── ...
-│   ├── GOPR0387/
-|
-│   ├── HMB_1_3900/ # Udacity_Dataset
-│   ├── ...
-│   ├── HMB_6/
-|
-│   ├── test_01/ # Himax_Dataset
-│   ├── ...
-│   └── test_24/
-├── himax/
-│   └── jpg/
-│       └── testing/
-│           ├── test_02/ # Himax_Dataset
-│           ├── ...
-│           └── test_23/
-├── testing/
-│   ├── DSCN2571/ # Zurich_Bicycle_Dataset
-│   ├── GOPR0200/
-│   ├── ...
-│   ├── GOPR0386/
-|   |
-│   └── HMB_3/ # Udacity_Dataset
-├── training/
-│   ├── DSCN2561/ # Zurich_Bicycle_Dataset
-│   ├── ...
-│   ├── DSCN2697/
-│   ├── GOPR0201/
-│   ├── ...
-│   ├── GOPR0387/
-|
-│   ├── HMB_1_3900/ # Udacity_Dataset
-│   ├── ...
-│   ├── HMB_6/
-|
-│   ├── test_01/ # Himax_Dataset
-│   ├── ...
-│   └── test_24/
-|
-└── validation/
-    ├── DSCN2682/ # Zurich_Bicycle_Dataset
-    ├── GOPR0227/
-    |
-    └── HMB_1_501# Zurich_Bicycle_Dataset
+└── Dataset_PULP_Dronet_v3_*/
+    ├── ETH finetuning/
+    │       ├── acquisition1/
+    │       │   ├── characteristics.json # metadata
+    │       │   ├── images/ # images folder
+    │       │   ├── labels_partitioned.csv # Labels for PULP-Dronet
+    │       │   └── state_labels_DroneState.csv # raw data from the crazyflie
+    |       ...
+    │       └── acquisition39/
+    ├── Lorenzo Bellone/
+    │       ├── acquisition1/
+    |       ...
+    │       └── acquisition19/
+    ├── Lorenzo Lamberti/
+    │   ├── dataset-session1/
+    |   │   ├── acquisition1/
+    |   |   ...
+    |   │   └── acquisition29/
+    │   ├── dataset-session2/
+    |   │   ├── acquisition1/
+    |   |   ...
+    |   │   └── acquisition55/
+    │   ├── dataset-session3/
+    |   │   ├── acquisition1/
+    |   |   ...
+    |   │   └── acquisition65/
+    │   └── dataset-session4/
+    |       ├── acquisition1/
+    |       ...
+    |       └── acquisition51/
+    ├── Michal Barcis/
+    │       ├── acquisition1/
+    |       ...
+    │       └── acquisition18/
+    └── TII finetuning/
+        ├── dataset-session1/
+        │       ├── acquisition1/
+        |       ...
+        │       └── acquisition18/
+        └── dataset-session2/
+                ├── acquisition1/
+                ...
+                └── acquisition39/
 ```
 
-#### Important note
+this structure applies for all the three sets mentioned above: `Dataset_PULP_Dronet_v3_not_augmented`, `Dataset_PULP_Dronet_v3_not_augmented_balanced`, `Dataset_PULP_Dronet_v3_augmented`.
 
-The himax dataset folders (`test_*`) must be named with 2 figures, for example: test_01 and **not** test_1.
+use the datasets as follows:
 
-# How to use
+### **Dataset Labels**
 
-All the python scripts (training.py, testing.py, evaluation.py, quantize.py) take default values of variables from the config.py file. Each argument added by command line will override default values.
+The `labels_partitioned.csv` file contains metadata for the PULP-Dronet v3 image dataset.
+The file includes the following columns:
+
+- **filename**: The name of the image file (e.g., `25153.jpeg`).
+- **label_yaw_rate**: The yaw rate label, representing the rotational velocity. values are `0.0`, indicating no rotation.
+- **label_collision**: The collision label, where `0` denotes no collision and `1` would indicate a collision.
+- **partition**: The dataset partition, specifying the role of each image in the dataset (e.g., `train`, `test`, or `validation`). In this sample, all images belong to the `train` set.
+
+This file is essential for mapping images to their corresponding labels and partitions, facilitating the training and evaluation of models in the PULP-Dronet v3 project.
+
+
+
+# How to: train and deploy PULP-Dronet v3
+
+All the python scripts (training.py, testing.py, quantize.py) take default values of variables from the config.py file. Each argument added by command line will override default values.
 
 ## Training
 
 ```
-python training.py --data_path=/path/to/pulp_dronet_dataset --dataset=original_and_himax --arch=dronet_dory --gpu=0 --batch_size=32
-```
-
-## Evaluating all the weights of a training session
-
-When the "--early_stopping" is disabled, the training script will save the weights of the network after each epoch (by default in the "checkpoints/pulp_dronet_v2" folder)
-evaluation.py script provides a way to test (default:validation dataset) all these weights saved for each training session. After this, you can manually select the best performing set of weights.
-
-```
-python evaluation.py --data_path=/path/to/pulp_dronet_dataset --dataset=validation --arch=dronet_dory --gpu=0 --batch_size=32 --cherry_picking_path=checkpoints/pulp_dronet_v2/
+# pulp-dronet v3
+python training.py --gpu=0 --model_weights_path=pulp_dronet_v3    --block_type=ResBlock   --depth_mult=1.0    --bypass=True
+# tiny-pulp-dronet-v3
+python training.py --gpu=0 --model_weights_path=dw_pw_noby_0.125 --block_type=Depthwise  --depth_mult=0.125  --bypass=False
 ```
 
 ## Testing
 
-Testing on the original dataset only (Udacity and Zurich bicycle datasets) will provide performances of both Accuracy (collision) and RMSE (steering angle)
+You can test the pre-trained models on the testing set.
+It will provide performances of both Accuracy (collision) and RMSE (yaw rate).
 
-```
-python testing.py --data_path=/path/to/pulp_dronet_dataset --dataset=original --arch=dronet_dory --gpu=0 --batch_size=32
-```
-
-Testing on the HIMAX dataset only will provide performances of Accuracy only (kust "collision" labels, no "steering angle" labels)
-
-```
-python testing.py --data_path=/path/to/pulp_dronet_dataset --dataset=himax --arch=dronet_dory --gpu=0 --batch_size=32
+```bash
+# pulp dronet v3
+python testing.py --gpu=0 --model_weights_path=./model/pulp-dronet-v3-resblock-1.0.pth      --block_type=ResBlock  --depth_mult=1.0    --bypass=True  --data_path_testing=./dataset/
+# tiny pulp dronet v3
+python testing.py --gpu=0 --model_weights_path=./model/tiny-pulp-dronet-v3-dw-pw-0.125.pth  --block_type=Depthwise  --depth_mult=0.125 --bypass=False --data_path_testing=./dataset/
 ```
 
-## Deployment flow: NEMO/DORY and GAP8 (GVSoC) flow: quickstart
+## Deployment flow: NEMO and DORY
 
 How to run PULP-DroNet on GAP8 or GVSoC in three steps, starting from a pretrained model.
 
-**NEMO (quantization):**
-- **Input**: model definition (pytorch format, can be found in "models/dronet_v3.py") + pre-trained weights (".pth file", can be found in "models/dronet_v3.pth" )
-- **Output**: ONNX graph model (including weights) + golden activations (".txt" files, used by DORY for checksums)
+**1. NEMO (quantization):**
 
-**DORY (generation of optimized C code):**
+**&#x23F5; Input:** model definition (pytorch format, can be found in `model/dronet_v3.py`) + pre-trained weights (`.pth file`, can be found in `model/pulp-dronet-v3-resblock-1.0.pth` and `model/tiny-pulp-dronet-v3-dw-pw-0.125`)
+
+**&#x23F5; Output:** ONNX graph model (`.onnx` file, including weights) + golden activations (`.txt` files, used by DORY for checksums)
+
+**2. DORY (generation of optimized C code):**
 - **Input**: ONNX graph model + golden activations (".txt" files)
-- **Output**: optimized C code for deployment on GAP8, generated in the "dory_examples/application/" folder
+* optimized C code for deployment on GAP8, generated in the "dory_examples/application/" folder
 
-**GAP8 (run on platform):**
+**3. GAP8 (run on platform):**
 - **Input**: optimized C code generated by DORY (dory_examples/application/" folder)
 
 ### Detailed steps:
 
 **1. Generate the onnx model with nemo script**
+
+Here the scripts for quantizing Tiny-PULP-Dronet v3 and Tiny-PULP-Dronet v3:
+
+```bash
+conda activate pulp-dronet-v3
+
+# pulp dronet v3
+python quantize.py --gpu=0 --model_weights_path=../model/pulp-dronet-v3-resblock-1.0.pth        --block_type=ResBlock   --depth_mult=1.0   --bypass=True  --data_path_testing=./dataset/ --export_path=./nemo_output/
+# tiny pulp dronet v3
+python quantize.py --gpu=0 --model_weights_path=../model/tiny-pulp-dronet-v3-dw-pw-0.125.pth    --block_type=Depthwise  --depth_mult=0.125 --bypass=False --data_path_testing=./dataset/ --export_path=./nemo_output/
 ```
-conda activate your_env
-python quantize.py --data=/path/to/your/pulpdronet/dataset  --export_path=/nemo_output/
+
+These commands will export both onnx models and weights to `./nemo_output/` folder.
+I provide you the pre-quantized models at the following directories.
+
+```bash
+nemo-dory/nemo-output/
+    ├── pulp-dronet-v3-resblock-1.0/
+    └── tiny-pulp-dronet-v3-dw-pw-0.125/
 ```
 
 **2. Use DORY to generate the C code**
 
-DORY generates the deployment C code  under the "dory_examples/application/" folder:
+DORY generates the deployment C code:
+
+```bash
+cd nemo-dory/dory_dronet/dory_example/
+conda activate dory
+
+# generate pulp-dronet v3
+python network_generate.py --network_dir=../../nemo_output/pulp-dronet-v3-resblock-1.0/ --sdk=gap_sdk --Bn_Relu_Bits=64 --l2_buffer_size 410000  --l1_buffer_size 35000 --verbose_level=Check_all+Perf_final
+
+# generate tiny-pulp-dronet v3
+python network_generate.py --network_dir=../../nemo_output/tiny-pulp-dronet-v3-dw-pw-0.125/ --sdk=gap_sdk --Bn_Relu_Bits=64 --l2_buffer_size 410000  --l1_buffer_size 35000 --verbose_level=Check_all+Perf_final
+```
+
+The code gets generated under the `dory_dronet/dory_examples/application/` folder.
+I provide you the already generated code at the following directories:
 
 ```
-cd /dory/dory_example/
-conda activate your_env
-python network_generate.py --network_dir ../nemo_output/ --verbose_level Check_all+Perf_final --Bn_Relu_Bits 64 --l2_buffer_size 420000 --sdk=gap_sdk
+drone-applications/
+    └── gap8_app/
+        ├── pulp-dronet-v3/
+        └── tiny-pulp-dronet-v3/
 ```
+
 
 **3. Build and run on GAP8 (or GVSoC)**
 
 _remember: open a new terminal, source your sdk and export the cfg for your debugger_
 
-_remember: your gap sdk (or pulp sdk) must be correctly installed before you try to run on GAP8_ ([Go to GAP sdk setup](#gap-sdk))
+_remember: your gap sdk (or pulp sdk) must be correctly installed before you try to run on GAP8_ ([Go to GAP sdk setup](#how-to-install-the-gap-sdk))
 
-```
+```bash
 source gap_sdk/configs/ai_deck.sh
-export GAPY_OPENOCD_CABLE=$HOME/work/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg
+export GAPY_OPENOCD_CABLE=$HOME/gap/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg
 ```
 
 then run PULP-DroNet on GAP8 **: )**
 
+```bash
+# RUN pulp-dronet v3 on the AI-Deck's GAP8
+cd pulp-dronet/tiny-pulp-dronet-v3/drone-applications/gap8_app/pulp-dronet-v3/
+make clean all run CORE=8 platform=board
+# RUN tiny-pulp-dronet v3 on the AI-Deck's GAP8
+cd pulp-dronet/tiny-pulp-dronet-v3/drone-applications/gap8_app/tiny-pulp-dronet-v3/
+make clean all run CORE=8 platform=board
 ```
-cd dory/dory_example/application
-make clean all run CORE=8 platform=gvsoc  (GVSoC)
-make clean all run CORE=8 platform=board  (GAP8)
+
+
+# How to install the gap-sdk
+
+_Tested version of the sdk is: 3.9.1_
+
+You must install the GAP sdk (or the [PULP sdk](https://github.com/pulp-platform/pulp-sdk)) to use GVSoC or to run code on GAP8 SoC.
+Here you can find the basic steps to install the GAP sdk. Full GWT guide can be found at: https://greenwaves-technologies.com/setting-up-sdk/
+
+
+## Prerequisites
+
+#### OS and gcc version
+
+```
+Ubuntu 20.04.6 LTS
+gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2)
 ```
 
-## Pre-generated deployment example
+#### Conda
 
-The code generated by DORY only performs one single forward-pass on the PULP-Dronet network.
-Therefore, it  must be then integrated with other functionalies of the AI-deck (camera, UART, ..) and with the crazyflie main control board (STM32) to actually control the drone's flight.
+*Python version: 3.6.10*
 
-in the `deployment/` folder we provide an example of of both the GAP8 application and crazyflie-firmware patches required to perform the following operations in a loop:
+Create a conda environment (and call it gap_sdk) to install all the packets needed by the sdk (pip commands below).
 
-- Open the himax camera
-- acquire an image
-- forward pass on the PULP-Dronet CNN
-- forward the probability of collision and the steering angle to the main control board (STM32) via UART
-- The control board translates the steering anche and collision probability in flight controls
+```bash
+conda create --name gap_sdk python==3.6.10 numpy cython
+conda activate gap_sdk
+```
 
-Follow the [deployment/README.md](./deployment/README.md) instructions to flash this pre-generated example on both the GAP8 and STM32 MCUs.
+#### packages for the sdk
 
-
-# Bonus: Install GAP SDK
-
-_Tested versions of the sdk are: 3.8.1_
-
-You must install the GAP sdk (or the [PULP sdk](https://github.com/pulp-platform/pulp-sdk)) to use GVSoC or to run code on GAP8 SoC. Here you can find the basic steps to install the GAP sdk.
-
-_Full GWT guide can be found at: https://greenwaves-technologies.com/setting-up-sdk/_
-
-#### Prerequisites
 ```
 sudo apt-get install -y build-essential git libftdi-dev libftdi1 doxygen python3-pip libsdl2-dev curl cmake libusb-1.0-0-dev scons gtkwave libsndfile1-dev rsync autoconf automake texinfo libtool pkg-config libsdl2-ttf-dev
 ```
 
-Tip: create also a conda environment (and call it gap_sdk) to install all the packets needed by the sdk
+#### Opencv3.2
+
+Unfortunately it is not ufficially supported anymore. But here's how to install it
+
+This is a repo that allows to do so: [gist.github.com/syneart/3e6bb68de8b6390d2eb18bff67767dcb](https://gist.github.com/syneart/3e6bb68de8b6390d2eb18bff67767dcb)
+To install execute the following
+
+```bash
+wget -O - https://gist.githubusercontent.com/syneart/3e6bb68de8b6390d2eb18bff67767dcb/raw/OpenCV3.2withContrib.sh | bash
+```
+
+check if installed correctly:
+```bash
+ dpkg -l | grep libopencv
+```
+
+## Clone sdk and extra tools
+
+The final  repository has to look like
 
 ```
-conda create --name gap_sdk python numpy cython
-conda activate gap_sdk
+/home/YOUR_USER/gap/
+    ├── gap_gnu_toolchain
+    ├── gap8_openocd
+    └── gap-sdk/
 ```
 
-#### Toolchain
+#### Install Toolchain
 
-```
-git clone https://github.com/GreenWaves-Technologies/gap_riscv_toolchain_ubuntu_18.git
-cd ~/gap_riscv_toolchain_ubuntu_18
+```bash
+git clone https://github.com/GreenWaves-Technologies/gap_gnu_toolchain
+cd gap_gnu_toolchain
+git checkout 6fc27059038575e3bfef2b36ad7963a3ea77863e
 ./install.sh
+# if you chose a custom path for install, add this to your .bashrc file:
+export GAP_RISCV_GCC_TOOLCHAIN="custom/path/that/you/chose"
 ```
 
-**TIP**: if you chose a custom path for install, add this to your .bashrc file:
+#### Install OpenOCD
 
-> export GAP_RISCV_GCC_TOOLCHAIN="custom/path/that/you/chose"
+*commit SHA: 6fc27059038575e3bfef2b36ad7963a3ea77863e*
 
-#### Build GAP SDK
+Clone, build and install OpenOCD for GAP8:
 
+```bash
+git clone https://github.com/GreenWaves-Technologies/gap8_openocd.git
+cd gap8_openocd
+git checkout 6fc27059038575e3bfef2b36ad7963a3ea77863e
+./bootstrap
+./configure --program-prefix=gap8- --prefix=/usr --datarootdir=/usr/share/gap8-openocd
+make -j
+sudo make -j install
+
+#Finally, copy openocd udev rules and reload udev rules
+sudo cp /usr/share/gap8-openocd/openocd/contrib/60-openocd.rules /etc/udev/rules.d
+sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
+
+Now, add your user to dialout group.
+
+```bash
+sudo usermod -a -G dialout <username> # This will require a logout / login to take effect
+```
+
+Finally, logout of your session and log back in.
+
+
+
+
+#### Build gap-sdk
+
+*gap-sdk version: 3.9.1 (bbdec24018212447cb9ece8ca615b969994a0a37)*
+
+```bash
+# clone anche checkout
 git clone https://github.com/GreenWaves-Technologies/gap_sdk.git
 cd gap_sdk
+git checkout release-v3.9.1
 git submodule update --init --recursive
-source configs/ai-ai_deck.sh
-```
 
-```
+# source the right board
+source configs/ai-ai_deck.sh
+
+# install dependencies
+conda activate gap_sdk
 pip install -r requirements.txt
 pip install -r tools/nntool/requirements.txt
-```
 
-```
+# build the sdk!
 make sdk
 ```
 
-**IMPORTANT:** always run the sourceme.sh in a fresh new terminal. Never source this file two times in the same terminal (might have issues)
+IMPORTANT: always run the sourceme.sh in a fresh new terminal.
 
 
-#### TEST: To check everything works
+#### Check everything works
 
-**Test on GVSoC**
-```
-cd examples/pmsis/helloworld
+**Test on GVSoC (system-on-chip simulator)**
+
+```bash
+cd gap_sdk/examples/pmsis/helloworld
 make clean all run platform=gvsoc
 ```
 
 **Test on the board**
 
-```
+```bash
 export GAPY_OPENOCD_CABLE=interface/ftdi/olimex-arm-usb-ocd-h.cfg
-cd examples/pmsis/helloworld
+export GAP_RISCV_GCC_TOOLCHAIN="/home/YOUR_USER_PATH/gap/gap_gnu_toolchain"
+
+cd gap_sdk/examples/pmsis/helloworld/
 make clean all run platform=board
 ```
 
 There are different cables setup by default for each board ([here the list of defices supported](https://github.com/GreenWaves-Technologies/gap_sdk/tree/master/tools/gap8-openocd/tcl/interface/ftdi)). In case you want to use a different cable, you can define this environment variable:
 
-> GAPY_OPENOCD_CABLE=$HOME/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg
-
-
-
-
-#### How can I use the GAP sdk a second time?:
-
-after installing, the only commands you need to run on a fresh new terminal in order to use the gap sdk are:
-
 ```
-cd gap_sdk
-source configs/ai_deck.sh
 GAPY_OPENOCD_CABLE=$HOME/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg
-
 ```
-
-
-
-
