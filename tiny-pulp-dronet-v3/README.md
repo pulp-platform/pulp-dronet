@@ -6,7 +6,9 @@ The project's structure is the following:
 .
 └── tiny-pulp-dronet-v3/
     ├── dataset/ # directory where you must put the PULP-Dronet v3 dataset
-    ├── training/ # directory where all training checkpoints, logs, and tensorboard files are saved.
+    │   ├── training/ # put here the training dataset, dowloaded from Zenodo
+    │   └── testing/  # put here the testing dataset, dowloaded from Zenodo
+    ├── drone-applications/ # code running on the Bitcraze Crazyflie 2.1 nano-drone and the GAP8 SoC
     │   ├── crazyflie-app/ # Crazyflie STM32 code (flight controller)
     │   │   ├── inc/ ...
     │   │   ├── src/ ...
@@ -22,10 +24,14 @@ The project's structure is the following:
     │           │   ├── inc/ ...
     │           │   └── src/ ...
     │           └── Makefile
+    ├── imgs/ # images for readme
     ├── model/
     │   ├── dronet_v3.py # pytorch definition of the PULP-Dronet v3 CNN.
     │   ├── pulp-dronet-v3-resblock-1.0.pth # pre-trained pytorch model of PULP-Dronet v3
     │   └── tiny-pulp-dronet-v3-dw-pw-0.125.pth # pre-trained pytorch model of Tiny-PULP-Dronet v3
+    ├── nemo-dory/
+    │   ├── nemo/ # external: NEMO tool for quantization of CNNs
+    │   └── dory_dronet/  # external: DORY tool for deployment of CNNs on MCUs
     ├── training/ # directory where all training checkpoints, logs, and tensorboard files are saved.
     ├── classes.py # class definitions used in the project.
     ├── conda_deps.yml # conda environment file.
@@ -75,6 +81,29 @@ We provide some basic instructions at the end of the README. [Go to gap-sdk setu
 
 # The PULP-Dronet v3 dataset
 
+
+<h2 align="center" style="margin-top: 20px; margin-bottom: 20px;">
+  <a href="https://zenodo.org/records/13348430">
+    Download
+  </a>
+</h2>
+
+<p align="center" style="width: 70%; margin: 20px auto;">
+  <i> We release the dataset as open source under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+  See License.CC.md inside the downloaded zip file. </i>
+</p>
+
+
+<p align="center">
+  <img src="imgs/dataset.jpg" width="70%">
+</p>
+
+
+
+
+
+
+
 We collected a dataset of 77k images for nano-drones' autonomous navigation, for a total of 600MB of data.
 We used the Bitcraze Crazyflie 2.1, collecting images from the AI-Deck's Himax HM01B0 monocrome camera.
 
@@ -88,13 +117,6 @@ A human pilot manually flew the drone, collecting *i*) images from the grayscale
 After the data collection, we labeled all the images with a binary collision label whenever an obstacle was in the line of sight and closer than 2m.
 We recorded 301 sequences in 20 different environments.
 Each sequence of data is labeled with high-level characteristics, listed in `characteristics.json`:
-**&#x23F5;** scenario (i.e., indoor or outdoor);
-**&#x23F5;** path type (i.e., presence or absence of turns);
-**&#x23F5;** obstacle types (e.g., pedestrians, chairs);
-**&#x23F5;** flight height (i.e., 0.5, 1.0, 1.5 m/s);
-**&#x23F5;** light conditions (dark, normal, bright);
-**&#x23F5;** acquisition date;
-**&#x23F5;** a location name identifier.
 
 For training our CNNs, we augmented the training images by applying random cropping, flipping, brightness augmentation, vignetting, and blur.
 The resulting dataset has 157k images, split as follows: 110k, 7k, 15k images for training, validation, and testing, respectively.
@@ -105,12 +127,12 @@ Specifically, we removed (only from the test set) some images having `yaw_rate==
 
 | Dataset                 |   Train Images    | Validation Images |    Test Images    |    Total    |
 |-------------------------|:-----------------:|:-----------------:|:-----------------:|:-----------:|
-| Not Augmented           |      53,830       |      7,798        |      15,790       |   77,418    |
-| Not Augmented Balanced  |      53,830       |    **7,798**      |     **3,071**     |   64,699    |
-| Augmented               |   **110,138**     |     15,812        |      31,744       |  157,694    |
+| PULP-Dronet v3          |      53,830       |      7,798        |      15,790       |   77,418    |
+| PULP-Dronet v3 testing  |      53,830       |    **7,798**      |     **3,071**     |   64,699    |
+| PULP-Dronet v3 training |   **110,138**     |     15,812        |      31,744       |  157,694    |
 
 
-we use the `Augmented` for training and the  `Not Augmented Balanced` for validation/testing, this is the final split:
+we use the `PULP-Dronet v3 training` for training and the  `PULP-Dronet v3 testing` for validation/testing, this is the final split:
 
 | Dataset |   Train Images    | Validation Images |    Test Images    |    Total    |
 |:-------:|:-----------------:|:-----------------:|:-----------------:|:-----------:|
@@ -119,13 +141,8 @@ we use the `Augmented` for training and the  `Not Augmented Balanced` for valida
 
 **Notes:**
 
-- **Not Augmented** and **Not Augmented Balanced** datasets: Images are in full QVGA resolution (324x244px), uncropped.
-- **Augmented** dataset: Images are cropped to `200x200px`, matching the PULP-Dronet input resolution. Cropping was done randomly on the full-resolution images to create variations.
-
-
-## **Dataset download**:
-
-[TODO] zenodo
+- **PULP-Dronet v3** and **PULP-Dronet v3 testing** datasets: Images are in full QVGA resolution (324x244px), uncropped.
+- **PULP-Dronet v3 training** dataset: Images are cropped to `200x200px`, matching the PULP-Dronet input resolution. Cropping was done randomly on the full-resolution images to create variations.
 
 
 ### **Dataset Structure**
@@ -177,21 +194,58 @@ we use the `Augmented` for training and the  `Not Augmented Balanced` for valida
                 └── acquisition39/
 ```
 
-this structure applies for all the three sets mentioned above: `Dataset_PULP_Dronet_v3_not_augmented`, `Dataset_PULP_Dronet_v3_not_augmented_balanced`, `Dataset_PULP_Dronet_v3_augmented`.
+This structure applies for all the three sets mentioned above: `PULP_Dronet_v3`, `PULP_Dronet_v3_training`, `PULP_Dronet_v3_testing`.
 
 use the datasets as follows:
 
 ### **Dataset Labels**
 
-The `labels_partitioned.csv` file contains metadata for the PULP-Dronet v3 image dataset.
+**1.** **`labels_partitioned.csv`**
+The  file contains metadata for the PULP-Dronet v3 image dataset.
 The file includes the following columns:
 
 - **filename**: The name of the image file (e.g., `25153.jpeg`).
-- **label_yaw_rate**: The yaw rate label, representing the rotational velocity. values are `0.0`, indicating no rotation.
-- **label_collision**: The collision label, where `0` denotes no collision and `1` would indicate a collision.
-- **partition**: The dataset partition, specifying the role of each image in the dataset (e.g., `train`, `test`, or `validation`). In this sample, all images belong to the `train` set.
+- **label_yaw_rate**: The yaw rate label, representing the rotational velocity. values are in the [-1, +1] range, where `YawRate > 0` means counter-clockwise turn --> turn left, and `YawRate < 0` means clockwise turn --> turn right.
+- **label_collision**: The collision label, in range [0,1]. `0` denotes no collision and `1` indicates a collision.
+- **partition**: The dataset partition, i.e., `train`, `test`, or `valid`.
 
-This file is essential for mapping images to their corresponding labels and partitions, facilitating the training and evaluation of models in the PULP-Dronet v3 project.
+**2.** **`characteristics.json`**
+contains metadata. This might be useful the user to filter the dataset on some specific characteristics, or to partition the images types equally:
+**&#x23F5;** scenario (i.e., indoor or outdoor);
+**&#x23F5;** path type (i.e., presence or absence of turns);
+**&#x23F5;** obstacle types (e.g., pedestrians, chairs);
+**&#x23F5;** flight height (i.e., 0.5, 1.0, 1.5 m/s);
+**&#x23F5;** behaviour in presence of obstacles (i.e., overpassing, stand still, n/a);
+**&#x23F5;** light conditions (dark, normal, bright, mixed);
+**&#x23F5;** a location name identifier;
+**&#x23F5;** acquisition date.
+
+
+**3.** **`labeled_images.csv`**
+the same as `labels_partitioned.csv`, but without the `partition` column. You can use this file to repeat the partition into train, valid, and test sets.
+
+**4.** **`state_labels_DroneState.csv`**
+This is the raw data logged from the crazyflie at ~100 samples/s.
+The file includes the following columns:
+
+- **timeTicks**: The timestamp.
+- **range.front**: The distance measurement from the front VL53L1x ToF sensor [mm].
+- **mRange.rangeStatusFront**: The status code of the front range sensor (check the VL53L1x datasheet for more info)
+- **controller.yawRate**: The yaw rate command given by the human pilot (in radians per second).
+- **ctrltarget.yaw**: The target yaw rate set by the control system (in radians per second).
+- **stateEstimateZ.rateYaw**: The estimated yaw rate from the drone's state estimator (in radians per second).
+
+**Data Processing Workflow**
+
+- **`dataset_processing.py`**:
+  - **Input**: `state_labels_DroneState.csv`
+  - **Output**: `labeled_images.csv`
+  - **Function**: matches the drone state labels (~100Hz) timestamp to the image's timestamp (~10Hz), discarding extra drone states.
+
+- **`dataset_partitioning.py`**:
+  - **Input**: `labeled_images.csv`
+  - **Output**: `labels_partitioned.csv`
+  - **Function**: Partitions the labeled images into training, validation, and test sets.
 
 
 
