@@ -72,10 +72,10 @@ def create_parser(cfg):
     """
     parser = argparse.ArgumentParser(description='PyTorch PULP-DroNet Training')
     # Path to dataset
-    parser.add_argument('-d', '--data_path',
-                        help='Path to the training dataset',
-                        default=cfg.data_path,
-                        metavar='DIRECTORY')
+    # parser.add_argument('-d', '--data_path',
+    #                     help='Path to the training dataset',
+    #                     default=cfg.data_path,
+    #                     metavar='DIRECTORY')
     parser.add_argument('--data_path_testing',
                         help='Path to the testing dataset',
                         metavar='DIRECTORY')
