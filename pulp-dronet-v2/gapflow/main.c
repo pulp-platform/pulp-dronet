@@ -1,25 +1,25 @@
 /*-----------------------------------------------------------------------------
  Copyright (C) 2020-2021 ETH Zurich, Switzerland, University of Bologna, Italy.
- All rights reserved.                                                          
-                                                                               
- Licensed under the Apache License, Version 2.0 (the "License");               
- you may not use this file except in compliance with the License.              
- See LICENSE.apache.md in the top directory for details.                       
- You may obtain a copy of the License at                                       
-                                                                               
-   http://www.apache.org/licenses/LICENSE-2.0                                  
-                                                                               
- Unless required by applicable law or agreed to in writing, software           
- distributed under the License is distributed on an "AS IS" BASIS,             
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.      
- See the License for the specific language governing permissions and           
- limitations under the License.                                                
-                                                                               
- File:    main.c   
+ All rights reserved.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ See LICENSE in the top directory for details.
+ You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+ File:    main.c
  Authors: Vlad Niculescu   	<vladn@iis.ee.ethz.ch>
           Lorenzo Lamberti 	<lorenzo.lamberti@unibo.it>
           Daniele Palossi  <dpalossi@iis.ee.ethz.ch> <daniele.palossi@idsia.ch>
- Date:    15.03.2021                                                           
+ Date:    15.03.2021
 -------------------------------------------------------------------------------*/
 
 
@@ -44,7 +44,7 @@
 #define AT_INPUT_SIZE 	(AT_INPUT_WIDTH*AT_INPUT_HEIGHT*AT_INPUT_COLORS)
 
 #define __XSTR(__s) __STR(__s)
-#define __STR(__s) #__s 
+#define __STR(__s) #__s
 
 typedef signed char NETWORK_OUT_TYPE;
 
@@ -76,7 +76,7 @@ int body(void)
 	pi_freq_set(PI_FREQ_DOMAIN_FC, FREQ_FC*1000*1000);
 	pi_freq_set(PI_FREQ_DOMAIN_CL, FREQ_CL*1000*1000);
 	PMU_set_voltage(voltage, 0);
-	printf("Set VDD voltage as %.2f, FC Frequency as %d MHz, CL Frequency = %d MHz\n", 
+	printf("Set VDD voltage as %.2f, FC Frequency as %d MHz, CL Frequency = %d MHz\n",
 		(float)voltage/1000, FREQ_FC, FREQ_CL);
 
     pi_fs_file_t *file;
@@ -103,7 +103,7 @@ int body(void)
         pmsis_exit(-2);
     }
 
-	// Initialize the ram 
+	// Initialize the ram
   	struct pi_hyperram_conf hyper_conf;
   	pi_hyperram_conf_init(&hyper_conf);
   	pi_open_from_conf(&HyperRam, &hyper_conf);
@@ -113,7 +113,7 @@ int body(void)
 		pmsis_exit(-3);
 	}
 
-	// Allocate L3 buffer to store input data 
+	// Allocate L3 buffer to store input data
 	if (pi_ram_alloc(&HyperRam, &l3_buff, (uint32_t) AT_INPUT_SIZE))
 	{
 		printf("Ram malloc failed !\n");
@@ -178,7 +178,7 @@ int body(void)
 	}
 	printf("Network Constructor was OK!\n");
 
-	// Dispatch task on the cluster 
+	// Dispatch task on the cluster
 	pi_cluster_send_task_to_cl(&cluster_dev, task);
 
     printf("Model:\t%s\n\n", __XSTR(AT_MODEL_PREFIX));

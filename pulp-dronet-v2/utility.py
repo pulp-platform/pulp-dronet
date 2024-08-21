@@ -4,7 +4,7 @@
 #                                                                               #
 # Licensed under the Apache License, Version 2.0 (the "License");               #
 # you may not use this file except in compliance with the License.              #
-# See LICENSE.apache.md in the top directory for details.                       #
+# See LICENSE in the top directory for details.                       #
 # You may obtain a copy of the License at                                       #
 #                                                                               #
 #   http://www.apache.org/licenses/LICENSE-2.0                                  #
@@ -73,7 +73,7 @@ class DronetDataset(Dataset):
         for dir in sorted(dirs):
             full_dir_path = os.path.join(root, dir)
             for sub_root, sub_dirs, files in os.walk(full_dir_path):
-                # sorted file names 
+                # sorted file names
                 for file in sorted(files):
                     # print(os.path.join(full_dir_path, file))
                     if file.endswith(".jpg"):
@@ -163,7 +163,7 @@ def write_log(logs_path, log_str, prefix='train', should_print=True, mode='a', e
 def custom_mse(y_true, y_pred, t, device): # Mean Squared Error
 
     output_MSE = torch.zeros(1, 1, dtype=torch.float32, requires_grad=False)
-    
+
     if (t==0).sum().item() > 0:
         target_s = y_true[t==0]
         input_s  = y_pred[0][t==0]
@@ -185,7 +185,7 @@ def custom_accuracy(y_true, y_pred, t, device):
     pre = 0.0
     rec = 0.0
     f1 = 0.0
-    
+
     if (t==1).sum().item() > 0:
         pred =  y_pred[1][t==1] >= 0.5
         truth = y_true[t==1] >= 0.5
@@ -209,7 +209,7 @@ def custom_accuracy(y_true, y_pred, t, device):
 def custom_bce(y_true, y_pred, t, device): # Debunking loss functions
 
     output_BCE = torch.zeros(1, 1, dtype=torch.float32, requires_grad=False)
-    
+
     if (t==1).sum().item() > 0:
         target_c = y_true[t==1]
         input_c  = y_pred[1][t==1]
@@ -249,7 +249,7 @@ def custom_loss(y_true, y_pred, t, epoch, args, device):  #prime 10 epoche train
         else:
             loss_MSE = nn.MSELoss(size_average=None, reduce=None, reduction='mean')
             output_MSE = loss_MSE(input_s, target_s).to(device)
- 
+
     if n_samples_entropy > 0:
         k = int(min(k_entropy, n_samples_entropy))
         target_c = y_true[t==1]
@@ -273,7 +273,7 @@ def custom_loss(y_true, y_pred, t, epoch, args, device):  #prime 10 epoche train
 def custom_mse_id_nemo(y_true, y_pred, t, fc_quantum, device): # Mean Squared Error
 
     output_MSE = torch.zeros(1, 1, dtype=torch.float32, requires_grad=False)
-    
+
     if (t==0).sum().item() > 0:
         target_s = y_true[t==0]
         input_s  = y_pred[0][t==0]
@@ -311,7 +311,7 @@ class EarlyStopping:
         Args:
             patience (int): How long to wait after last time validation loss improved.
                             Default: 7
-            verbose (bool): If True, prints a message for each validation loss improvement. 
+            verbose (bool): If True, prints a message for each validation loss improvement.
                             Default: False
             delta (float): Minimum change in the monitored quantity to qualify as an improvement.
                             Default: 0

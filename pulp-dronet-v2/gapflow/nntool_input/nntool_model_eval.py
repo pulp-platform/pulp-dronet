@@ -1,27 +1,27 @@
 # Copyright (C) 2020-2021 ETH Zurich, Switzerland, University of Bologna, Italy.
-# All rights reserved.                                                           
-                                                                            
-# Licensed under the Apache License, Version 2.0 (the "License");               
-# you may not use this file except in compliance with the License.              
-# See LICENSE.apache.md in the top directory for details.                       
-# You may obtain a copy of the License at                                       
-                                                                            
-#   http://www.apache.org/licenses/LICENSE-2.0                                  
-                                                                            
-# Unless required by applicable law or agreed to in writing, software           
-# distributed under the License is distributed on an "AS IS" BASIS,             
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.      
-# See the License for the specific language governing permissions and           
-# limitations under the License.                                                
-                                                                            
-# File:    nntool_model_eval.py      
-# Author:  Vlad Niculescu      <vladn@iis.ee.ethz.ch>                           
-# Date:    15.03.2021                                                           
+# All rights reserved.
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# See LICENSE in the top directory for details.
+# You may obtain a copy of the License at
+
+#   http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# File:    nntool_model_eval.py
+# Author:  Vlad Niculescu      <vladn@iis.ee.ethz.ch>
+# Date:    15.03.2021
 
 import os
 import sys
 sys.path.append('../')
-from os.path import join 
+from os.path import join
 
 import argparse
 import logging
@@ -196,7 +196,7 @@ def validate(INPUT):
 def main():
     # parse arguments
     global args
-    from config import cfg # load configuration with all default values 
+    from config import cfg # load configuration with all default values
     parser = create_parser(cfg)
     args = parser.parse_args()
     dataset_path = join('..', args.data_path)

@@ -195,6 +195,6 @@ Summary of characteristics:
 
 ## License
 
-All files in this repository are original and licensed under Apache-2.0, see LICENSE.Apache.md.
+All files in this repository are original and licensed under Apache-2.0, see LICENSE.
 
 We release the dataset ([zenodo.org/records/13348430](https://zenodo.org/records/13348430)) as open source under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.

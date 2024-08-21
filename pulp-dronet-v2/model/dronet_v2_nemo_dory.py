@@ -4,7 +4,7 @@
 #                                                                               #
 # Licensed under the Apache License, Version 2.0 (the "License");               #
 # you may not use this file except in compliance with the License.              #
-# See LICENSE.apache.md in the top directory for details.                       #
+# See LICENSE in the top directory for details.                       #
 # You may obtain a copy of the License at                                       #
 #                                                                               #
 #   http://www.apache.org/licenses/LICENSE-2.0                                  #
@@ -33,7 +33,7 @@ class ResBlock(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(ResBlock, self).__init__()
         self.conv1 = nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=3, stride=2, padding=1, dilation=1, groups=1, bias=False, padding_mode='zeros')
-        self.conv2 = nn.Conv2d(in_channels=out_channels, out_channels=out_channels, kernel_size=3, stride=1, padding=1, dilation=1, groups=1, bias=False, padding_mode='zeros')         
+        self.conv2 = nn.Conv2d(in_channels=out_channels, out_channels=out_channels, kernel_size=3, stride=1, padding=1, dilation=1, groups=1, bias=False, padding_mode='zeros')
         self.bn1 = nn.BatchNorm2d(num_features=out_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
         self.bn2 = nn.BatchNorm2d(num_features=out_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
         self.relu1 = nn.ReLU6(inplace=False)
@@ -79,9 +79,9 @@ class dronet(nn.Module):
 
     def forward(self, x):
         x = self.first_conv(x)
-        x = self.bn1(x)   
-        x = self.relu1(x) 
-        x = self.pool(x) 
+        x = self.bn1(x)
+        x = self.relu1(x)
+        x = self.pool(x)
         x = self.resBlock1(x)
         x = self.resBlock2(x)
         x = self.resBlock3(x)
@@ -115,9 +115,9 @@ class dronet_nemo(nn.Module):
 
     def forward(self, x):
         x = self.first_conv(x)
-        x = self.bn1(x)   
-        x = self.relu1(x) 
-        x = self.pool(x) 
+        x = self.bn1(x)
+        x = self.relu1(x)
+        x = self.pool(x)
         x = self.resBlock1(x)
         x = self.resBlock2(x)
         x = self.resBlock3(x)
