@@ -23,7 +23,10 @@
 # Date:    01.03.2024                                                         #
 #-----------------------------------------------------------------------------#
 
+import os
+import argparse
 import cv2
+from dataset_visualizer.classes import Acquisition
 
 # Colors (B, G, R)
 WHITE = (255, 255, 255)
@@ -34,6 +37,37 @@ LIGHT_YELLOW = (105, 255, 105)
 RED = (0, 0, 255)
 GREEN = (0, 200, 0)
 GRAY = (100, 100, 100)
+
+
+def create_parser():
+    parser = argparse.ArgumentParser(description=('Image viewer for the dataset collector framework'))
+    parser.add_argument(
+        '-d',
+        '--dataset_path',
+        help='path to dataset folder ',
+        default=os.path.join(os.path.dirname(__file__), '..', 'dataset'),
+    )
+    parser.add_argument(
+        '-a',
+        '--acquisition',
+        help=(
+            'name of the aquisition to visualize; '
+            'with --video you can use "all" to save all videos'
+        ),
+        required=True,
+    )
+    # parser.add_argument(
+    #     '--video',
+    #     help='do not open the visualizer but create a video',
+    #     action='store_true'
+    # )
+    # parser.add_argument(
+    #     '--framerate',
+    #     help='framerate for the --video option',
+    #     default=15
+    # )
+    return parser
+
 
 
 def create_cv2_image(image, scale=1, highlight=False):
@@ -123,3 +157,67 @@ def create_cv2_image(image, scale=1, highlight=False):
         interpolation=cv2.INTER_AREA
     )
     return img
+
+
+def viewer_opencv(acquisition):
+
+    number_of_imgs = len(acquisition.images)
+    image_idx = 0
+    while True:
+        # --- GET IMAGE and IMAGE PATH---
+        image = acquisition.images[image_idx]
+        img_name = image.name
+
+        # --- Create cv2 image with overlays ---
+        img = create_cv2_image(image)
+
+        # --- Add image name overlay---
+        img = cv2.putText(img,
+                          "{}".format(img_name),
+                          (150, 10),
+                          cv2.FONT_HERSHEY_SIMPLEX,
+                          0.3,  # font size
+                          RED,
+                          1)
+
+        # --- SHOW IMAGE ---
+        cv2.imshow("Preview", img)
+        cv2.setWindowTitle("Preview", 'Image: %s' %(img_name)) # update title
+
+        # --- SCROLL TO NEW IMAGE ---
+        k = cv2.waitKey(100)
+        if k == 27:  # Escape key
+            break
+        elif k == ord('d'):
+            image_idx = (image_idx + 1) % number_of_imgs
+        elif k == ord('a'):
+            image_idx = (image_idx - 1) % number_of_imgs
+
+    cv2.destroyAllWindows()
+
+
+def main():
+    parser = create_parser()
+    args = parser.parse_args()
+
+    acquisition_folder_path = os.path.join(
+        args.dataset_path,
+        args.acquisition
+    )
+
+    if not os.path.exists(acquisition_folder_path):
+        print(
+            "The selected aquisition does not exist. Please provide both "
+            "the acquisition name and the dataset path."
+        )
+        return 1
+
+    acquisition = Acquisition(
+        acquisition_folder_path,
+        include_deleted=True,
+    )
+
+    viewer_opencv(acquisition)
+
+if __name__ == "__main__":
+    main()
