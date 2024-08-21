@@ -355,7 +355,10 @@ class CrazyflieControllerManager:
     @classmethod
     def set_selected_controller(cls, selected_controller: Joystick):
         if not cls._is_reading_input:
-            selected_controller.init()
+            try:
+                selected_controller.init()
+            except:
+                print("ERROR: Couldn't initialize joystick. Did you connect it?")
             cls._selected_controller = selected_controller
             for callback in cls._callbacks_to_notify_on_selected_controller_change:
                 callback(selected_controller)
