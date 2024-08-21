@@ -96,7 +96,6 @@ class AcquisitionVisualizer:
         root.bind("<e>", lambda _: self.mark_deleted(False))
         root.bind("<q>", lambda _: self.mark_deleted(True))
         root.bind("<p>", lambda _: self.toggle_animation())
-
         root.bind("<i>", lambda _: self.mark_straight())
         root.bind("<l>", lambda _: self.mark_turn("left"))
         root.bind("<r>", lambda _: self.mark_turn("right"))
