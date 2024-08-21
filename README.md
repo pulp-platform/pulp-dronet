@@ -1,9 +1,11 @@
-<h1 align="center">PULP-Dronet: <i>Judge me by my size, do you? --Yoda, TESB</i></h1>
+<h1 align="center">PULP-Dronet</h1>
+
+<h3 align="center"><i>Judge me by my size, do you? --Yoda, TESB</i></h3>
 
 <p align="center"> <i> Copyright (C) 2024 ETH Zürich, University of Bologna. All rights reserved. </i> </p>
 
-
 <img style="float: center;" src="imgs/PULP_drone.png" width="100%">
+
 
 ## **Videos**
 * **PULP-Dronet v1:** [video1](https://youtu.be/57Vy5cSvnaA), [video2](https://youtu.be/JKY03NV3C2s).
