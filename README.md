@@ -6,9 +6,9 @@
 <img style="float: center;" src="imgs/PULP_drone.png" width="100%">
 
 ## **Videos**
-**&#x23F5; PULP-Dronet v1:** [video1](https://youtu.be/57Vy5cSvnaA), [video2](https://youtu.be/JKY03NV3C2s).
-**&#x23F5; PULP-Dronet v2:** [video1](https://youtu.be/41IwjAXmFQ0), [video2](https://youtu.be/Cd9GyTl6tHI).
-**&#x23F5; PULP-Dronet v3:** [video](https://youtu.be/ehNlDyhsVSc)
+* **PULP-Dronet v1:** [video1](https://youtu.be/57Vy5cSvnaA), [video2](https://youtu.be/JKY03NV3C2s).
+* **PULP-Dronet v2:** [video1](https://youtu.be/41IwjAXmFQ0), [video2](https://youtu.be/Cd9GyTl6tHI).
+* **PULP-Dronet v3:** [video](https://youtu.be/ehNlDyhsVSc)
 
 
 *Subscribe to our [PULP Platform](https://www.youtube.com/c/PULPPlatform) youtube channel!*
@@ -18,12 +18,12 @@
 
 If you use PULP-Dronet in an academic or industrial context, please cite the listed publications:
 
-**&#x23F5;** *"Distilling Tiny and Ultra-fast Deep Neural Networks for Autonomous Navigation on Nano-UAVs"*, 2024([IEEE IoT Journal](https://ieeexplore.ieee.org/abstract/document/10606040), [arXiv](https://arxiv.org/abs/2407.12675#))
-**&#x23F5;** *"Tiny-PULP-Dronets: Squeezing Neural Networks for Faster and Lighter Inference on Multi-Tasking Autonomous Nano-Drones"*, 2022([IEEE AICAS](https://ieeexplore.ieee.org/document/9869931), [arXiv](https://arxiv.org/abs/2407.02405))
-**&#x23F5;** *"Improving Autonomous Nano-Drones Performance via Automated End-to-End Optimization and Deployment of DNNs"*, 2021 ([IEEE JETCAS](https://ieeexplore.ieee.org/document/9606685))
-**&#x23F5;** *"Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones"*, 2021 ([IEEE AICAS](https://ieeexplore.ieee.org/document/9458550))
-**&#x23F5;** *"A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones"*, 2019 ( [IEEE IoT Journal](https://ieeexplore.ieee.org/document/8715489), [arXiv preprint](https://arxiv.org/abs/1805.01831))
-**&#x23F5;** *"An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs"*, 2019 ([IEEE DCOSS](https://ieeexplore.ieee.org/document/8804776), [arXiv preprint](https://arxiv.org/abs/1905.04166))
+* *"Distilling Tiny and Ultra-fast Deep Neural Networks for Autonomous Navigation on Nano-UAVs"*, 2024([IEEE IoT Journal](https://ieeexplore.ieee.org/abstract/document/10606040), [arXiv](https://arxiv.org/abs/2407.12675#))
+* *"Tiny-PULP-Dronets: Squeezing Neural Networks for Faster and Lighter Inference on Multi-Tasking Autonomous Nano-Drones"*, 2022([IEEE AICAS](https://ieeexplore.ieee.org/document/9869931), [arXiv](https://arxiv.org/abs/2407.02405))
+* *"Improving Autonomous Nano-Drones Performance via Automated End-to-End Optimization and Deployment of DNNs"*, 2021 ([IEEE JETCAS](https://ieeexplore.ieee.org/document/9606685))
+* *"Automated Tuning of End-to-end Neural FlightControllers for Autonomous Nano-drones"*, 2021 ([IEEE AICAS](https://ieeexplore.ieee.org/document/9458550))
+* *"A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones"*, 2019 ( [IEEE IoT Journal](https://ieeexplore.ieee.org/document/8715489), [arXiv preprint](https://arxiv.org/abs/1805.01831))
+* *"An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs"*, 2019 ([IEEE DCOSS](https://ieeexplore.ieee.org/document/8804776), [arXiv preprint](https://arxiv.org/abs/1905.04166))
 
 
 ```bibtex
