@@ -243,7 +243,9 @@ python dataset_post_processing.py --data_path=acquisition1
 
 #### Dataset viewer
 
-After creating the `labeled_images.csv` we can use the dataset visualizer to scroll through the images and see the state associated with it:
+After creating the `labeled_images.csv` we can use the `pulp-dronet/dataset_visualizer` to inspect both the images and labels.
+
+We also provide inside this repo a lightweight opencv viewer
 
 ~~~~
 cd /dataset_collector_framework/dataset_collector/dataset_tools/
