@@ -6,7 +6,7 @@
 #                                                                             #
 # Licensed under the Apache License, Version 2.0 (the "License");             #
 # you may not use this file except in compliance with the License.            #
-# See LICENSE.apache.md in the top directory for details.                     #
+# See LICENSE in the top directory for details.                     #
 # You may obtain a copy of the License at                                     #
 #                                                                             #
 #   http://www.apache.org/licenses/LICENSE-2.0                                #
@@ -96,7 +96,6 @@ class AcquisitionVisualizer:
         root.bind("<e>", lambda _: self.mark_deleted(False))
         root.bind("<q>", lambda _: self.mark_deleted(True))
         root.bind("<p>", lambda _: self.toggle_animation())
-
         root.bind("<i>", lambda _: self.mark_straight())
         root.bind("<l>", lambda _: self.mark_turn("left"))
         root.bind("<r>", lambda _: self.mark_turn("right"))

@@ -6,7 +6,7 @@
 #                                                                             #
 # Licensed under the Apache License, Version 2.0 (the "License");             #
 # you may not use this file except in compliance with the License.            #
-# See LICENSE.apache.md in the top directory for details.                     #
+# See LICENSE in the top directory for details.                     #
 # You may obtain a copy of the License at                                     #
 #                                                                             #
 #   http://www.apache.org/licenses/LICENSE-2.0                                #
@@ -17,7 +17,7 @@
 # See the License for the specific language governing permissions and         #
 # limitations under the License.                                              #
 #                                                                             #
-# File:    metadata_visualizer.py                                             #
+# File:    video.py                                                           #
 # Authors:                                                                    #
 #          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
 #          Michal Barcis    <michal.barcis@tii.ae>                            #
@@ -29,9 +29,8 @@ import os
 from os.path import join
 import cv2
 
-from dataset_visualizer.models import Dataset
+from dataset_visualizer.classes import Dataset
 from dataset_visualizer.image_visualizer import create_cv2_image, RED
-
 
 def save_all_videos(dataset_path):
     d = Dataset(dataset_path)
@@ -40,7 +39,6 @@ def save_all_videos(dataset_path):
         print(f"Saving video for acquisition '{acquisition.name}'")
         create_video(acquisition, acquisition.name)
     print("All videos saved")
-
 
 def create_video(acquisition, video_name='video'):
     number_of_imgs = len(acquisition.images)

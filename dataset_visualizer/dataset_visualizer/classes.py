@@ -6,7 +6,7 @@
 #                                                                             #
 # Licensed under the Apache License, Version 2.0 (the "License");             #
 # you may not use this file except in compliance with the License.            #
-# See LICENSE.apache.md in the top directory for details.                     #
+# See LICENSE in the top directory for details.                     #
 # You may obtain a copy of the License at                                     #
 #                                                                             #
 #   http://www.apache.org/licenses/LICENSE-2.0                                #
@@ -17,7 +17,7 @@
 # See the License for the specific language governing permissions and         #
 # limitations under the License.                                              #
 #                                                                             #
-# File:    models.py                                                          #
+# File:    classes.py                                                          #
 # Authors:                                                                    #
 #          Michal Barcis    <michal.barcis@tii.ae>                            #
 #          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
@@ -54,20 +54,6 @@ class Dataset:
                 continue
             # print(f"--- acquisition '{acquisition_path}' initialized successfully")
         print("Dataset successfully initialized")
-
-        ## Michal's solution
-        # acquisition_names = os.listdir(os.path.join(self.path))
-        # for name in acquisition_names:
-        #     print(f"--- initializing acquisition '{name}'")
-        #     try:
-        #         self.acquisitions.append(
-        #             Acquisition(os.path.join(self.path, name))
-        #         )
-        #     except Acquisition.InitializationError:
-        #         print(f"acquisition '{name}' initialization error, skipping")
-        #         continue
-        #     print(f"--- acquisition '{name}' initialized successfully")
-        # print("Dataset successfully initialized")
 
     def create_dataframe(self):
         """ This method allows you to create a dataframe with all the

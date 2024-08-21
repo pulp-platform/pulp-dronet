@@ -6,7 +6,7 @@
 #                                                                             #
 # Licensed under the Apache License, Version 2.0 (the "License");             #
 # you may not use this file except in compliance with the License.            #
-# See LICENSE.apache.md in the top directory for details.                     #
+# See LICENSE in the top directory for details.                     #
 # You may obtain a copy of the License at                                     #
 #                                                                             #
 #   http://www.apache.org/licenses/LICENSE-2.0                                #
@@ -28,7 +28,7 @@
 import argparse
 import os
 
-from dataset_visualizer.models import Acquisition
+from dataset_visualizer.classes import Acquisition
 from dataset_visualizer.video import create_video, save_all_videos
 from dataset_visualizer.acquisition_visualizer import create_tk_window
 

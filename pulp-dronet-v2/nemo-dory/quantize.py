@@ -4,7 +4,7 @@
 #                                                                               #
 # Licensed under the Apache License, Version 2.0 (the "License");               #
 # you may not use this file except in compliance with the License.              #
-# See LICENSE.apache.md in the top directory for details.                       #
+# See LICENSE in the top directory for details.                       #
 # You may obtain a copy of the License at                                       #
 #                                                                               #
 #   http://www.apache.org/licenses/LICENSE-2.0                                  #
@@ -23,29 +23,29 @@
 #-------------------------------------------------------------------------------#
 
 # Description:
-# Script of NEMO quantization tool for automatic export of a pytorch-defined NN 
+# Script of NEMO quantization tool for automatic export of a pytorch-defined NN
 # architecture in Dory format
-# Input: a pytorch network definition ("--flow=nemo_dory") and a set of 
+# Input: a pytorch network definition ("--flow=nemo_dory") and a set of
 #        pre-trained weights (".pth" file given through '--model_weights').
-# Output: - ONNX graph representation file (of the 8-bit quantized network) 
+# Output: - ONNX graph representation file (of the 8-bit quantized network)
 #                (Note: this file is comprehensive of NN weights)
 #         - Golden activations for all the layers (used by DORY only for checksums)
 #
-# Brief description of NEMO: 
+# Brief description of NEMO:
 # (more details can be found at: https://github.com/pulp-platform/nemo)
-# NEMO operates on three different "levels" of quantization-aware DNN representations, 
+# NEMO operates on three different "levels" of quantization-aware DNN representations,
 # all built upon torch.nn.Module and torch.autograd.Function:
-# 1. Fake-quantized FQ: replaces regular activations (e.g., ReLU) with 
-#    quantization-aware ones (PACT) and dynamically quantized weights (with linear 
-#    PACT-like quantization), maintaining full trainability (similar to the 
+# 1. Fake-quantized FQ: replaces regular activations (e.g., ReLU) with
+#    quantization-aware ones (PACT) and dynamically quantized weights (with linear
+#    PACT-like quantization), maintaining full trainability (similar to the
 #    native PyTorch support, but not based on it).
-# 2. Quantized-deployable QD: replaces all function with deployment-equivalent 
-#    versions, trading off trainability for a more accurate representation of 
+# 2. Quantized-deployable QD: replaces all function with deployment-equivalent
+#    versions, trading off trainability for a more accurate representation of
 #    numerical behavior on real hardware.
-# 3. Integer-deployable ID: replaces all activation and weight tensors used 
-#    along the network with integer-based ones. It aims at bit-accurate representation 
-#    of actual hardware behavior. All the quantized representations support mixed-precision 
-#    weights (signed and asymmetric) and activations (unsigned). The current version of NEMO 
+# 3. Integer-deployable ID: replaces all activation and weight tensors used
+#    along the network with integer-based ones. It aims at bit-accurate representation
+#    of actual hardware behavior. All the quantized representations support mixed-precision
+#    weights (signed and asymmetric) and activations (unsigned). The current version of NEMO
 #    targets per-layer quantization; work on per-channel quantization is in progress.
 
 #essentials
@@ -77,9 +77,9 @@ def create_parser(cfg):
     parser.add_argument('-d', '--data_path', help='path to dataset',
                         default=cfg.data_path)
     parser.add_argument('-s', '--dataset', default=cfg.testing_dataset,
-                        choices=['original', 'himax'], 
+                        choices=['original', 'himax'],
                         help='test on original or himax dataset')
-    parser.add_argument('-m', '--model_weights', default=cfg.model_weights, 
+    parser.add_argument('-m', '--model_weights', default=cfg.model_weights,
                         help='path to the weights of the testing network (.pth file)')
     parser.add_argument('-a', '--flow',metavar='DEPLOYMENT_FLOW', default='nemo_dory',
                         choices=['nemo_dory'],
@@ -87,10 +87,10 @@ def create_parser(cfg):
                         'Note that the --flow=gapflow model should be quantized with '
                         'the corresponding Greenwaves Technologies tool called NNTools.'
                         'Check the gapflow/ folder to use that deployment flow.')
-    parser.add_argument('--export_path', default=cfg.nemo_export_path, 
+    parser.add_argument('--export_path', default=cfg.nemo_export_path,
                         help='folder where the nemo output (onnx and layer activations)'
                         'will be saved')
-    parser.add_argument('--onnx_name', default=cfg.nemo_onnx_name, 
+    parser.add_argument('--onnx_name', default=cfg.nemo_onnx_name,
                         help='the name for the output onnx graph')
     parser.add_argument('--gpu', help='which gpu to use. Just one at'
                         'the time is supported', default=cfg.gpu)
@@ -198,7 +198,7 @@ def testing_nemo(model, testing_loader, device, id_stage=False, test_only_one=Fa
 #pulp dronet
 def test_on_one_image(model, testing_dataset, device, id_stage=False):
     # this function takes just one image and makes a forward pass into the model.
-    # it is used for saving the intermediate activations values of the network, 
+    # it is used for saving the intermediate activations values of the network,
     # and DORY uses them for calculating checksums.
 
     model.eval()
@@ -206,11 +206,11 @@ def test_on_one_image(model, testing_dataset, device, id_stage=False):
         image = test_dataset[0][0]
         if id_stage:
             image *= 255
-        
+
         image = torch.reshape(image, (1,1,200,200))
         image = image.to(device)
         outputs = model(image)
-    return 
+    return
 
 
 
@@ -222,7 +222,7 @@ if __name__ == '__main__':
 
     # parse arguments
     global args
-    from config import cfg # load configuration with all default values 
+    from config import cfg # load configuration with all default values
     parser = create_parser(cfg)
     args = parser.parse_args()
     model_weights_path= join('..', args.model_weights)
@@ -238,7 +238,7 @@ if __name__ == '__main__':
     # import PULP-DroNet CNN architecture
     if args.flow == 'nemo_dory':
         from model.dronet_v2_nemo_dory import dronet_nemo
-    else: 
+    else:
         raise ValueError('Doublecheck the deployment flow that you are trying to use.\
                           Make sure that you are not tring to use a network that \
                           was intended for GAPflow (NNtool +AutoTiler). You must select \
@@ -276,7 +276,7 @@ if __name__ == '__main__':
         else:
             print('Failed to find the [''state_dict''] inside the checkpoint. I will try to open it as a checkpoint.')
         model.load_state_dict(checkpoint)
-    else: 
+    else:
         raise RuntimeError('Failed to open checkpoint. provide a checkpoint.pth.tar file')
 
     # load testing set
@@ -284,10 +284,10 @@ if __name__ == '__main__':
         root=testing_data_path,
         transform=transforms.ToTensor())
     test_loader = torch.utils.data.DataLoader(
-        test_dataset, 
-        batch_size=args.batch_size, 
-        shuffle=False, 
-        num_workers=args.workers) 
+        test_dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
+        num_workers=args.workers)
 
     ############################################################################
     # Full Precision
@@ -323,11 +323,11 @@ if __name__ == '__main__':
     model_q.id_stage()
     test_mse, test_acc = testing_nemo(model_q, test_loader, device, id_stage=True)
     print("IntegerDeployable MSE: %.4f , Acc: %.4f, Model size: %.2fkB"  % (test_mse,  test_acc, model_size))
-    
+
     ############################################################################
     # get activation layers names
     ############################################################################
-    # By defining the union of Conv-BN-ReLU, this function extracts the activations 
+    # By defining the union of Conv-BN-ReLU, this function extracts the activations
     # (by meaning of output) of each layer so defined.
 
     names = []
@@ -343,12 +343,12 @@ if __name__ == '__main__':
     ############################################################################
     # Export ONNX and Activations
     ############################################################################
-    
+
     # define onnx and activations save path
     export_path = args.export_path # for both onnx and activations
     export_onnx_path = join(export_path,args.onnx_name)
-    # If not existing already, create a new folder for all the NEMO output (ONNX + activations) 
-    os.makedirs(export_path, exist_ok=True) 
+    # If not existing already, create a new folder for all the NEMO output (ONNX + activations)
+    os.makedirs(export_path, exist_ok=True)
 
     # remove old NEMO's activations
     clean_directory(export_path)
@@ -370,7 +370,7 @@ if __name__ == '__main__':
         np.savetxt(join(export_path,'out_layer%d.txt') % l, t.flatten(), '%.3f', newline=',\\\n', header = names[l] + ' (shape %s)' % str(list(t.shape)))
 
     print('\nExport of golden activations was successful \n')
-    
+
     network_output_quantum = get_fc_quantum(model_q)
     print('network_output_quantum:', network_output_quantum)
 

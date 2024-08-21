@@ -6,7 +6,7 @@
 #                                                                             #
 # Licensed under the Apache License, Version 2.0 (the "License");             #
 # you may not use this file except in compliance with the License.            #
-# See LICENSE.apache.md in the top directory for details.                     #
+# See LICENSE in the top directory for details.                     #
 # You may obtain a copy of the License at                                     #
 #                                                                             #
 #   http://www.apache.org/licenses/LICENSE-2.0                                #
@@ -29,7 +29,7 @@ from os.path import join
 import argparse
 import json
 import pandas as pd
-from models import Dataset
+from classes import Dataset
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -41,7 +41,6 @@ if not os.path.exists(EXPORT_PATH):
 # Some plots restyling
 plt.style.use("seaborn-dark")
 
-
 def create_parser():
     parser = argparse.ArgumentParser(
         description=("Plots of statistics for the dataset")
@@ -51,7 +50,6 @@ def create_parser():
                         help=("Dataset path with all the acquisitions."), default="../dataset")
 
     return parser
-
 
 def cumulative_stats(df, stats):
     # Compute the cumulative stats directly from the dataframe
