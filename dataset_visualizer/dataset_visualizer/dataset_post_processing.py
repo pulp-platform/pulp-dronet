@@ -23,6 +23,7 @@
 
 import pandas as pd
 import os
+from os.path import join
 import numpy as np
 import glob
 import argparse
@@ -64,6 +65,61 @@ def label_images_gap_ticks(dataset_path):
         labeled_images_df = pd.concat([labeled_images_df, close_state_samples], axis=1)
     return labeled_images_df
 
+
+def match_images_and_states(acquisition_path):
+    # This function matches the drone's states and images by acquisition
+    # timestamp.
+    # We have 2 inputs:
+    #   - state_labels_DroneState.csv file  contains all the drone's state
+    #   logged (acquisition_timestamp, roll, pitch, yaw, front_distance).
+    #   Logging rate ~100 state/s - images/ folder: contains all the images
+    #   saved with the GAP8 camera (and WiFi tx). Each image is named with its
+    #   acquisition timestamp. Logging rate ~10 images/s Therefore: we normally
+    #   collect the drone's state with an higher logging rate w.r.t. the image
+    #   logging rate. We will end with more states than images.  This function:
+    #   finds the correspondence between images and states. We only keep 1
+    #   state for each image, and we discard the extra states we collected
+    #   Output: a single csv file that contains (image_timestap.jpeg ,
+    #   state_timestamp , roll , pitch , yaw , thrust , range.front ,
+    #   mRange.rangeStatusFront)
+    state_labels_files = [
+        join(acquisition_path, "state_labels_DroneState.csv"),
+    ]
+
+    image_names = sorted(
+        os.listdir(join(acquisition_path, "images")),
+        key=lambda image_name: int(image_name.split('.')[0])
+    )
+    image_ticks = [int(img_name.split('.')[0]) for img_name in image_names]
+    labeled_images_df = pd.DataFrame(image_names, columns=["filename"])
+
+    for state_labels_file in state_labels_files:
+        state_labels = pd.read_csv(state_labels_file)
+        if "ticks" in state_labels.columns.values:
+            state_labels = state_labels.rename(columns={"ticks": "timeTicks"})
+            print(state_labels.columns)
+        minimum_distance_idxs = []
+
+        if(len(state_labels) == 0):
+            continue
+
+        for image_tick in image_ticks:
+            minimum_distance_idxs.append(
+                np.argmin(abs(state_labels["timeTicks"].values - image_tick))
+            )
+        close_state_samples = (
+            state_labels.iloc[minimum_distance_idxs, :].reset_index(drop=True)
+        )
+        confName = state_labels_file.split("_")[-1].split('.')[0]
+        close_state_samples = close_state_samples.rename(
+            columns={"timeTicks": confName + "_TimeTicks"}
+        )
+        labeled_images_df = pd.concat(
+            [labeled_images_df, close_state_samples],
+            axis=1
+        )
+
+    return labeled_images_df
 
 # --- WORK IN PROGRESS: a function that is meant to be used with the front distance sensor ---
 
