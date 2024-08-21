@@ -34,7 +34,8 @@ To get the datasetcollector app running there are three main steps required:
 ### Prerequisites:
 
 - Install the GAP sdk by following [Greenwaves' instructions](https://greenwaves-technologies.com/setting-up-sdk/).
-
+- Download the [crazyflie-firmware (tag 2020.09)](https://github.com/bitcraze/crazyflie-firmware/tree/2020.09) to `pulp-dronet/dataset_collection_framework/external/`
+- Install [crazyflie-clients-python (tag 2020.09.01)](https://github.com/bitcraze/crazyflie-clients-python/tree/2020.09.1)
 
 ### Note:
 - There have been some [problems if USB 3.0 was enabled](https://github.com/bitcraze/crazyflie-lib-python/issues/130) when using the crazyradio dongle (very long time for scanning the devices), hence it is recommended to use USB2.0 in the VM settings.
