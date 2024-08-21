@@ -1,4 +1,4 @@
-<div style="text-align: center; margin: 0px; padding: 0px;">
+<div align="center"; margin: 0px; padding: 0px;">
   <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/pulp-platform/pulp-dronet?style=flat-square">
   <img alt="GitHub forks" src="https://img.shields.io/github/forks/pulp-platform/pulp-dronet?style=flat-square">
   <img alt="GitHub watchers" src="https://img.shields.io/github/watchers/pulp-platform/pulp-dronet?style=flat-square">
