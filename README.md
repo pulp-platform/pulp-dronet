@@ -1,3 +1,17 @@
+<div style="text-align: center; margin: 0px; padding: 0px;">
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/pulp-platform/pulp-dronet?style=for-the-badge">
+  <img alt="GitHub forks" src="https://img.shields.io/github/forks/pulp-platform/pulp-dronet?style=for-the-badge">
+  <img alt="GitHub watchers" src="https://img.shields.io/github/watchers/pulp-platform/pulp-dronet?style=for-the-badge">
+  <img alt="GitHub License" src="https://img.shields.io/github/contributors/pulp-platform/pulp-dronet?style=for-the-badge">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/pulp-platform/pulp-dronet?style=for-the-badge">
+</div>
+
+<!-- Possible styles
+style=social
+style=for-the-badge
+style=flat-square
+ -->
+
 <h1 align="center">PULP-Dronet</h1>
 
 <h3 align="center"><i>Judge me by my size, do you? --Yoda, TESB</i></h3>
@@ -7,7 +21,9 @@
 <img style="float: center;" src="imgs/PULP_drone.png" width="100%">
 
 
+
 ## **Videos**
+
 * **PULP-Dronet v1:** [video1](https://youtu.be/57Vy5cSvnaA), [video2](https://youtu.be/JKY03NV3C2s).
 * **PULP-Dronet v2:** [video1](https://youtu.be/41IwjAXmFQ0), [video2](https://youtu.be/Cd9GyTl6tHI).
 * **PULP-Dronet v3:** [video](https://youtu.be/ehNlDyhsVSc)
