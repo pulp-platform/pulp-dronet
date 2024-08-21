@@ -176,7 +176,7 @@ Achieving AI multi tasking perception on a nano-UAV presents significant challen
 The extremely limited payload on nano-UAVs restricts them to accommodate only ultra-low-power microcontroller units that have stringent computational and memory constraint, which have prevented the deployment of multiple AI tasks onboard.
 Therefore, we focus on optimizing and minimizing the AI workloads without compromising the drone’s behavior when stressed in real-world testing scenarios.
 We achieve a speedup of 8.5× in the inference time, compared to PULP-Dronet v2, with an inference throughput of 139 frames/s.
-Moreover, we develop amethodology for dataset collection on a nano-UAV. We collect unified collision avoidance and steering information onlywith nano-UAV onboard resources, without dependence on external infrastructures.The resulting PULP-Dronet v3 dataset consists of 66k labeled images, which we release open-source along with our ;
+Moreover, we develop amethodology for dataset collection on a nano-UAV. We collect unified collision avoidance and steering information onlywith nano-UAV onboard resources, without dependence on external infrastructures.The resulting PULP-Dronet v3 dataset consists of 66k labeled images.
 
 We release here, as open source, all our code, including: the PULP-Dronet v3 dataset, our dataset collection framework, and our trained networks.
 
@@ -190,7 +190,7 @@ Summary of characteristics:
 
 - **Deployment**: fully automated with the academic [DORY](https://github.com/pulp-platform/dory).
 
-- **Dataset**: custom made, collected with the nano-drone.
+- **[Dataset](https://zenodo.org/records/13348430)**: custom made, collected with the nano-drone.
 
 
 ## License
