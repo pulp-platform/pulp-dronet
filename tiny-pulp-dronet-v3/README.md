@@ -4,16 +4,28 @@ The project's structure is the following:
 
 ```
 .
+└── drone-applications/
+    ├── crazyflie-dronet-app/
+    ├── external/
+    |    └── crazyflie-firmware # tag 2022.01
+    ├── gap8-dronet-app/ # use gap-sdk 3.9.1
+    └── README.md
+```
+
+```
+.
 └── tiny-pulp-dronet-v3/
     ├── dataset/ # directory where you must put the PULP-Dronet v3 dataset
     │   ├── training/ # put here the training dataset, dowloaded from Zenodo
     │   └── testing/  # put here the testing dataset, dowloaded from Zenodo
     ├── drone-applications/ # code running on the Bitcraze Crazyflie 2.1 nano-drone and the GAP8 SoC
-    │   ├── crazyflie-app/ # Crazyflie STM32 code (flight controller)
+    │   ├── crazyflie-dronet-app/ # Crazyflie STM32 code (flight controller)
     │   │   ├── inc/ ...
     │   │   ├── src/ ...
     │   │   └── Makefile
-    │   └── gap8_app/ # AI-Deck GAP8 code (CNN processing + camera)
+    |   ├── external/
+    |   |    └── crazyflie-firmware # use tag 2022.01
+    │   └── gap8-dronet-app/ # AI-Deck GAP8 code (CNN processing + camera). Use gap-sdk 3.9.1
     │       ├── pulp-dronet-v3/ # main running pulp-dronet v3 (19fps, 320kB)
     │       │   ├── DORY_network/
     │       │   │   ├── inc/ ...
@@ -70,8 +82,6 @@ If the recursive clone fails for anyu reason, download it from here: [github.com
 Nemo is already added as a submodule inside `tiny-pulp-dronet-v3/nemo-dory/dory_dronet/` folder.
 If the recursive clone fails for anyu reason, download it from here: [github.com/LorenzoLamberti94/dory_dronet](https://github.com/LorenzoLamberti94/dory_dronet).
 
-_Tested on this commit: caa1becddf06eac121f0d424374d37d395f29b8c_
-
 ### Install the GAP sdk
 
 We use **version 3.9.1**
@@ -97,11 +107,6 @@ We provide some basic instructions at the end of the README. [Go to gap-sdk setu
 <p align="center">
   <img src="imgs/dataset.jpg" width="70%">
 </p>
-
-
-
-
-
 
 
 We collected a dataset of 77k images for nano-drones' autonomous navigation, for a total of 600MB of data.
@@ -362,6 +367,88 @@ make clean all run CORE=8 platform=board
 cd pulp-dronet/tiny-pulp-dronet-v3/drone-applications/gap8_app/tiny-pulp-dronet-v3/
 make clean all run CORE=8 platform=board
 ```
+
+# Fly with PULP-Dronet
+
+
+The `drone-applications/` folder contains the code for visual-based autonomous navigation that runs aboard the STM32 of the Crazyflie 2.1, and on the GAP8 SoC of the AI deck.
+* the `crazyflie-dronet-application` is the flight controller, taking the CNN's outputs from the AI-Deck via UART
+* the `gap8-dronet-app` is the code that acquires a new image, and makes the CNN forward inference, and ultimately passes the outputs to the STM32 via UART.
+
+```
+.
+└── drone-applications/
+    ├── crazyflie-dronet-app/
+    ├── external/
+    |    └── crazyflie-firmware # tag 2022.01
+    ├── gap8-dronet-app/ # use gap-sdk 3.9.1
+    └── README.md
+```
+
+### Requirements
+
+* The gap-sdk installed (_tag: 3.9.1_). ([Instructions](../README.md##how-to-install-the-gap-sdk))
+* download crazyflie-firmware (_tag: 2022.01_) into `./drone-applications/external/crazyflie-firmware/`
+* Install the Crazyflie Client: [https://github.com/bitcraze/crazyflie-clients-python](https://github.com/bitcraze/crazyflie-clients-python). (_tag: 2022.01_)
+* Install the crazyflie python libraries: [https://github.com/bitcraze/crazyflie-lib-python](https://github.com/bitcraze/crazyflie-lib-python) (_tag: 0.1.17.1_)
+
+**Warning:** there is no compatibility with the new versions, as the crazyflie firmware changed drastically.
+
+
+### 1. Flash the Crazyflie Application
+
+Compile the code
+
+```sh
+cd ./drone-applications/crazyflie-dronet-app/
+make clean platform=cf2
+```
+
+Now flash the application. While the drone is powered-off, hold the power-on button for 3 seconds. This should put the drone into bootloader mode. Then run:
+
+```sh
+make cload
+```
+
+Wait for the flashing to be completed.
+
+
+### 2. Flash the GAP8 SoC
+
+Power on the AI-deck and connect the JTAG cable.
+
+Source the gap-sdk (make sure you installed it)
+
+```bash
+source gap_sdk/configs/ai_deck.sh
+export GAPY_OPENOCD_CABLE=$HOME/gap/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg
+```
+
+Flash the gap8 application.
+
+```sh
+cd ./drone-applications/gap-dronet-app/
+make clean all
+make flash
+```
+
+Now power cycle the drone (turn of and on). Pulp-Dronet is running in the AI-deck!
+
+
+### 3. Running Pulp-Dronet
+
+Mount the AI-deck on the top of the Crazyflie.
+Launch the Crazyflie Client:
+
+```sh
+cfclient
+```
+
+To fly the drone, go to the `Parameters` tab of the cfclient and set the `fly` parameter from the `START_STOP` group to 1.
+The drone will take off and start the autonomous navigation.
+
+Note: if you enable debug printfs, you can see them in the `Console` tab of the cfclient.
+
 
 
 # How to install the gap-sdk
