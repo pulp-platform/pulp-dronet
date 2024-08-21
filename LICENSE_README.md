@@ -1,4 +1,8 @@
-# PULP-Dronet v1
+# LICENSE README
+this file describes the license of all the files in this repository, and the license of any external module
+
+
+## PULP-Dronet v1
 The project's structure is the following:
 
 ```
@@ -48,7 +52,7 @@ A copy of the Apache 2.0 license is included in `pulp-dronet/LICENSE.apache.md` 
 
 All the files in `pulp-dronet-v1/dataset/Udacity_Dataset` and  `pulp-dronet-v1/dataset/Zurich_Bicycle_Dataset` are released with the MIT License included in the same folder as `LICENSE.mit.md`.
 
-# PULP-Dronet v2
+## PULP-Dronet v2
 The project's structure is the following:
 
 The project's structure is the following:
@@ -89,7 +93,7 @@ A copy of the Apache 2.0 license is included in `pulp-dronet/LICENSE`.
 
 
 
-# Tiny-PULP-Dronet v2'3
+## Tiny-PULP-Dronet v2'3
 
 The project's structure is the following:
 
@@ -143,12 +147,12 @@ External modules, which can be downloaded from external github reopositories, ar
 * `pulp-dronet/tiny-pulp-dronet-v3/drone-applications/external/crazyflie-firmware` is released under GNU General Public License v3.0
 
 
-# PULP-Dronet v3 Dataset
+## PULP-Dronet v3 Dataset
 
 We release the dataset ([zenodo.org/records/13348430](https://zenodo.org/records/13348430)) as open source under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 
 
-# Dataset collector framework
+## Dataset collector framework
 
 The project's structure is the following:
 
@@ -215,7 +219,7 @@ External modules, which can be downloaded from external github reopositories, ar
 * `/pulp-dronet/dataset_collection_framework/crazyflie_firmware_patches/crazyflie-firmware-modified-dataset` is released under GNU General Public License v3.0
 * `/pulp-dronet/dataset_collection_framework/external/crazyflie-firmware` is released under GNU General Public License v3.0.
 
-# Dataset visualizer
+## Dataset visualizer
 
 The project's structure is the following:
 
