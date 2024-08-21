@@ -1,16 +1,6 @@
 # Tiny-PULP-Dronet v3
 
-The project's structure is the following:
-
-```
-.
-└── drone-applications/
-    ├── crazyflie-dronet-app/
-    ├── external/
-    |    └── crazyflie-firmware # tag 2022.01
-    ├── gap8-dronet-app/ # use gap-sdk 3.9.1
-    └── README.md
-```
+## Project Structure
 
 ```
 .
