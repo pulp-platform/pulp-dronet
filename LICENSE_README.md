@@ -44,7 +44,7 @@ All the folders, sub-folders and files in this project except for the content of
 * `pulp-dronet-v1/dataset/Zurich_Bicycle_Dataset`
 
 are released open-source with the Apache 2.0 license.
-A copy of the Apache 2.0 license is included in `pulp-dronet\LICENSE.apache.md` and in `pulp-dronet-v1/dataset/Himax_Dataset/LICENSE.apache.md`.
+A copy of the Apache 2.0 license is included in `pulp-dronet/LICENSE.apache.md` and in `pulp-dronet-v1/dataset/Himax_Dataset/LICENSE.apache.md`.
 
 All the files in `pulp-dronet-v1/dataset/Udacity_Dataset` and  `pulp-dronet-v1/dataset/Zurich_Bicycle_Dataset` are released with the MIT License included in the same folder as `LICENSE.mit.md`.
 
@@ -85,7 +85,7 @@ The project's structure is the following:
 ```
 All the folders, sub-folders and files in this project are released open-source with the Apache 2.0 license.
 
-A copy of the Apache 2.0 license is included in `pulp-dronet\LICENSE`.
+A copy of the Apache 2.0 license is included in `pulp-dronet/LICENSE`.
 
 
 
@@ -137,7 +137,7 @@ The project's structure is the following:
 
 All the folders, sub-folders and files in this project are released open-source with the Apache 2.0 license.
 
-A copy of the Apache 2.0 license is included in `pulp-dronet\LICENSE`.
+A copy of the Apache 2.0 license is included in `pulp-dronet/LICENSE`.
 
 External modules, which can be downloaded from external github reopositories, are released under different licenses:
 * `pulp-dronet/tiny-pulp-dronet-v3/drone-applications/external/crazyflie-firmware` is released under GNU General Public License v3.0
@@ -209,7 +209,7 @@ dataset_collection_framework
 
 All the folders, sub-folders and files in this project are released open-source with the Apache 2.0 license.
 
-A copy of the Apache 2.0 license is included in `pulp-dronet\LICENSE`.
+A copy of the Apache 2.0 license is included in `pulp-dronet/LICENSE`.
 
 External modules, which can be downloaded from external github reopositories, are released under different licenses:
 * `/pulp-dronet/dataset_collection_framework/crazyflie_firmware_patches/crazyflie-firmware-modified-dataset` is released under GNU General Public License v3.0
@@ -240,4 +240,4 @@ dataset_visualizer
 ```
 
 All the folders, sub-folders and files in this project are released open-source with the Apache 2.0 license.
-A copy of the Apache 2.0 license is included in `pulp-dronet\LICENSE`.
+A copy of the Apache 2.0 license is included in `pulp-dronet/LICENSE`.
