@@ -29,7 +29,7 @@ from os.path import join
 import argparse
 import json
 import pandas as pd
-from models import Dataset
+from classes import Dataset
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -41,7 +41,6 @@ if not os.path.exists(EXPORT_PATH):
 # Some plots restyling
 plt.style.use("seaborn-dark")
 
-
 def create_parser():
     parser = argparse.ArgumentParser(
         description=("Plots of statistics for the dataset")
@@ -51,7 +50,6 @@ def create_parser():
                         help=("Dataset path with all the acquisitions."), default="../dataset")
 
     return parser
-
 
 def cumulative_stats(df, stats):
     # Compute the cumulative stats directly from the dataframe

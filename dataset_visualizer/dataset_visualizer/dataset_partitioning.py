@@ -24,7 +24,7 @@
 
 import argparse
 import os
-from models import Dataset
+from classes import Dataset
 from os.path import join
 import pandas as pd
 from random import shuffle, random

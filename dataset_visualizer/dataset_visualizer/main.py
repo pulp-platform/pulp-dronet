@@ -28,7 +28,7 @@
 import argparse
 import os
 
-from dataset_visualizer.models import Acquisition
+from dataset_visualizer.classes import Acquisition
 from dataset_visualizer.video import create_video, save_all_videos
 from dataset_visualizer.acquisition_visualizer import create_tk_window
 
