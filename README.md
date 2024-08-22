@@ -18,7 +18,12 @@ style=flat-square
 
 <p align="center"> <i> Copyright (C) 2024 ETH Zürich, University of Bologna. All rights reserved. </i> </p>
 
-<img style="float: center;" src="imgs/PULP_drone.png" width="100%">
+<div align="center">
+  <img src="imgs/PULP_drone.png" width="98%">
+  <br><br>
+  <img src="https://github.com/LorenzoLamberti94/readme_gifs/blob/main/pulp-dronet-v3-slalom.gif" width="49%">
+  <img src="https://github.com/LorenzoLamberti94/readme_gifs/blob/main/pulp-dronet-v3-dynobstacle.gif" width="49%">
+</div>
 
 
 
