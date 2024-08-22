@@ -145,7 +145,7 @@ All the folders, sub-folders and files in this project are released open-source 
 
 A copy of the Apache 2.0 license is included in `pulp-dronet/LICENSE`.
 
-External modules, which can be downloaded from external github reopositories, are released under different licenses:
+External modules, which can be downloaded from external github repositories, are released under different licenses:
 * `pulp-dronet/tiny-pulp-dronet-v3/drone-applications/external/crazyflie-firmware` is released under GNU General Public License v3.0
 * `pulp-dronet/tiny-pulp-dronet-v3/drone-applications/gap8-dronet-app/viewer-pulp-dronet` is released under GNU General Public License v3.0
 
@@ -218,7 +218,7 @@ All the folders, sub-folders and files in this project are released open-source 
 
 A copy of the Apache 2.0 license is included in `pulp-dronet/LICENSE`.
 
-External modules, which can be downloaded from external github reopositories, are released under different licenses:
+External modules, which can be downloaded from external github repositories, are released under different licenses:
 * `/pulp-dronet/dataset_collection_framework/crazyflie_firmware_patches/crazyflie-firmware-modified-dataset` is released under GNU General Public License v3.0
 * `/pulp-dronet/dataset_collection_framework/external/crazyflie-firmware` is released under GNU General Public License v3.0.
 
