@@ -116,11 +116,13 @@ The project's structure is the following:
     │       │   │   ├── inc/ ...
     │       │   │   └── src/ ...
     │       │   └── Makefile
-    │       └── tiny-pulp-dronet-v3/ # main running tiny-pulp-dronet v3 (139fps, 2.9kB)
-    │           ├── DORY_network/
-    │           │   ├── inc/ ...
-    │           │   └── src/ ...
-    │           └── Makefile
+    │       ├── tiny-pulp-dronet-v3/ # main running tiny-pulp-dronet v3 (139fps, 2.9kB)
+    │       │   ├── DORY_network/
+    │       |   │   ├── inc/ ...
+    │       |   │   └── src/ ...
+    │       |   └── Makefile
+    |       └── viewer-pulp-dronet/
+    |           └── viewer_custom.py
     ├── imgs/ # images for readme
     ├── model/
     │   ├── dronet_v3.py # pytorch definition of the PULP-Dronet v3 CNN.
@@ -145,6 +147,7 @@ A copy of the Apache 2.0 license is included in `pulp-dronet/LICENSE`.
 
 External modules, which can be downloaded from external github reopositories, are released under different licenses:
 * `pulp-dronet/tiny-pulp-dronet-v3/drone-applications/external/crazyflie-firmware` is released under GNU General Public License v3.0
+* `pulp-dronet/tiny-pulp-dronet-v3/drone-applications/gap8-dronet-app/viewer-pulp-dronet` is released under GNU General Public License v3.0
 
 
 ## PULP-Dronet v3 Dataset
