@@ -428,8 +428,13 @@ make flash
 
 Now power cycle the drone (turn of and on). Pulp-Dronet is running in the AI-deck!
 
+**Streamer:**
+- you can stream live images via images enabling the `#define JPEG_STREAMER 1` in `./drone-applications/gap8-dronet-app/pulp-dronet-v3/DORY_network/src/main.c`
+- use the viewer in `./drone-applications/gap8-dronet-app/viewer-pulp-dronet/`
+- we developed our application using some specific NINA firmware. If you buy a new AI deck, then the stock firmware is probably not compatible. Follow the [instructions here](https://github.com/LorenzoLamberti94/NINA-flashing-crazyflie) to flash the right firmware.
 
-### 3. Running Pulp-Dronet
+
+### 3. Running PULP-Dronet
 
 Mount the AI-deck on the top of the Crazyflie.
 Launch the Crazyflie Client:
