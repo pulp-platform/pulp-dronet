@@ -1,5 +1,9 @@
 # Tiny-PULP-Dronet v3
 
+<div align="center">
+  <img src="https://github.com/LorenzoLamberti94/readme_gifs/blob/main/pulp-dronet-v3-iotj.gif" width="100%">
+</div>
+
 ## Project Structure
 
 ```
