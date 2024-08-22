@@ -593,7 +593,7 @@ cd gap_sdk/examples/pmsis/helloworld/
 make clean all run platform=board
 ```
 
-There are different cables setup by default for each board ([here the list of defices supported](https://github.com/GreenWaves-Technologies/gap_sdk/tree/master/tools/gap8-openocd/tcl/interface/ftdi)). In case you want to use a different cable, you can define this environment variable:
+There are different cables setup by default for each board ([here the list of devices supported](https://github.com/GreenWaves-Technologies/gap_sdk/tree/master/tools/gap8-openocd/tcl/interface/ftdi)). In case you want to use a different cable, you can define this environment variable:
 
 ```
 GAPY_OPENOCD_CABLE=$HOME/gap_sdk/tools/gap8-openocd/tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg
