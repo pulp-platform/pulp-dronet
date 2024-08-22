@@ -124,7 +124,13 @@ Now the AI Deck software is up and running, and it is streaming images via Wi-Fi
 
 #### Remarks:
 - Flashing the AI-Deck (GAP8) does not always work on the first try. Sometimes it is necessary to flash multiple times (you should notice an error if that happens)
-- To get the image streamer working some files inside the gap sdk hade been changed. The modified files are stored in `GAP8_streamer/gap_sdk_modified`. Therefore, the `Makefile` masks some files of the original gap_sdk to include these files that have been modified. By doing so, you don't have to modify the sdk.
+- To get the image streamer working some files inside the gap sdk hade been changed. The modified files are stored in `GAP8_streamer/gap_sdk_modified`. Therefore, the `Makefile` masks some files of the original gap_sdk to include these files that have been modified. By doing so, you don't have to modify the SDK.
+
+**NINA firmware:**
+we developed our application using some specific NINA firmware. If you buy a new AI deck is probably not compatible. 
+
+Follow the [instructions here](https://github.com/LorenzoLamberti94/NINA-flashing-crazyflie).
+
 
 # 3. Open the dataset collector python app
 
