@@ -14,7 +14,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #
-#  File:    app_dronet.c
+#  File:    Makefile
 #  Author:  Lorenzo Lamberti      <lorenzo.lamberti@unibo.it>
 #           Daniel Rieben         <riebend@student.ethz.ch>
 #  Date:    01.03.2024
