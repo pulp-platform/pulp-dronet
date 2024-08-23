@@ -15,12 +15,11 @@
 # See the License for the specific language governing permissions and         #
 # limitations under the License.                                              #
 #                                                                             #
-# File:    utility.py                                                         #
+# File:    classes.py                                                         #
 # Authors:                                                                    #
 #          Michal Barcis    <michal.barcis@tii.ae>                            #
 #          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
 #          Lorenzo Bellone  <lorenzo.bellone@tii.ae>                          #
-#          Daniele Palossi  <dpalossi@iis.ee.ethz.ch>                         #
 # Date:    01.03.2024                                                         #
 #-----------------------------------------------------------------------------#
 

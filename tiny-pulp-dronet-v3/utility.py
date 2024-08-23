@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and         #
 # limitations under the License.                                              #
 #                                                                             #
-# File:    testing.py                                                         #
+# File:    utility.py                                                         #
 # Authors:                                                                    #
 #          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
 #          Daniele Palossi  <dpalossi@iis.ee.ethz.ch>                         #

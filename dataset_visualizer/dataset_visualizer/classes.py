@@ -1,5 +1,3 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
 #-----------------------------------------------------------------------------#
 # Copyright(C) 2024 University of Bologna, Italy, ETH Zurich, Switzerland.    #
 # All rights reserved.                                                        #
@@ -23,6 +21,8 @@
 #          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
 # Date:    01.03.2024                                                         #
 #-----------------------------------------------------------------------------#
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import json
 import os

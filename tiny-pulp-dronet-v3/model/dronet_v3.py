@@ -25,7 +25,6 @@
 
 import torch.nn as nn
 import sys
-# sys.path.append('./nemo-dory/nemo/')
 sys.path.append('./nemo-dory/nemo')
 try:
     import nemo

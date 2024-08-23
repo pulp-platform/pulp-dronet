@@ -1,5 +1,3 @@
-#! /usr/bin/env python
-# -*-coding: utf-8 -*-
 # #-----------------------------------------------------------------------------#
 # Copyright(C) 2024 University of Bologna, Italy, ETH Zurich, Switzerland.    #
 # All rights reserved.                                                        #
@@ -24,6 +22,8 @@
 #          Lorenzo Bellone  <lorenzo.bellone@tii.ae>                          #
 # Date:    01.03.2024                                                         #
 #-----------------------------------------------------------------------------#
+#! /usr/bin/env python
+# -*-coding: utf-8 -*-
 
 import cv2
 import numpy as np

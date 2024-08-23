@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and         #
 # limitations under the License.                                              #
 #                                                                             #
-# File:    imageViewerUI.py                                                   #
+# File:    image_viewer_cv.py                                                 #
 # Authors:                                                                    #
 #          Lorenzo Lamberti <lorenzo.lamberti@unibo.it>                       #
 # Date:    01.03.2024                                                         #
