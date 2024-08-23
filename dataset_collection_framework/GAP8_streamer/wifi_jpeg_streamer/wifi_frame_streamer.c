@@ -15,9 +15,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 
- File:    app_dronet.c
+ File:    wifi_jpeg_streamer.c
  Author:  Daniele Palossi <dpalossi@iis.ee.ethz.ch>
- 		  Lorenzo Lamberti      <lorenzo.lamberti@unibo.it>
+          Lorenzo Lamberti      <lorenzo.lamberti@unibo.it>
  Date:    01.03.2024
 -------------------------------------------------------------------------------*/
 
