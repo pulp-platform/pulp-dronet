@@ -37,17 +37,17 @@ Prerequisites:
 1. Download the [bitcraze VM (2018.12)](https://github.com/bitcraze/bitcraze-vm/releases/tag/2018.12) ([downloadlink](https://files.bitcraze.se/dl/BitcrazeVM_2018.12.ova))
 2. [Import the VM](https://docs.oracle.com/cd/E26217_01/E26796/html/qs-import-vm.html)
 3. Before you can launch the VM you need to install the extension pack for USB2.0/3.0 support. The extension pack can downloaded [here](https://www.virtualbox.org/wiki/Downloads). You can install the package under: Tools > Preferences > Extensions.
-4. Now launch the VM and open a terminal to checkout this repo with the following command.  
+4. Now launch the VM and open a terminal to checkout this repo with the following command.
 ~~~~~shell
 git clone https://iis-git.ee.ethz.ch/Drone-dev/dataset-building-framework-for-pulp-based-nano-drones.git --recursive
 ~~~~~
 
-Try hello.c (follow this [tutorial](https://www.bitcraze.io/documentation/repository/crazyflie-firmware/master/development/howto/))  
-**Bugs when trying hello.c:**  
-./vendor/FreeRTOS/include/task.h line 1600, declaration of: void vApplicationStackOverflowHook( TaskHandle_t xTask,char * pcTaskName ); (not used in task.c) does not concide with definition in ./src/hal/src/freeRTOSdebig.c line 52: void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskName){...}  
+Try hello.c (follow this [tutorial](https://www.bitcraze.io/documentation/repository/crazyflie-firmware/master/development/howto/))
+**Bugs when trying hello.c:**
+./vendor/FreeRTOS/include/task.h line 1600, declaration of: void vApplicationStackOverflowHook( TaskHandle_t xTask,char * pcTaskName ); (not used in task.c) does not concide with definition in ./src/hal/src/freeRTOSdebig.c line 52: void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskName){...}
 Workaround: just comment out the declaration in task.h
 
-Launch python client:  
+Launch python client:
 ~~~~~shell
 python3 /home/bitcraze/bitcrazeSoftware/crazyflie-clients-python/bin/cfclient
 ~~~~~
@@ -58,33 +58,33 @@ Prerequisites:
 
 The following steps are needed to install the gap-sdk:
 1. Download and install [Anaconda](https://docs.anaconda.com/anaconda/install/linux/). Close and reopen the console after installation.
-2. Create a new virtual environment and activate it.  
+2. Create a new virtual environment and activate it.
 ~~~~~shell
-conda create -n gap-sdk python=3.8 numpy cython  
+conda create -n gap-sdk python=3.8 numpy cython
 conda activate gap-sdk
 ~~~~~
-3. Also install the config parser since it will be used later to buidling the gap-sdk. 
-~~~~~shell 
-sudo apt-get update -y  
-sudo apt-get install -y python-configparser  
+3. Also install the config parser since it will be used later to buidling the gap-sdk.
+~~~~~shell
+sudo apt-get update -y
+sudo apt-get install -y python-configparser
 ~~~~~
-4. Furthermore later on the python package Pillow will used which need additional packages. 
-~~~~~shell 
-sudo apt install libjpeg8-dev zlib1g-dev  
+4. Furthermore later on the python package Pillow will used which need additional packages.
+~~~~~shell
+sudo apt install libjpeg8-dev zlib1g-dev
 ~~~~~
-Next the Olimex drivers will be installed for the communication through JTAG with the gap8 chip. First the drivers need to be installed on the Host OS as well as on the VM. For Windows OS you can use Zadig to install the driver.  
+Next the Olimex drivers will be installed for the communication through JTAG with the gap8 chip. First the drivers need to be installed on the Host OS as well as on the VM. For Windows OS you can use Zadig to install the driver.
 
-5. Download [Zadig](https://zadig.akeo.ie/), launch it and plug in the Olimex JTAG adapter. In the Application two interfaces (0 and 1) should show up. For both install the driver. The official description can be found [here](https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf#page=17).  
-6. In the VM the following command install the dependencies needed.  
+5. Download [Zadig](https://zadig.akeo.ie/), launch it and plug in the Olimex JTAG adapter. In the Application two interfaces (0 and 1) should show up. For both install the driver. The official description can be found [here](https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf#page=17).
+6. In the VM the following command install the dependencies needed.
 ~~~~~shell
 sudo apt-get install libftdi-dev libftdi1
 ~~~~~
-7. Since root privileges are required to use the JTAG communication it is necessary to define a rule. You can use the following commands to do so.  
+7. Since root privileges are required to use the JTAG communication it is necessary to define a rule. You can use the following commands to do so.
 ~~~~~shell
-sudo touch /etc/udev/rules.d/olimex-arm-usb-ocd-h.rules  
-sudo echo 'SUBSYSTEM=="usb", ACTION=="add", ATTRS{idProduct}=="002b", ATTRS{idVendor}=="15ba", MODE="664", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/olimex-arm-usb-ocd-h.rules 
-~~~~~ 
-Please note that if you use another JTAG adapter than ARM-USB-OCD-H you need to adapt the Product and Vendor ID. Please refer to the official description [here](https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf#page=19) in case of any issues.  
+sudo touch /etc/udev/rules.d/olimex-arm-usb-ocd-h.rules
+sudo echo 'SUBSYSTEM=="usb", ACTION=="add", ATTRS{idProduct}=="002b", ATTRS{idVendor}=="15ba", MODE="664", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/olimex-arm-usb-ocd-h.rules
+~~~~~
+Please note that if you use another JTAG adapter than ARM-USB-OCD-H you need to adapt the Product and Vendor ID. Please refer to the official description [here](https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf#page=19) in case of any issues.
 
 8. Next the gap-sdk will be installed. To do so the following packages must be installed. ([Official description](https://github.com/GreenWaves-Technologies/gap_sdk))
 ~~~~~shell
@@ -119,20 +119,20 @@ git lfs clone https://github.com/GreenWaves-Technologies/gap_riscv_toolchain_ubu
 cd ~/gap_riscv_toolchain_ubuntu_18
 sudo ./install.sh
 ~~~~~
- 
-12. Next the gap_sdk release-v3.8.1 can be cloned as follows.  
+
+12. Next the gap_sdk release-v3.8.1 can be cloned as follows.
 ~~~~~shell
 cd ~
 git clone https://github.com/GreenWaves-Technologies/gap_sdk.git
 cd ~/gap_sdk
 git checkout tags/release-v3.8.1 -b gap_sdk-v3.8.1
 ~~~~~
-13. For the installation of the gap_sdk you need to install the python packages into the virtual env.  
+13. For the installation of the gap_sdk you need to install the python packages into the virtual env.
 ~~~~~shell
 pip install -r tools/nntool/requirements.txt
 pip install -r requirements.txt
 ~~~~~
-14. Finally, we install the full tool suite of the sdk (including nntool and autotiler).  
+14. Finally, we install the full tool suite of the sdk (including nntool and autotiler).
 ~~~~~shell
 git submodule update --init --recursive
 source configs/ai_deck.sh
@@ -148,7 +148,7 @@ Now you can try the helloworld from the gap-sdk (make sure the JTAG adapter is a
 ~~~~~shell
 cd examples/pmsis/helloworld
 make clean all run platform=gvsoc   \\ use virtual platform
-make clean all run platform=board	\\ program chip
+make clean all run platform=board    \\ program chip
 ~~~~~
 For easier loading of the environment you can use the following alias and add it to your ~/.bashrc file.
 ~~~~~shell
