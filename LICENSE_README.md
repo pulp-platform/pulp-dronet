@@ -93,7 +93,7 @@ A copy of the Apache 2.0 license is included in `pulp-dronet/LICENSE`.
 
 
 
-## Tiny-PULP-Dronet v2'3
+## Tiny-PULP-Dronet v3
 
 The project's structure is the following:
 
