@@ -17,7 +17,7 @@
 
  File:    app_dronet.c
  Author:  Lorenzo Lamberti      <lorenzo.lamberti@unibo.it>
-          Vlad Niculescu 	    <vladn@iis.ee.ethz.ch>
+          Vlad Niculescu        <vladn@iis.ee.ethz.ch>
  Date:    01.03.2024
 -------------------------------------------------------------------------------*/
 
@@ -57,11 +57,11 @@ uint8_t enable_integral = ENABLE_INTEGRAL;
 uint8_t enable_low_pass = ENABLE_LOW_PASS;
 uint8_t quadratic = ENABLE_QUADRATIC;
 uint8_t emergency_br = ENABLE_EMERGENCY_BR;
-uint8_t debug = 0; 								// activate debug prints
+uint8_t debug = 0;                                 // activate debug prints
 
 // START / STOP mission parameter
-uint8_t fly = 0; 		// Takeoff/landing command (GUI parameter)
-uint8_t landed = 0; 	// Flag for indicating whether the drone landed
+uint8_t fly = 0;         // Takeoff/landing command (GUI parameter)
+uint8_t landed = 0;     // Flag for indicating whether the drone landed
 
 /* --------------- GLOBAL VARIABLES --------------- */
 // CNN output
@@ -102,8 +102,8 @@ static setpoint_t create_setpoint(float x_vel, float z, float yaw_rate)
     setpoint.mode.z = modeAbs;
     setpoint.mode.yaw = modeVelocity;
 
-    setpoint.velocity.x	= x_vel;
-    setpoint.velocity.y	= 0.0f;
+    setpoint.velocity.x = x_vel;
+    setpoint.velocity.y = 0.0f;
     setpoint.position.z = z;
     setpoint.attitudeRate.yaw = yaw_rate;
     setpoint.velocity_body = true;
@@ -180,9 +180,9 @@ void process_cnn_output(int32_t* cnn_output_int, float* cnn_output_float)
     // [1]=collision
     cnn_output_float[1] = (float) (cnn_output_int[1] * nemo_quantum);
 
-    if(cnn_output_float[0] < -1.0f) cnn_output_float[0]	= -1.0f;
-    if(cnn_output_float[0] > 1.0f) cnn_output_float[0] 	= 1.0f;
-    // if(cnn_output_float[1] < 0.1f) cnn_output_float[1] 	= 0.0f;
+    if(cnn_output_float[0] < -1.0f) cnn_output_float[0] = -1.0f;
+    if(cnn_output_float[0] > 1.0f) cnn_output_float[0]  = 1.0f;
+    // if(cnn_output_float[1] < 0.1f) cnn_output_float[1]  = 0.0f;
 }
 
 float integrate_collision(float prob_of_col, float integral_weight)
@@ -403,10 +403,10 @@ LOG_ADD(LOG_FLOAT, gap8_coll, &cnn_data_float[1])
 LOG_GROUP_STOP(UART_LOG_GAP8)
 
 LOG_GROUP_START(DRONET_LOG)
-LOG_ADD(LOG_FLOAT, steering, &steering_angle)  	// CNN output
-LOG_ADD(LOG_FLOAT, collision, &prob_of_col)		// CNN output after the sigmoid
-LOG_ADD(LOG_FLOAT, fwd_vel, &forward_velocity)	// scaled and post-processed by low-pass, integrator, brake.
-LOG_ADD(LOG_FLOAT, ang_vel, &angular_velocity)	// scaled and post-processed by low-pass, integrator, brake.
+LOG_ADD(LOG_FLOAT, steering, &steering_angle)     // CNN output
+LOG_ADD(LOG_FLOAT, collision, &prob_of_col)       // CNN output after the sigmoid
+LOG_ADD(LOG_FLOAT, fwd_vel, &forward_velocity)    // scaled and post-processed by low-pass, integrator, brake.
+LOG_ADD(LOG_FLOAT, ang_vel, &angular_velocity)    // scaled and post-processed by low-pass, integrator, brake.
 LOG_GROUP_STOP(DRONET_LOG)
 
 /* --- PARAMETERS --- */
@@ -416,11 +416,11 @@ PARAM_GROUP_STOP(START_STOP)
 
 // Activate - deactivate functionalities: 0=Non-active, 1=active
 PARAM_GROUP_START(FUNCTIONALITIES)
-PARAM_ADD(PARAM_UINT8, debug, &debug) 				// debug prints
-PARAM_ADD(PARAM_UINT8, quadratic, &quadratic)		// activate quadratic preprocessing of probability of collision
-PARAM_ADD(PARAM_UINT8, integrate, &enable_integral)	// integrate collision probability
-PARAM_ADD(PARAM_UINT8, low_pass, &enable_low_pass)	// activate low pass filtering
-PARAM_ADD(PARAM_UINT8, brake, &emergency_br)		// activate emergency brake if collision>threshold
+PARAM_ADD(PARAM_UINT8, debug, &debug)               // debug prints
+PARAM_ADD(PARAM_UINT8, quadratic, &quadratic)       // activate quadratic preprocessing of probability of collision
+PARAM_ADD(PARAM_UINT8, integrate, &enable_integral) // integrate collision probability
+PARAM_ADD(PARAM_UINT8, low_pass, &enable_low_pass)  // activate low pass filtering
+PARAM_ADD(PARAM_UINT8, brake, &emergency_br)        // activate emergency brake if collision>threshold
 PARAM_GROUP_STOP(FUNCTIONALITIES)
 
 // Filters' parameters
