@@ -17,7 +17,7 @@
 
  File:    app_dronet.c
  Author:  Lorenzo Lamberti      <lorenzo.lamberti@unibo.it>
-		  Daniel Rieben		    <riebend@student.ethz.ch>
+          Daniel Rieben		    <riebend@student.ethz.ch>
  Date:    01.03.2024
 -------------------------------------------------------------------------------*/
 
@@ -49,57 +49,57 @@ static void tickSyncSequence(void);
 void tickSyncSequence(void)
 {
   if (!tick_sync_done){
-	vTaskDelay(M2T(3000));  // Wait for 3 sec to be sure that the gap8 is ready
-	// generate reset signal on GPIO (it a HIGH->LOW impulse)
-	digitalWrite(PIN_CLK_RESET, HIGH);  // clock reset signal
-	vTaskDelay(M2T(SIGNAL_PERIOD));
-	digitalWrite(PIN_CLK_RESET, LOW);
-	while(digitalRead(PIN_CLK_RESET) == HIGH);
-	//reset the ticks
-	gap_ticks = 0;
+    vTaskDelay(M2T(3000));  // Wait for 3 sec to be sure that the gap8 is ready
+    // generate reset signal on GPIO (it a HIGH->LOW impulse)
+    digitalWrite(PIN_CLK_RESET, HIGH);  // clock reset signal
+    vTaskDelay(M2T(SIGNAL_PERIOD));
+    digitalWrite(PIN_CLK_RESET, LOW);
+    while(digitalRead(PIN_CLK_RESET) == HIGH);
+    //reset the ticks
+    gap_ticks = 0;
 
-	tick_sync_done = true;
+    tick_sync_done = true;
   }
 
 
 }
 
 unsigned int get_dataset_collector_timestamp(){
-	return gap_ticks;
+    return gap_ticks;
 }
 
 static void dataCollectorTask(){
-	systemWaitStart();
-	vTaskDelay(M2T(500));
-	tickSyncSequence();
-	while(1){
-		int current_state = digitalRead(DECK_GPIO_RX1);
-		if(gap_clock_state != current_state){
-			gap_clock_state = current_state;
-			gap_ticks++;
-		}
-	}
+    systemWaitStart();
+    vTaskDelay(M2T(500));
+    tickSyncSequence();
+    while(1){
+        int current_state = digitalRead(DECK_GPIO_RX1);
+        if(gap_clock_state != current_state){
+            gap_clock_state = current_state;
+            gap_ticks++;
+        }
+    }
 }
 
 
 static void datasetCollectorInit()
 {
-	// STM32: drives PIN_CLK_RESET LOW->HIGH once as an initial synchronization signal (read by GAP8)
-	// GAP8: drives DECK_GPIO_RX1 continuosly HIGH->LOW and LOW->HIGH for periodic synchronization (read by the STM32). This is a workaround because GPIO interrupts dont work properly on GAP8 right now.
+    // STM32: drives PIN_CLK_RESET LOW->HIGH once as an initial synchronization signal (read by GAP8)
+    // GAP8: drives DECK_GPIO_RX1 continuosly HIGH->LOW and LOW->HIGH for periodic synchronization (read by the STM32). This is a workaround because GPIO interrupts dont work properly on GAP8 right now.
 
-	// Setup the GPIO and write it to 0
-	pinMode(PIN_CLK_RESET, OUTPUT);  // init GPIO mode
-	digitalWrite(PIN_CLK_RESET, LOW); //init value to LOW
-	vTaskDelay(10);
+    // Setup the GPIO and write it to 0
+    pinMode(PIN_CLK_RESET, OUTPUT);  // init GPIO mode
+    digitalWrite(PIN_CLK_RESET, LOW); //init value to LOW
+    vTaskDelay(10);
 
-	pinMode(DECK_GPIO_RX1, INPUT);  // init GPIO mode
-	gap_clock_state = digitalRead(DECK_GPIO_RX1);
+    pinMode(DECK_GPIO_RX1, INPUT);  // init GPIO mode
+    gap_clock_state = digitalRead(DECK_GPIO_RX1);
 
-	DEBUG_PRINT("Initialize dataset collector driver!\n");
-	initUsecTimer();
-	setCustomTimestamp(get_dataset_collector_timestamp);
+    DEBUG_PRINT("Initialize dataset collector driver!\n");
+    initUsecTimer();
+    setCustomTimestamp(get_dataset_collector_timestamp);
 
-	xTaskCreate(dataCollectorTask, "dataset-collector-task", 2*configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    xTaskCreate(dataCollectorTask, "dataset-collector-task", 2*configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 }
 
 

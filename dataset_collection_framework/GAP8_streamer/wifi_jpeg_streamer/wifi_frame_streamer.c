@@ -141,24 +141,24 @@ int frame_streamer_send_async_with_timestamp(frame_streamer_t *streamer, pi_buff
 
 static void led_handler() {
 
-	led_val ^= 1;
-	pi_gpio_pin_write(&led, PI_GPIO_A2_PAD_14_A2, led_val);
-	pi_task_push_delayed_us(pi_task_callback(&led_task, led_handler, NULL), 500000);
+    led_val ^= 1;
+    pi_gpio_pin_write(&led, PI_GPIO_A2_PAD_14_A2, led_val);
+    pi_task_push_delayed_us(pi_task_callback(&led_task, led_handler, NULL), 500000);
 }
 
 static void gpio_toggle_handler() {
-	time_ticks++;
-	gpio_val ^= 1;
-	pi_gpio_pin_write(&gpio, PI_GPIO_A25_PAD_39_A7, gpio_val);
-	pi_task_push_delayed_us(pi_task_callback(&gpio_task, gpio_toggle_handler, NULL), 15000);
+    time_ticks++;
+    gpio_val ^= 1;
+    pi_gpio_pin_write(&gpio, PI_GPIO_A25_PAD_39_A7, gpio_val);
+    pi_task_push_delayed_us(pi_task_callback(&gpio_task, gpio_toggle_handler, NULL), 15000);
 }
 
 static void streamer_handler() {
 
-	pi_camera_control(&camera, PI_CAMERA_CMD_STOP, 0);
+    pi_camera_control(&camera, PI_CAMERA_CMD_STOP, 0);
 
-	// frame_streamer_send_async(streamer, &buffer, pi_task_callback(&cam_task, camera_handler, NULL));
-  	frame_streamer_send_async_with_timestamp(streamer, &buffer, &time_ticks , pi_task_callback(&cam_task, camera_handler, NULL)); // my frame streamer adds timestamp
+    // frame_streamer_send_async(streamer, &buffer, pi_task_callback(&cam_task, camera_handler, NULL));
+      frame_streamer_send_async_with_timestamp(streamer, &buffer, &time_ticks , pi_task_callback(&cam_task, camera_handler, NULL)); // my frame streamer adds timestamp
 #ifdef VERBOSE
   printf("------------------------------------------------------\n");
 #endif
@@ -168,9 +168,9 @@ static void streamer_handler() {
 
 static void camera_handler() {
 
-	pi_camera_capture_async(&camera, image, CAM_WIDTH*CAM_HEIGHT, pi_task_callback(&stream_task, streamer_handler, NULL));
+    pi_camera_capture_async(&camera, image, CAM_WIDTH*CAM_HEIGHT, pi_task_callback(&stream_task, streamer_handler, NULL));
 
-	pi_camera_control(&camera, PI_CAMERA_CMD_START, 0);
+    pi_camera_control(&camera, PI_CAMERA_CMD_START, 0);
 
 }
 
@@ -179,240 +179,240 @@ static void camera_handler() {
 
 static void init_memory() {
 
-	image = (unsigned char *)pi_l2_malloc(CAM_WIDTH*CAM_HEIGHT*sizeof(unsigned char));
+    image = (unsigned char *)pi_l2_malloc(CAM_WIDTH*CAM_HEIGHT*sizeof(unsigned char));
 
 #ifdef VERBOSE
-	printf("L2 Image alloc\t%dB\t@ 0x%08X:\t%s\n", CAM_WIDTH*CAM_HEIGHT*sizeof(unsigned char), (unsigned char*) image, image?"Ok":"Failed");
+    printf("L2 Image alloc\t%dB\t@ 0x%08X:\t%s\n", CAM_WIDTH*CAM_HEIGHT*sizeof(unsigned char), (unsigned char*) image, image?"Ok":"Failed");
 #endif
 
-	if(image == NULL) pmsis_exit(-1);
+    if(image == NULL) pmsis_exit(-1);
 }
 
 
 static void init_camera() {
 
-	int32_t errors = 0;
-	uint8_t set_value = 3;
-	struct pi_himax_conf cam_conf;
+    int32_t errors = 0;
+    uint8_t set_value = 3;
+    struct pi_himax_conf cam_conf;
 
-	pi_himax_conf_init(&cam_conf);
+    pi_himax_conf_init(&cam_conf);
 
-	cam_conf.format = PI_CAMERA_QVGA;
+    cam_conf.format = PI_CAMERA_QVGA;
 
-	pi_open_from_conf(&camera, &cam_conf);
+    pi_open_from_conf(&camera, &cam_conf);
 
-	errors = pi_camera_open(&camera);
+    errors = pi_camera_open(&camera);
 
 #ifdef VERBOSE
-	printf("HiMax camera init:\t\t\t%s\n", errors?"Failed":"Ok");
+    printf("HiMax camera init:\t\t\t%s\n", errors?"Failed":"Ok");
 #endif
 
-	if(errors) pmsis_exit(errors);
+    if(errors) pmsis_exit(errors);
 
-	// image rotation
-	pi_camera_reg_set(&camera, IMG_ORIENTATION, &set_value);
-	pi_camera_control(&camera, PI_CAMERA_CMD_AEG_INIT, 0);
+    // image rotation
+    pi_camera_reg_set(&camera, IMG_ORIENTATION, &set_value);
+    pi_camera_control(&camera, PI_CAMERA_CMD_AEG_INIT, 0);
 }
 
 
 static void init_wifi() {
 
-	int32_t errors = 0;
-	struct pi_nina_w10_conf nina_conf;
+    int32_t errors = 0;
+    struct pi_nina_w10_conf nina_conf;
 
-	pi_nina_w10_conf_init(&nina_conf);
+    pi_nina_w10_conf_init(&nina_conf);
 
-	nina_conf.ssid = "";
-	nina_conf.passwd = "";
-	nina_conf.ip_addr = "0.0.0.0";
-	nina_conf.port = 5555;
+    nina_conf.ssid = "";
+    nina_conf.passwd = "";
+    nina_conf.ip_addr = "0.0.0.0";
+    nina_conf.port = 5555;
 
-	pi_open_from_conf(&wifi, &nina_conf);
+    pi_open_from_conf(&wifi, &nina_conf);
 
-	errors = pi_transport_open(&wifi);
+    errors = pi_transport_open(&wifi);
 
 #ifdef VERBOSE
-	printf("NINA WiFi init:\t\t\t\t%s\n", errors?"Failed":"Ok");
+    printf("NINA WiFi init:\t\t\t\t%s\n", errors?"Failed":"Ok");
 #endif
 
-	if(errors) pmsis_exit(errors);
+    if(errors) pmsis_exit(errors);
 }
 
 
 static void init_streamer() {
 
-	struct frame_streamer_conf streamer_conf;
+    struct frame_streamer_conf streamer_conf;
 
-	frame_streamer_conf_init(&streamer_conf);
+    frame_streamer_conf_init(&streamer_conf);
 
-	streamer_conf.transport = &wifi;
-	streamer_conf.format = FRAME_STREAMER_FORMAT_JPEG;
-	streamer_conf.width = CAM_WIDTH;
-	streamer_conf.height = CAM_HEIGHT;
-	streamer_conf.depth = 1;
-	streamer_conf.name = name;
+    streamer_conf.transport = &wifi;
+    streamer_conf.format = FRAME_STREAMER_FORMAT_JPEG;
+    streamer_conf.width = CAM_WIDTH;
+    streamer_conf.height = CAM_HEIGHT;
+    streamer_conf.depth = 1;
+    streamer_conf.name = name;
 
-	streamer = frame_streamer_open(&streamer_conf);
+    streamer = frame_streamer_open(&streamer_conf);
 
-	pi_buffer_init(&buffer, PI_BUFFER_TYPE_L2, image);
-	pi_buffer_set_format(&buffer, CAM_WIDTH, CAM_HEIGHT, 1, PI_BUFFER_FORMAT_GRAY);
+    pi_buffer_init(&buffer, PI_BUFFER_TYPE_L2, image);
+    pi_buffer_set_format(&buffer, CAM_WIDTH, CAM_HEIGHT, 1, PI_BUFFER_FORMAT_GRAY);
 
 #ifdef VERBOSE
-	printf("Streamer init:\t\t\t\t%s\n", streamer?"Ok":"Failed");
+    printf("Streamer init:\t\t\t\t%s\n", streamer?"Ok":"Failed");
 #endif
 
-	if(streamer == NULL) pmsis_exit(-1);
+    if(streamer == NULL) pmsis_exit(-1);
 }
 
 
 static void init_led() {
 
-	int32_t errors = 0;
-	struct pi_gpio_conf led_conf = {0};
+    int32_t errors = 0;
+    struct pi_gpio_conf led_conf = {0};
 
-	pi_gpio_conf_init(&led_conf);
-	pi_open_from_conf(&led, &led_conf);
+    pi_gpio_conf_init(&led_conf);
+    pi_open_from_conf(&led, &led_conf);
 
-	errors = pi_gpio_open(&led);
+    errors = pi_gpio_open(&led);
 
 #ifdef VERBOSE
-	printf("LED GPIO init:\t\t\t\t%s\n", errors?"Failed":"Ok");
+    printf("LED GPIO init:\t\t\t\t%s\n", errors?"Failed":"Ok");
 #endif
 
-	if(errors) pmsis_exit(errors);
+    if(errors) pmsis_exit(errors);
 
-	pi_gpio_pin_configure(&led, PI_GPIO_A2_PAD_14_A2, PI_GPIO_OUTPUT);
+    pi_gpio_pin_configure(&led, PI_GPIO_A2_PAD_14_A2, PI_GPIO_OUTPUT);
 }
 
 
 static void gpio_handler() {
 
-	printf(" --- CALLBACK --- \n");
+    printf(" --- CALLBACK --- \n");
 }
 
 static void polling_synch() {
-	uint32_t value = 0;
+    uint32_t value = 0;
 #ifdef VERBOSE
-	debug_printf("Start polling for synch\n");
+    debug_printf("Start polling for synch\n");
 #endif
-	while(value == 0){
-		pi_gpio_pin_read(&gpio, PI_GPIO_A24_PAD_38_B6, &value);
-		if(value == 1){
-			break;
-		}
-	}
-	while(value == 1){
-		pi_gpio_pin_read(&gpio, PI_GPIO_A24_PAD_38_B6, &value);
-		if(value == 0){
-			time_ticks = 0;
-			break;
-		}
-	}
+    while(value == 0){
+        pi_gpio_pin_read(&gpio, PI_GPIO_A24_PAD_38_B6, &value);
+        if(value == 1){
+            break;
+        }
+    }
+    while(value == 1){
+        pi_gpio_pin_read(&gpio, PI_GPIO_A24_PAD_38_B6, &value);
+        if(value == 0){
+            time_ticks = 0;
+            break;
+        }
+    }
 #ifdef VERBOSE
-		debug_printf("GPIO value: %i\n", value);
+        debug_printf("GPIO value: %i\n", value);
 #endif
 #ifdef VERBOSE
-	// debug_printf("Start time: %llu us\n", start_time_us);
+    // debug_printf("Start time: %llu us\n", start_time_us);
 #endif
 }
 
 
 static void init_gpio() {
 
-	int32_t errors = 0;
-	struct pi_gpio_conf gpio_conf = {0};
-	pi_gpio_e gpio_in = PI_GPIO_A24_PAD_38_B6;
+    int32_t errors = 0;
+    struct pi_gpio_conf gpio_conf = {0};
+    pi_gpio_e gpio_in = PI_GPIO_A24_PAD_38_B6;
 //	pi_gpio_notif_e irq_type = PI_GPIO_NOTIF_RISE;
-	pi_gpio_notif_e irq_type = PI_GPIO_NOTIF_NONE;  // For now don't add interrupt
-	pi_gpio_flags_e cfg_flags = PI_GPIO_INPUT | PI_GPIO_PULL_DISABLE | PI_GPIO_DRIVE_STRENGTH_LOW;
-	int32_t gpio_mask = (1 << (gpio_in & PI_GPIO_NUM_MASK));
+    pi_gpio_notif_e irq_type = PI_GPIO_NOTIF_NONE;  // For now don't add interrupt
+    pi_gpio_flags_e cfg_flags = PI_GPIO_INPUT | PI_GPIO_PULL_DISABLE | PI_GPIO_DRIVE_STRENGTH_LOW;
+    int32_t gpio_mask = (1 << (gpio_in & PI_GPIO_NUM_MASK));
 
-	pi_gpio_conf_init(&gpio_conf);
-	pi_open_from_conf(&gpio, &gpio_conf);
+    pi_gpio_conf_init(&gpio_conf);
+    pi_open_from_conf(&gpio, &gpio_conf);
 
-	errors = pi_gpio_open(&gpio);
+    errors = pi_gpio_open(&gpio);
 
 #ifdef VERBOSE
-	printf("Callback GPIO init:\t\t\t%s\n", errors?"Failed":"Ok");
+    printf("Callback GPIO init:\t\t\t%s\n", errors?"Failed":"Ok");
 #endif
 
-	if(errors) pmsis_exit(errors);
+    if(errors) pmsis_exit(errors);
 
-	pi_gpio_pin_configure(&gpio, gpio_in, cfg_flags);
-	pi_gpio_pin_notif_configure(&gpio, gpio_in, irq_type);
+    pi_gpio_pin_configure(&gpio, gpio_in, cfg_flags);
+    pi_gpio_pin_notif_configure(&gpio, gpio_in, irq_type);
 
 //	pi_gpio_callback_init(&cb_gpio, gpio_mask, gpio_handler, NULL);  //Only needed if interrupt used
 
-	pi_gpio_e gpio_out = PI_GPIO_A25_PAD_39_A7;
-	pi_gpio_flags_e cfg_flags_out = PI_GPIO_OUTPUT | PI_GPIO_PULL_ENABLE | PI_GPIO_DRIVE_STRENGTH_HIGH;
-	pi_gpio_pin_configure(&gpio, gpio_out, cfg_flags_out);
+    pi_gpio_e gpio_out = PI_GPIO_A25_PAD_39_A7;
+    pi_gpio_flags_e cfg_flags_out = PI_GPIO_OUTPUT | PI_GPIO_PULL_ENABLE | PI_GPIO_DRIVE_STRENGTH_HIGH;
+    pi_gpio_pin_configure(&gpio, gpio_out, cfg_flags_out);
 
-	pi_gpio_pin_write(&gpio, PI_GPIO_A25_PAD_39_A7, gpio_val);
+    pi_gpio_pin_write(&gpio, PI_GPIO_A25_PAD_39_A7, gpio_val);
 
 }
 
 
 int main_task(void) {
 
-	int32_t errors = 0;
+    int32_t errors = 0;
 
 #ifdef VERBOSE
-	printf("Entering main controller...\n");
+    printf("Entering main controller...\n");
 #endif
 
-	pi_freq_set(PI_FREQ_DOMAIN_FC, 250000000);
+    pi_freq_set(PI_FREQ_DOMAIN_FC, 250000000);
 
-	// Image L2 allocation
-	init_memory();
+    // Image L2 allocation
+    init_memory();
 
 
-	// Camera initialization
-	init_camera();
+    // Camera initialization
+    init_camera();
 
-	// GPIO callback initialization
+    // GPIO callback initialization
 //	 init_gpio();
 
-	// Wifi initialization
-	init_wifi();
+    // Wifi initialization
+    init_wifi();
 
-	// Streamer initialization
-	init_streamer();
+    // Streamer initialization
+    init_streamer();
 
 #ifdef VERBOSE
-	printf("Task LED started:\t\t\tOk\n");
+    printf("Task LED started:\t\t\tOk\n");
 #endif
 
-	// Initialize GPIO's
-	init_gpio();
+    // Initialize GPIO's
+    init_gpio();
 
-	// Polling timestamp synchronization
-	polling_synch();
+    // Polling timestamp synchronization
+    polling_synch();
 
-	// Blinking LED initialization
-	init_led();
+    // Blinking LED initialization
+    init_led();
 
-	// Start task: led blinking
-	pi_task_push(pi_task_callback(&led_task, led_handler, NULL));
+    // Start task: led blinking
+    pi_task_push(pi_task_callback(&led_task, led_handler, NULL));
 
-	// Start task: GPIO periodic signal for synch
-	pi_task_push(pi_task_callback(&gpio_task, gpio_toggle_handler, NULL));
+    // Start task: GPIO periodic signal for synch
+    pi_task_push(pi_task_callback(&gpio_task, gpio_toggle_handler, NULL));
 
-	// Start task: camera capture
-	pi_task_push(pi_task_callback(&cam_task, camera_handler, NULL));
+    // Start task: camera capture
+    pi_task_push(pi_task_callback(&cam_task, camera_handler, NULL));
 #ifdef VERBOSE
-	printf("Task Capture started:\t\t\tOk\n");
+    printf("Task Capture started:\t\t\tOk\n");
 #endif
 
-	while(1) {
-		pi_yield();
-	}
+    while(1) {
+        pi_yield();
+    }
 
-	pi_l2_free(image, CAM_WIDTH*CAM_HEIGHT*sizeof(unsigned char));
-	pi_gpio_close(&led);
-	pi_gpio_close(&gpio);
+    pi_l2_free(image, CAM_WIDTH*CAM_HEIGHT*sizeof(unsigned char));
+    pi_gpio_close(&led);
+    pi_gpio_close(&gpio);
     pmsis_exit(errors);
 
-	return 0;
+    return 0;
 }
 
 
@@ -420,7 +420,7 @@ int main_task(void) {
 int main(void) {
 
 #ifdef VERBOSE
-	printf("\n\n\t *** PMSIS Kickoff trasmission ***\n\n");
+    printf("\n\n\t *** PMSIS Kickoff trasmission ***\n\n");
 #endif
-	return pmsis_kickoff((int *) main_task);
+    return pmsis_kickoff((int *) main_task);
 }

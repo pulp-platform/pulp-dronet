@@ -3,7 +3,7 @@
  * Alessio Burrello <alessio.burrello@unibo.it>
  *
  * Copyright (C) 2019-2020 University of Bologna
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 
 #include "dory.h"
@@ -69,7 +69,7 @@ unsigned int dory_get_tile_1d(
  *      the pitch of the tiling grid in the inner dimension, i.e. the distance
  *      between two "ticks" in the j dimension.
  *  @param tile_stride_j
- *      the total size of the tiling grid in the inner dimension, i.e. the 
+ *      the total size of the tiling grid in the inner dimension, i.e. the
  *      number of ticks in the j dimension.
  *  @param data_size
  *      size of data in bytes
@@ -116,11 +116,11 @@ unsigned int  dory_get_tile_2d(
  *      the pitch of the tiling grid in the inner dimension, i.e. the distance
  *      between two "ticks" in the k dimension.
  *  @param tile_stride_j
- *      the total size of the tiling grid in the middle dimension, i.e. the 
+ *      the total size of the tiling grid in the middle dimension, i.e. the
  *      total number of ticks in the j dimension.
  *  @param tile_stride_k
- *      the total size of the tiling grid in the inner dimension, i.e. the 
- *      total number of ticks in the k dimension. 
+ *      the total size of the tiling grid in the inner dimension, i.e. the
+ *      total number of ticks in the k dimension.
  *  @param data_size
  *      size of data in bytes
  */
@@ -186,7 +186,7 @@ void __attribute__ ((noinline)) dory_dma_memcpy_3d_custom_weights(
   unsigned short length_0,
   unsigned int dir,
   unsigned int *id
-) 
+)
 {
   // parallelization
   if (pi_core_id()==0)
@@ -207,7 +207,7 @@ void __attribute__ ((noinline)) dory_dma_memcpy_3d_custom_out(
   unsigned short length_0,
   unsigned int dir,
   unsigned int *id
-) 
+)
 {
   // parallelization
   int core_id = pi_core_id();
@@ -219,9 +219,9 @@ void __attribute__ ((noinline)) dory_dma_memcpy_3d_custom_out(
   stop_pixel = MIN(start_pixel+chunk, length_2);
   int offs_remote = stride_1*start_pixel;
   int offs_local = length_0*length_1*start_pixel;
-  for ( int i=start_pixel; i<stop_pixel; i++) 
+  for ( int i=start_pixel; i<stop_pixel; i++)
   {
-    for ( int j=0; j<length_1; j++) 
+    for ( int j=0; j<length_1; j++)
     {
 #if (MCHAN_VERSION < 7)
       mchan_transfer(length_0, dir, 1, 0, 1, 0, 0, (unsigned int)(ext + offs_remote), (unsigned int)(loc + offs_local), 0, 0);
@@ -246,7 +246,7 @@ void __attribute__ ((noinline)) dory_dma_memcpy_3d_custom(
   unsigned short length_0,
   unsigned int dir,
   unsigned int *id
-) 
+)
 {
   // parallelization
   int core_id = pi_core_id();
@@ -258,7 +258,7 @@ void __attribute__ ((noinline)) dory_dma_memcpy_3d_custom(
   stop_pixel = MIN(start_pixel+chunk, length_2);
   int offs_remote = stride_1*start_pixel;
   int offs_local = length_0*length_1*start_pixel;
-  for ( int i=start_pixel; i<stop_pixel; i++) 
+  for ( int i=start_pixel; i<stop_pixel; i++)
   {
 #if (MCHAN_VERSION < 7)
     mchan_transfer(length_0*length_1, dir, 1, 0, 1, 0, 0, (unsigned int)(ext + offs_remote), (unsigned int)(loc + offs_local), 0, 0);
@@ -280,7 +280,7 @@ void __attribute__ ((noinline)) dory_dma_memcpy_3d_custom_blocking(
   unsigned short length_0,
   unsigned int dir,
   unsigned int *id
-) 
+)
 {
   // parallelization
   int core_id = pi_core_id();
@@ -293,11 +293,11 @@ void __attribute__ ((noinline)) dory_dma_memcpy_3d_custom_blocking(
   int offs_remote = stride_1*start_pixel;
   int offs_local = length_0*length_1*start_pixel;
   int dma_evt = mchan_alloc();
-  for ( int i=start_pixel; i<stop_pixel; i++) 
+  for ( int i=start_pixel; i<stop_pixel; i++)
   {
-    for ( int j=0; j<length_1; j++) 
+    for ( int j=0; j<length_1; j++)
     {
-      // alloc channels with barrier after if we consider v2 chips, with DMA issue 
+      // alloc channels with barrier after if we consider v2 chips, with DMA issue
 #if (MCHAN_VERSION < 7)
       mchan_transfer(length_0, dir, 1, 0, 1, 0, 0, (unsigned int)(ext + offs_remote), (unsigned int)(loc + offs_local), 0, 0);
 #elif (MCHAN_VERSION == 7)
@@ -334,7 +334,7 @@ void __attribute__ ((noinline)) dory_dma_memcpy_3d_custom_hwc_to_chw(
   int offs_remote = start_pixel;
   int offs_local = length_2*length_1*start_pixel;
   int dma_evt = mchan_alloc();
-  for ( int i=start_pixel; i<stop_pixel; i++) 
+  for ( int i=start_pixel; i<stop_pixel; i++)
   {
 #if (MCHAN_VERSION < 7)
     mchan_transfer(length_1*length_2, dir, 1, 1, 1, 0, 0, (unsigned int)(ext + offs_remote), (unsigned int)(loc + offs_local), 1, stride_0);

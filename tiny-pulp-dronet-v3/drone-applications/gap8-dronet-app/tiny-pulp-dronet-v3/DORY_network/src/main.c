@@ -116,25 +116,25 @@ static frame_streamer_t *open_streamer(char *name)
 static struct pi_device camera;
 static void open_camera() {
 
-	int32_t errors = 0;
-	uint8_t set_value = 3;
-	struct pi_himax_conf cam_conf;
+    int32_t errors = 0;
+    uint8_t set_value = 3;
+    struct pi_himax_conf cam_conf;
 
-	pi_himax_conf_init(&cam_conf);
+    pi_himax_conf_init(&cam_conf);
 
-	cam_conf.format = PI_CAMERA_QVGA;
+    cam_conf.format = PI_CAMERA_QVGA;
 
-	pi_open_from_conf(&camera, &cam_conf);
+    pi_open_from_conf(&camera, &cam_conf);
 
-	errors = pi_camera_open(&camera);
+    errors = pi_camera_open(&camera);
 
-	printf("HiMax camera init:\t\t\t%s\n", errors?"Failed":"Ok");
+    printf("HiMax camera init:\t\t\t%s\n", errors?"Failed":"Ok");
 
-	if(errors) pmsis_exit(errors);
+    if(errors) pmsis_exit(errors);
 
-	// image rotation
-	pi_camera_reg_set(&camera, IMG_ORIENTATION, &set_value);
-	pi_camera_control(&camera, PI_CAMERA_CMD_AEG_INIT, 0);
+    // image rotation
+    pi_camera_reg_set(&camera, IMG_ORIENTATION, &set_value);
+    pi_camera_control(&camera, PI_CAMERA_CMD_AEG_INIT, 0);
 }
 
 
@@ -161,18 +161,18 @@ void body()
     struct pi_hyperflash_conf flash_conf;
     struct pi_readfs_conf conf0;
 
-	// Voltage and Frequency settings
-	uint32_t voltage =1200;
-	PMU_set_voltage(voltage, 0);
-	pi_time_wait_us(10000);
-	pi_freq_set(PI_FREQ_DOMAIN_FC, FREQ_FC*1000*1000);
-	pi_time_wait_us(10000);
-	pi_freq_set(PI_FREQ_DOMAIN_CL, FREQ_CL*1000*1000);
-	pi_time_wait_us(10000);
-	printf("Set VDD voltage as %.2f, FC Frequency as %d MHz, CL Frequency = %d MHz\n",
-		(float)voltage/1000, FREQ_FC, FREQ_CL);
+    // Voltage and Frequency settings
+    uint32_t voltage =1200;
+    PMU_set_voltage(voltage, 0);
+    pi_time_wait_us(10000);
+    pi_freq_set(PI_FREQ_DOMAIN_FC, FREQ_FC*1000*1000);
+    pi_time_wait_us(10000);
+    pi_freq_set(PI_FREQ_DOMAIN_CL, FREQ_CL*1000*1000);
+    pi_time_wait_us(10000);
+    printf("Set VDD voltage as %.2f, FC Frequency as %d MHz, CL Frequency = %d MHz\n",
+        (float)voltage/1000, FREQ_FC, FREQ_CL);
 
-	// Initialize the Flash
+    // Initialize the Flash
     pi_hyperflash_conf_init(&flash_conf);
     pi_open_from_conf(&flash, &flash_conf);
     if (pi_flash_open(&flash))
@@ -191,18 +191,18 @@ void body()
         pmsis_exit(-2);
     }
 
-	// Initialize the ram
-  	struct pi_hyperram_conf hyper_conf;
-  	pi_hyperram_conf_init(&hyper_conf);
-  	pi_open_from_conf(&HyperRam, &hyper_conf);
-	if (pi_ram_open(&HyperRam))
-	{
-		printf("Error ram open !\n");
-		pmsis_exit(-3);
-	}
+    // Initialize the ram
+      struct pi_hyperram_conf hyper_conf;
+      pi_hyperram_conf_init(&hyper_conf);
+      pi_open_from_conf(&HyperRam, &hyper_conf);
+    if (pi_ram_open(&HyperRam))
+    {
+        printf("Error ram open !\n");
+        pmsis_exit(-3);
+    }
 
-	// UART Configuration
-	struct pi_device uart;
+    // UART Configuration
+    struct pi_device uart;
     struct pi_uart_conf conf_uart;
     pi_uart_conf_init(&conf_uart);
     conf_uart.enable_tx = 1;
@@ -222,38 +222,38 @@ void body()
     // Open the Himax camera
     open_camera();
 
-	////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
 
 
-	// Network Constructor
-	char* input_image_buffer = network_setup();
-	printf("Network has been set up\n");
+    // Network Constructor
+    char* input_image_buffer = network_setup();
+    printf("Network has been set up\n");
     // printf("---------------------L2_input addr %ld \n", input_image_buffer);
 
-	// Allocate the output tensor
-	ResOut = (int32_t *) pi_l2_malloc(CNN_OUTPUTS*sizeof(int32_t));
-	if (ResOut==0) {
-		printf("Failed to allocate Memory for Result (%ld bytes)\n", CNN_OUTPUTS*sizeof(int32_t));
-		return 1;
-	}
+    // Allocate the output tensor
+    ResOut = (int32_t *) pi_l2_malloc(CNN_OUTPUTS*sizeof(int32_t));
+    if (ResOut==0) {
+        printf("Failed to allocate Memory for Result (%ld bytes)\n", CNN_OUTPUTS*sizeof(int32_t));
+        return 1;
+    }
 
-	// CNN task setup
-	struct pi_cluster_task cluster_task = {0};
-	cluster_task.entry = (void *) pulp_parallel; // function call in network.c
-	cluster_task.stack_size = 4096;
-	cluster_task.slave_stack_size = 3072;
-	cluster_task.arg = NULL;
+    // CNN task setup
+    struct pi_cluster_task cluster_task = {0};
+    cluster_task.entry = (void *) pulp_parallel; // function call in network.c
+    cluster_task.stack_size = 4096;
+    cluster_task.slave_stack_size = 3072;
+    cluster_task.arg = NULL;
 
-	// Open the cluster
-	struct pi_device cluster_dev = {0};
-	struct pi_cluster_conf conf;
-	pi_cluster_conf_init(&conf);
-	conf.id=0;
-	pi_open_from_conf(&cluster_dev, &conf);
-	if (pi_cluster_open(&cluster_dev))
-		return -1;
+    // Open the cluster
+    struct pi_device cluster_dev = {0};
+    struct pi_cluster_conf conf;
+    pi_cluster_conf_init(&conf);
+    conf.id=0;
+    pi_open_from_conf(&cluster_dev, &conf);
+    if (pi_cluster_open(&cluster_dev))
+        return -1;
 
-	printf("Network Running...\n");
+    printf("Network Running...\n");
 
 
     #ifdef JPEG_STREAMER
@@ -276,62 +276,62 @@ void body()
 
 
 #ifdef PERF
-	float perf_cyc;
-	float perf_s;
-	pi_perf_conf(1<<PI_PERF_CYCLES);
+    float perf_cyc;
+    float perf_s;
+    pi_perf_conf(1<<PI_PERF_CYCLES);
 #endif
 
-	while(1){
+    while(1){
         LED_OFF;
 #ifdef PERF
-		// perf measurement begin
-		pi_perf_reset();
-		pi_perf_start();
+        // perf measurement begin
+        pi_perf_reset();
+        pi_perf_start();
 #endif
-		// Start camera acquisition
-		pi_camera_control(&camera, PI_CAMERA_CMD_START, 0);
-		pi_camera_capture(&camera, input_image_buffer, BUFF_SIZE);
-		pi_camera_control(&camera, PI_CAMERA_CMD_STOP, 0);
+        // Start camera acquisition
+        pi_camera_control(&camera, PI_CAMERA_CMD_START, 0);
+        pi_camera_capture(&camera, input_image_buffer, BUFF_SIZE);
+        pi_camera_control(&camera, PI_CAMERA_CMD_STOP, 0);
 
-		// Crop the image
-		image_crop(input_image_buffer, input_image_buffer);
+        // Crop the image
+        image_crop(input_image_buffer, input_image_buffer);
 
         #ifdef JPEG_STREAMER
             frame_streamer_send(streamer, &buffer);
         #endif
 
         LED_ON;
-  		// Run CNN inference
-		pi_cluster_send_task_to_cl(&cluster_dev, &cluster_task);
-      	// printf("main.c: Steering Angle: %d, Collision: %d \n",  ResOut[0], ResOut[1]);
+          // Run CNN inference
+        pi_cluster_send_task_to_cl(&cluster_dev, &cluster_task);
+          // printf("main.c: Steering Angle: %d, Collision: %d \n",  ResOut[0], ResOut[1]);
 
-		data_to_send[0] = ResOut[0];
-		data_to_send[1] = ResOut[1];
+        data_to_send[0] = ResOut[0];
+        data_to_send[1] = ResOut[1];
 
-		/* UART synchronous send */
-	    // pi_uart_write(&uart, (char *) data_to_send, 8);
+        /* UART synchronous send */
+        // pi_uart_write(&uart, (char *) data_to_send, 8);
 
-		/* UART asynchronous send */
-		pi_task_t wait_task2 = {0};
-	    pi_task_block(&wait_task2);
-	    pi_uart_write_async(&uart, (char *) data_to_send, 8, &wait_task2);
-		//// pi_task_wait_on(&wait_task2);
+        /* UART asynchronous send */
+        pi_task_t wait_task2 = {0};
+        pi_task_block(&wait_task2);
+        pi_uart_write_async(&uart, (char *) data_to_send, 8, &wait_task2);
+        //// pi_task_wait_on(&wait_task2);
 
 #ifdef PERF
-		// performance measurements: end
-		pi_perf_stop();
-		perf_cyc =  pi_perf_read(PI_PERF_CYCLES);
-		perf_s = 1./((float)perf_cyc/(float)(FREQ_FC*1000*1000));
-		// printf("%d\n", perf_cyc);
-		printf("fps %f  (camera acquisition + wifi streaming + cropping + inference + uart)\n", perf_s);
+        // performance measurements: end
+        pi_perf_stop();
+        perf_cyc =  pi_perf_read(PI_PERF_CYCLES);
+        perf_s = 1./((float)perf_cyc/(float)(FREQ_FC*1000*1000));
+        // printf("%d\n", perf_cyc);
+        printf("fps %f  (camera acquisition + wifi streaming + cropping + inference + uart)\n", perf_s);
 #endif
 
-	}
+    }
 
-	// close the cluster
-	pi_cluster_close(&cluster_dev);
-	pmsis_exit(0);
-	return 0;
+    // close the cluster
+    pi_cluster_close(&cluster_dev);
+    pmsis_exit(0);
+    return 0;
 }
 
 int main(void)

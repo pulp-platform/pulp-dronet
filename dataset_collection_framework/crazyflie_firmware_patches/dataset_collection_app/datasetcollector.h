@@ -17,7 +17,7 @@
 
  File:    app_dronet.c
  Author:  Lorenzo Lamberti      <lorenzo.lamberti@unibo.it>
-		  Daniel Rieben		    <riebend@student.ethz.ch>
+          Daniel Rieben		    <riebend@student.ethz.ch>
  Date:    01.03.2024
 -------------------------------------------------------------------------------*/
 
