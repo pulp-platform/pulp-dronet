@@ -35,8 +35,8 @@
 #define debug_printf
 #endif
 
-#define CAM_WIDTH	324
-#define CAM_HEIGHT	244
+#define CAM_WIDTH   324
+#define CAM_HEIGHT  244
 
 uint64_t time_ticks;
 static unsigned char *image;
@@ -322,7 +322,7 @@ static void init_gpio() {
     int32_t errors = 0;
     struct pi_gpio_conf gpio_conf = {0};
     pi_gpio_e gpio_in = PI_GPIO_A24_PAD_38_B6;
-//	pi_gpio_notif_e irq_type = PI_GPIO_NOTIF_RISE;
+//  pi_gpio_notif_e irq_type = PI_GPIO_NOTIF_RISE;
     pi_gpio_notif_e irq_type = PI_GPIO_NOTIF_NONE;  // For now don't add interrupt
     pi_gpio_flags_e cfg_flags = PI_GPIO_INPUT | PI_GPIO_PULL_DISABLE | PI_GPIO_DRIVE_STRENGTH_LOW;
     int32_t gpio_mask = (1 << (gpio_in & PI_GPIO_NUM_MASK));
@@ -341,7 +341,7 @@ static void init_gpio() {
     pi_gpio_pin_configure(&gpio, gpio_in, cfg_flags);
     pi_gpio_pin_notif_configure(&gpio, gpio_in, irq_type);
 
-//	pi_gpio_callback_init(&cb_gpio, gpio_mask, gpio_handler, NULL);  //Only needed if interrupt used
+    // pi_gpio_callback_init(&cb_gpio, gpio_mask, gpio_handler, NULL);  //Only needed if interrupt used
 
     pi_gpio_e gpio_out = PI_GPIO_A25_PAD_39_A7;
     pi_gpio_flags_e cfg_flags_out = PI_GPIO_OUTPUT | PI_GPIO_PULL_ENABLE | PI_GPIO_DRIVE_STRENGTH_HIGH;
@@ -370,7 +370,7 @@ int main_task(void) {
     init_camera();
 
     // GPIO callback initialization
-//	 init_gpio();
+    // init_gpio();
 
     // Wifi initialization
     init_wifi();

@@ -1,9 +1,9 @@
 {
-	"Scenario": {"Indoor":0,"Outdoor":0},
-	"Path": {"Straight":0, "Turn":0, "Mixed":0},
-	"Obstacles": {"None":0, "Pedestrians":0, "Objects":0},
-	"Height": {"0.5m":0, "1m":0, "1.5m":0},
-	"Behaviour": {"Overpassing":0, "StandStill": 0, "N/A":0},
-	"Light": {"Bright":0, "Dark": 0, "Normal":0, "Mixed":0},
-	"No_Images": 0
+    "Scenario": {"Indoor":0,"Outdoor":0},
+    "Path": {"Straight":0, "Turn":0, "Mixed":0},
+    "Obstacles": {"None":0, "Pedestrians":0, "Objects":0},
+    "Height": {"0.5m":0, "1m":0, "1.5m":0},
+    "Behaviour": {"Overpassing":0, "StandStill": 0, "N/A":0},
+    "Light": {"Bright":0, "Dark": 0, "Normal":0, "Mixed":0},
+    "No_Images": 0
 }
