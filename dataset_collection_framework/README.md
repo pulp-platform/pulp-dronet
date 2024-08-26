@@ -11,14 +11,14 @@ The two transmission flows (Wifi & bluetoot) are totally indipendent, a python s
 The repository of the dataset framework collector is so structured:
 1. **STM32 code** for the drone's state acquisition and bluetooth transmission -> `crazyflie_firmware_patch/`
 2. **AI-deck code** for camera acquisition and wifi transmission -> `GAP8_streamer/`
-2. **Python app** with the dataset collector framwork Graphical User Interface (GUI), which receives the images and state on the laptop, and label's post processing scripts -> `dataset_collector/`
+2. **Python app** with the dataset collector framwork Graphical User Interface (GUI), which receives the images and state on the laptop, and label's post processing scripts -> `dataset_collector_python/`
 
 # How to setup dataset collector framework
 
-Make sure to clone recursively
+Make sure to cloned recursively
 
 ~~~~~shell
-git clone git@bitbucket.org:autonomouscv/dataset_collector_framework.git --recursive
+git clone git@github.com:pulp-platform/pulp-dronet.git --recursive
 ~~~~~
 
 To get the datasetcollector app running there are three main steps required:
@@ -27,9 +27,9 @@ To get the datasetcollector app running there are three main steps required:
 
 **2. Flash the firmware on the AI Deck**                -> `GAP8_streamer/`
 
-**3. Open the dataset collector python app**    -> `dataset_collector/`
+**3. Open the dataset collector python app**    -> `dataset_collector_python/`
 
-**4. Collect a new dataset**    -> stored in `dataset_collector/dataset/`
+**4. Collect a new dataset**    -> stored in `dataset_collector_python/dataset/`
 
 ### Prerequisites:
 
@@ -127,7 +127,7 @@ Now the AI Deck software is up and running, and it is streaming images via Wi-Fi
 - To get the image streamer working some files inside the gap sdk hade been changed. The modified files are stored in `GAP8_streamer/gap_sdk_modified`. Therefore, the `Makefile` masks some files of the original gap_sdk to include these files that have been modified. By doing so, you don't have to modify the SDK.
 
 **NINA firmware:**
-we developed our application using some specific NINA firmware. If you buy a new AI deck is probably not compatible. 
+we developed our application using some specific NINA firmware. If you buy a new AI deck is probably not compatible.
 
 Follow the [instructions here](https://github.com/LorenzoLamberti94/NINA-flashing-crazyflie).
 
@@ -150,7 +150,7 @@ conda env create -f conda_dependencies.yml
 Now we can open the Dataset Collector User interface with the following command: (**NOTE:** First you must plug in a joystick to control the crazyflie)
 
 ~~~~
-cd dataset_collector/
+cd dataset_collector_python/
 conda activate dataset_collection_framework
 python datasetcollector_main.py
 ~~~~
@@ -219,11 +219,11 @@ Left side of the Dataset collector GUI.
 
 ## Output of the dataset collector
 
-- **The images will be saved in this folder:** `dataset_collector_framework/dataset_collector/dataset/acquisition#/images`
+- **The images will be saved in this folder:** `dataset_collection_framework/dataset_collector_python/dataset/acquisition#/images`
 
-- **The drone's state will be saved in this `csv` file:**  `dataset_collector_framework/dataset_collector/dataset/acquisition#/state_labels_DroneState.csv`
+- **The drone's state will be saved in this `csv` file:**  `dataset_collection_framework/dataset_collector_python/dataset/acquisition#/state_labels_DroneState.csv`
 
-**NOTE:** each acquisition will not overwrite the previous one. Each acquisition will create a new folder inside the `dataset_collector_framework/dataset_collector/dataset/` folder with consecutive numbering (`acquisition1`, `acquisition2`, ...).
+**NOTE:** each acquisition will not overwrite the previous one. Each acquisition will create a new folder inside the `dataset_collection_framework/dataset_collector_python/dataset/` folder with consecutive numbering (`acquisition1`, `acquisition2`, ...).
 
 # Post-processing the dataset labels
 
@@ -235,7 +235,7 @@ This script does so.
 
 **Inputs:**
 
-`--data_path` specifies the acquisition# in folder `dataset_collector_framework/dataset_collector/dataset/`. From this folder it authomatically parses:
+`--data_path` specifies the acquisition# in folder `dataset_collection_framework/dataset_collector_python/dataset/`. From this folder it authomatically parses:
 - the labels in `state_labels_DroneState.csv`
 - all the images in the `images/` folder.
 
@@ -243,7 +243,7 @@ This script does so.
 - A new .csv file `labeled_images.csv` with correspondence between image-and-state. Extra states collected are removed (the logging rate for the state is higher than the framerate of the images)
 
 ~~~~
-cd /dataset_collector_framework/dataset_collector/dataset_tools/
+cd /dataset_collection_framework/dataset_collector_python/dataset_tools/
 python dataset_post_processing.py --data_path=acquisition1
 ~~~~
 
@@ -254,7 +254,7 @@ After creating the `labeled_images.csv` we can use the `pulp-dronet/dataset_visu
 We also provide inside this repo a lightweight opencv viewer
 
 ~~~~
-cd /dataset_collector_framework/dataset_collector/dataset_tools/
+cd /dataset_collection_framework/dataset_collector_python/dataset_tools/
 python image_viewer.py --data_path=acquisition1
 ~~~~
 

@@ -228,7 +228,7 @@ if __name__=="__main__":
     dataset_path= args.dataset_path
     acquisition_folder= args.folder
 
-    dataset_path = 'dataset_collector_framework/dataset_collector/dataset'
+    dataset_path = 'dataset_collection_framework/dataset_collectordataset_collector_python/dataset'
     acquisition_folder_path = join(dataset_path,acquisition_folder)
 
     if os.path.exists(acquisition_folder_path):
