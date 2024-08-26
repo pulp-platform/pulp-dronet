@@ -15,7 +15,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 
- File:    config_dronet.c
+ File:    config_dronet.h
  Author:  Lorenzo Lamberti      <lorenzo.lamberti@unibo.it>
  Date:    01.03.2024
 -------------------------------------------------------------------------------*/
