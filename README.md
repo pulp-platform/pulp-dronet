@@ -197,9 +197,9 @@ Achieving AI multi tasking perception on a nano-UAV presents significant challen
 The extremely limited payload on nano-UAVs restricts them to accommodate only ultra-low-power microcontroller units that have stringent computational and memory constraint, which have prevented the deployment of multiple AI tasks onboard.
 Therefore, we focus on optimizing and minimizing the AI workloads without compromising the drone’s behavior when stressed in real-world testing scenarios.
 We achieve a speedup of 8.5× in the inference time, compared to PULP-Dronet v2, with an inference throughput of 139 frames/s.
-Moreover, we develop amethodology for dataset collection on a nano-UAV. We collect unified collision avoidance and steering information onlywith nano-UAV onboard resources, without dependence on external infrastructures.The resulting PULP-Dronet v3 dataset consists of 66k labeled images.
+Moreover, we develop a methodology for dataset collection on a nano-UAV. We collect unified collision avoidance and steering information only with nano-UAV onboard resources, without dependence on external infrastructures. The resulting PULP-Dronet v3 dataset consists of 66k labeled images.
 
-We release here, as open source, all our code, including: the PULP-Dronet v3 dataset, our dataset collection framework, and our trained networks.
+We release all our open-source code here, including the PULP-Dronet v3 dataset, our dataset collection framework, and our trained networks.
 
 Summary of characteristics:
 
@@ -216,8 +216,8 @@ Summary of characteristics:
 
 ## License
 
-All files in this repository are original and licensed under Apache-2.0, see LICENSE.
+All files in this repository are original and licensed under Apache-2.0. See [LICENSE](./LICENSE).
 
 We release the dataset ([zenodo.org/records/13348430](https://zenodo.org/records/13348430)) as open source under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 
-The license of external modules are described in the [LICENSE_README.md](./LICENSE_README.md)
+The licenses of external modules are described in the [LICENSE_README.md](./LICENSE_README.md)
