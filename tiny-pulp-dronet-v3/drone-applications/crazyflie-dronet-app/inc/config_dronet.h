@@ -23,7 +23,7 @@
 /* --- SET TEST CONFIGURATION --- */
 // #define COLLISION_TEST 1  // collision avoidance test with dynamic obstacle
 //#define NAVIGATION_TEST 1  // navigation in corridors with turns
-#define IOTJ_TEST_U 1  // specific config usef for IOTJ experiments
+#define IOTJ_TEST_U 1  // specific config used for IOTJ experiments
 
 
 /* --- NEMO-DORY Flow --- */
