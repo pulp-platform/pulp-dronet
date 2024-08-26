@@ -15,7 +15,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 
- File:    frame_streamer.h.c
+ File:    frame_streamer.h
  Author:  Lorenzo Lamberti      <lorenzo.lamberti@unibo.it>
  Date:    01.03.2024
 -------------------------------------------------------------------------------*/
