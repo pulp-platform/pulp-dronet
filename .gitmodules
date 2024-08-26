@@ -10,3 +10,15 @@
 [submodule "src/autotiler"]
 	path = pulp-dronet-v1/src/autotiler
 	url = https://github.com/pulp-platform/autotiler.git
+[submodule "tiny-pulp-dronet-v3/nemo-dory/nemo"]
+	path = tiny-pulp-dronet-v3/nemo-dory/nemo
+	url = git@github.com:LorenzoLamberti94/nemo.git
+[submodule "tiny-pulp-dronet-v3/nemo-dory/dory"]
+	path = tiny-pulp-dronet-v3/nemo-dory/dory
+	url = git@github.com:LorenzoLamberti94/dory_dronet.git
+[submodule "dataset_collection_framework/crazyflie_firmware_patches/crazyflie-firmware-modified-dataset"]
+	path = dataset_collection_framework/crazyflie_firmware_patches/crazyflie-firmware-modified-dataset
+	url = git@github.com:LorenzoLamberti94/crazyflie-firmware-modified-dataset.git
+[submodule "tiny-pulp-dronet-v3/drone-applications/gap8-dronet-app/viewer-pulp-dronet"]
+	path = tiny-pulp-dronet-v3/drone-applications/gap8-dronet-app/viewer-pulp-dronet
+	url = https://github.com/LorenzoLamberti94/viewer-pulp-dronet

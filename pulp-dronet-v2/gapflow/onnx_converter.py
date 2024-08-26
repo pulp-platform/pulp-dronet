@@ -4,7 +4,7 @@
 #                                                                               #
 # Licensed under the Apache License, Version 2.0 (the "License");               #
 # you may not use this file except in compliance with the License.              #
-# See LICENSE.apache.md in the top directory for details.                       #
+# See LICENSE in the top directory for details.                                 #
 # You may obtain a copy of the License at                                       #
 #                                                                               #
 #   http://www.apache.org/licenses/LICENSE-2.0                                  #
@@ -33,23 +33,23 @@ from model.dronet_v2_gapflow import dronet
 
 def create_parser(cfg):
     parser = argparse.ArgumentParser(description='PyTorch PULP-DroNet Testing')
-    parser.add_argument('--gapflow_model_weights_original',  
+    parser.add_argument('--gapflow_model_weights_original',
                         help='path to the weights of the network trained on the\
                         original dataset (.pth file)',
                         default=cfg.gapflow_model_weights_original)
-    parser.add_argument('--gapflow_model_weights_original_himax', 
+    parser.add_argument('--gapflow_model_weights_original_himax',
                         help='path to the weights of the network trained on the\
                         original+himax dataset (.pth file)',
                         default=cfg.gapflow_model_weights_original_himax)
     parser.add_argument('--gapflow_onnx_export_path',
-                        help='folder where onnx models will be exported',  
+                        help='folder where onnx models will be exported',
                         default=cfg.gapflow_onnx_export_path)
     return parser
 
 def main():
     # parse arguments
     global args
-    from config import cfg # load configuration with all default values 
+    from config import cfg # load configuration with all default values
     parser = create_parser(cfg)
     args = parser.parse_args()
 
@@ -70,7 +70,7 @@ def main():
     ############################
     #### Export ONNX Models ####
     ############################
-    
+
     export_path = args.gapflow_onnx_export_path
     if not os.path.exists(export_path):
         os.makedirs(export_path)

@@ -4,7 +4,7 @@
 #                                                                               #
 # Licensed under the Apache License, Version 2.0 (the "License");               #
 # you may not use this file except in compliance with the License.              #
-# See LICENSE.apache.md in the top directory for details.                       #
+# See LICENSE in the top directory for details.                                 #
 # You may obtain a copy of the License at                                       #
 #                                                                               #
 #   http://www.apache.org/licenses/LICENSE-2.0                                  #
@@ -23,13 +23,13 @@
 #-------------------------------------------------------------------------------#
 
 # Description:
-# This script is used to choose the best performing PULP-DroNet model on the 
+# This script is used to choose the best performing PULP-DroNet model on the
 # testing dataset (the so called "cherry picking" process).
-# The training process saves weights for each epoch, so this scrit loads the CNN 
-# architecture (nemo_dory or gapflow) and tests it with the weights 
-# saved from all the epochs. 
+# The training process saves weights for each epoch, so this scrit loads the CNN
+# architecture (nemo_dory or gapflow) and tests it with the weights
+# saved from all the epochs.
 # Use the "--cherry_picking_path" argument to specify in which folder all the
-# weights (".pth files") can be found. By default, training.py saves all the 
+# weights (".pth files") can be found. By default, training.py saves all the
 # checkpoints in './checkpoints/pulp_dronet_v2/'.
 
 # essentials
@@ -56,7 +56,7 @@ def create_parser(cfg):
     parser.add_argument('-d', '--data_path', help='path to dataset',
                         default=cfg.data_path)
     parser.add_argument('-s', '--dataset', default=cfg.testing_dataset_evaluation,
-                        choices=['validation','original','himax'], 
+                        choices=['validation','original','himax'],
                         help='train on original or original+himax dataset')
     parser.add_argument('-a', '--flow',metavar='DEPLOYMENT_FLOW',default=cfg.flow,
                         choices=['nemo_dory', 'gapflow'],
@@ -94,7 +94,7 @@ def testing(model, model_path, testing_loader, device):
                 # we might have batches without steering or collision samples
                 loss_mse_value, loss_mse_valid = custom_mse(labels, outputs, types, device)
                 loss_acc_value, loss_acc_valid = custom_accuracy(labels, outputs, types, device)
-                
+
                 if loss_mse_valid == 1:
                     loss_mse.append(loss_mse_value.item())
                     test_mse = sum(loss_mse)/len(loss_mse)
@@ -111,7 +111,7 @@ def testing(model, model_path, testing_loader, device):
 def main():
     # parse arguments
     global args
-    from config import cfg # load configuration with all default values 
+    from config import cfg # load configuration with all default values
     parser = create_parser(cfg)
     args = parser.parse_args()
     cherry_picking_path = args.cherry_picking_path
@@ -128,7 +128,7 @@ def main():
         from model.dronet_v2_nemo_dory import dronet
     elif args.flow == 'gapflow':
         from model.dronet_v2_gapflow import dronet
-    else: 
+    else:
         raise ValueError('Doublecheck the deployment flow that you are trying to use.\
                             Select one between nemo_dory and gapflow')
 
@@ -148,9 +148,9 @@ def main():
         root=testing_data_path,
         transform=transforms.ToTensor())
     test_loader = torch.utils.data.DataLoader(
-        test_dataset, 
-        batch_size=args.batch_size, 
-        shuffle=False, 
+        test_dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
         num_workers=args.workers)
 
     # load the CNN model
@@ -163,7 +163,7 @@ def main():
         test_mse, test_acc = testing(net, join(cherry_picking_path, model), test_loader, device)
         print("model:", model, " \tTesting MSE: %.4f" % test_mse, "Acc: %.4f" % test_acc)
         results.append([model,test_mse,test_acc])
-    
+
     # print all results nicely
     print('\nI will now print the accuracy summary for all the models tested on the:', args.dataset, 'dataset.')
     for result in results:
@@ -171,6 +171,6 @@ def main():
 
     print('I evaluated all the models in this folder:', cherry_picking_path, 'evaluated on the:', args.dataset, 'dataset')
     print('You can now pick the best one.')
-    
+
 if __name__ == '__main__':
     main()
