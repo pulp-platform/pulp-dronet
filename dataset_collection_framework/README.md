@@ -9,7 +9,7 @@ This application allows for on-the-fly dataset collection, specifically:
 The two transmission flows (Wifi & bluetoot) are totally indipendent, a python script allows for offline matching of images and state.
 
 The repository of the dataset framework collector is so structured:
-1. **STM32 code** for the drone's state acquisition and bluetooth transmission -> `crazyflie_firmware_patch/`
+1. **STM32 code** for the drone's state acquisition and bluetooth transmission -> `crazyflie_firmware_patches/`
 2. **AI-deck code** for camera acquisition and wifi transmission -> `GAP8_streamer/`
 2. **Python app** with the dataset collector framwork Graphical User Interface (GUI), which receives the images and state on the laptop, and label's post processing scripts -> `dataset_collector_python/`
 
@@ -46,7 +46,7 @@ To get the datasetcollector app running there are three main steps required:
 First we need to change to the folder where the crazflie STM32 software is located. First go to the clone of this repo and execute:
 
 ~~~~
-cd crazyflie_firmware_patch/dataset_collection_app
+cd crazyflie_firmware_patches/dataset_collection_app
 ~~~~
 
 Plug in your crazyflie dongle and [set the crazyflie into flash mode](https://www.bitcraze.io/documentation/repository/crazyflie-firmware/2020.06/building-and-flashing/flashing/) (Turn off crazyflie and turn on by holding the on button for 3 seconds). The blue LED's should blink now.
@@ -65,7 +65,7 @@ make cload
 As soon as the flashing is done the crazyflie will be automatically reseted.
 
 #### Remarks to be mentioned:
-- Some files inside the original `crazyflie-firmware` hade been changed. The modified files are stored in `crazyflie_firmware_patch/crazyflie-firmware-modified-dataset/`. Therefore, the `Makefile` masks some files of the original gap_sdk to include these files that have been modified.
+- Some files inside the original `crazyflie-firmware` hade been changed. The modified files are stored in `crazyflie_firmware_patches/crazyflie-firmware-modified-dataset/`. Therefore, the `Makefile` masks some files of the original gap_sdk to include these files that have been modified.
 
 
 # 2. Flash the firmware on the AI Deck
