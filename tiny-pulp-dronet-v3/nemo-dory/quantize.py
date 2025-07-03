@@ -425,7 +425,7 @@ def main():
     # Save the input activations from the first layer to a text file
     first_layer_input_activations = activation_buffers_in['first_conv'][0][-1].cpu().detach().numpy()
     np.savetxt(
-        os.path.join(export_path, 'input_activations.txt'),
+        os.path.join(export_path, 'input.txt'),
         first_layer_input_activations.flatten(),
         fmt='%.3f',
         newline=',\\\n',
@@ -449,7 +449,7 @@ def main():
 
         # Save the activations to a text file
         np.savetxt(
-            os.path.join(export_path, f'layer_{idx}_activations.txt'),
+            os.path.join(export_path, f'out_layer%d.txt'),
             layer_output_activations.flatten(),
             fmt='%.3f',
             newline=',\\\n',
